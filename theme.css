@@ -801,6 +801,11 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
   color: var(--lg-text-on-glass);
 }
 
+.workspace-leaf-content[data-type="outline"] .view-content {
+  padding-inline: var(--lg-space-4);
+  scroll-padding-inline: var(--lg-space-4);
+}
+
 /* --------------------------------------------------------------------------
    6. Tabs
    -------------------------------------------------------------------------- */

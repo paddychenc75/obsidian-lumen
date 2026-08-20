@@ -26,7 +26,7 @@ Lumen 是一套适用于 Obsidian 的浅色与深色主题。界面 chrome 使�
 
 ### GitHub Release
 
-1. 从 [最新 Release](https://github.com/c13423023552/obsidian-lumen/releases/latest) 下载 `manifest.json` 和 `theme.css`。
+1. 从 [最新 Release](https://github.com/paddychenc75/obsidian-lumen/releases/latest) 下载 `manifest.json` 和 `theme.css`。
 2. 在仓库的 `.obsidian/themes/` 下创建 `琉光 Lumen` 文件夹。
 3. 将两个文件放入该文件夹。
 4. 在 Obsidian 的“设置 → 外观 → 主题”中选择 **琉光 Lumen**。
@@ -36,7 +36,7 @@ Lumen 是一套适用于 Obsidian 的浅色与深色主题。界面 chrome 使�
 将仓库克隆到 vault 的主题目录：
 
 ```bash
-git clone https://github.com/c13423023552/obsidian-lumen.git \
+git clone https://github.com/paddychenc75/obsidian-lumen.git \
   "/path/to/vault/.obsidian/themes/琉光 Lumen"
 ```
 

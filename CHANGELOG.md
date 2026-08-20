@@ -14,4 +14,4 @@ The project follows [Semantic Versioning](https://semver.org/).
 - Style Settings controls for wallpaper, glass weight, contrast, transparency, and accent color.
 - Automated repository validation and tag-based GitHub releases.
 
-[1.0.0]: https://github.com/c13423023552/obsidian-lumen/releases/tag/1.0.0
+[1.0.0]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.0
