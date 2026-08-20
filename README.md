@@ -20,7 +20,7 @@ A light and dark theme for [Obsidian](https://obsidian.md/) with translucent nav
 - macOS, Windows, Linux, or Obsidian Mobile
 
 > [!IMPORTANT]
-> The historical 1.0.0 release predates the Lumen Glass rename and contains the former bilingual manifest name. Do not use it for Lumen Glass; the next supported release is 1.0.1.
+> The historical 1.0.0 release predates the Lumen Glass rename and contains the former bilingual manifest name. Do not use it for Lumen Glass; the first supported release is 1.0.1.
 
 ## Installation
 
@@ -64,7 +64,7 @@ The validation script requires Node.js 24 or later and has no third-party depend
 npm run check
 ```
 
-Version tags must match the version in `manifest.json`. Pushing a version tag runs the release workflow and uploads the files required by Obsidian. The 1.0.1 tag must be created from this renamed source state; the existing 1.0.0 tag and release remain immutable historical artifacts.
+Version tags must match the version in `manifest.json`. Pushing a version tag runs the release workflow and uploads the files required by Obsidian. Existing tags and releases remain immutable historical artifacts.
 
 ## Contributing
 
