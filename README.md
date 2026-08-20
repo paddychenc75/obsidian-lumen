@@ -1,80 +1,72 @@
-# 琉光 Lumen
+# Lumen
 
-**手触琉璃，心落纸上。Glass for the hands. Paper for the mind.**
+A light and dark theme for [Obsidian](https://obsidian.md/) with translucent navigation, restrained interface styling, and a clear reading surface.
 
-Lumen 是一套适用于 Obsidian 的浅色与深色主题。界面 chrome 使用克制的环境玻璃，编辑器和阅读区保持稳定纸面，让导航具有层次，同时保证长文与技术文档的可读性。
+![Lumen theme preview](assets/screenshot.png)
 
-![Lumen 浅色界面](assets/screenshot.png)
+## Features
 
-## 特性
+- Light and dark color schemes
+- Translucent sidebars, tabs, status bar, command palette, and menus
+- Readable editor, reading view, code blocks, tables, callouts, and settings
+- Support for Live Preview, Properties, pop-out windows, and mobile layouts
+- System accessibility preferences for reduced transparency, increased contrast, and reduced motion
+- Optional customization through the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin
+- No remote fonts, images, or other runtime network requests
 
-- 浅色与深色模式
-- 玻璃 ribbon、侧栏、标签栏、状态栏和命令面板
-- 实色编辑器、阅读页、代码块、表格、Callout 与设置内容
-- 适配 Live Preview、阅读模式、Properties、移动端和独立设置窗口
-- 支持降低透明度、增强对比度和减少动态效果
-- 可选的 Style Settings 配置
-- 不加载远程字体、图片或其他网络资源
+## Requirements
 
-## 兼容性
+- Obsidian 1.13.0 or later
+- macOS, Windows, Linux, or Obsidian Mobile
 
-- Obsidian 1.13.0 或更高版本
-- macOS、Windows、Linux 与 Obsidian Mobile
-- 推荐安装 [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) 以使用全部外观配置
+## Installation
 
-## 安装
+### GitHub release
 
-### GitHub Release
+1. Download `manifest.json` and `theme.css` from the [latest release](https://github.com/paddychenc75/obsidian-lumen/releases/latest).
+2. Create a folder named `Lumen` inside your vault's `.obsidian/themes/` directory.
+3. Copy both files into the new folder.
+4. Open **Settings → Appearance → Themes** and select **Lumen**.
 
-1. 从 [最新 Release](https://github.com/paddychenc75/obsidian-lumen/releases/latest) 下载 `manifest.json` 和 `theme.css`。
-2. 在仓库的 `.obsidian/themes/` 下创建 `琉光 Lumen` 文件夹。
-3. 将两个文件放入该文件夹。
-4. 在 Obsidian 的“设置 → 外观 → 主题”中选择 **琉光 Lumen**。
+### Git
 
-### 本地开发
-
-将仓库克隆到 vault 的主题目录：
+Clone the repository directly into your vault's themes directory:
 
 ```bash
 git clone https://github.com/paddychenc75/obsidian-lumen.git \
-  "/path/to/vault/.obsidian/themes/琉光 Lumen"
+  "/path/to/vault/.obsidian/themes/Lumen"
 ```
 
-重新加载 Obsidian 或切换一次主题即可看到修改。
+Reload Obsidian or switch themes after editing `theme.css`.
 
-## Style Settings
+## Customization
 
-- 自定义墙纸与环境渗色
-- 玻璃重量：轻、标准、厚
-- chrome 贴边模式
-- 镜面高光开关
-- 正文高对比与中性纸面
-- 降低透明度与增强对比度
-- 自定义强调色
+Install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) to configure:
 
-系统级“降低透明度”“增强对比度”和“减少动态效果”也会自动生效。
+- Custom wallpaper and ambient color bleed
+- Thin, regular, or thick glass
+- Inset or flush interface layout
+- Specular highlights
+- Neutral or high-contrast reading surfaces
+- Transparency and contrast preferences
+- Accent color
 
-## 设计原则
+Lumen also follows the matching accessibility preferences provided by your operating system.
 
-Lumen 遵循“chrome 是玻璃，笔记是纸”的分层：
+## Development
 
-- 导航和临时覆盖层负责环境感与空间层级。
-- 笔记内容使用稳定纸面，不让墙纸和模糊影响阅读。
-- 选中状态使用内嵌材质，不依赖粗描边或高饱和色块。
-- 间距、圆角、交互状态和深浅色均由统一 token 管理。
-
-品牌与实现说明见 [BRAND.md](BRAND.md)、[DESIGN.md](DESIGN.md)、[REVIEW.md](REVIEW.md) 和 [preview.html](preview.html)。
-
-## 开发与校验
-
-项目只依赖 Node.js 自带模块：
+The validation script requires Node.js 24 or later and has no third-party dependencies.
 
 ```bash
 npm run check
 ```
 
-推送版本 tag 后，GitHub Actions 会校验 tag 与 `manifest.json` 的版本，并自动发布 Obsidian 所需的 `manifest.json` 和 `theme.css`。
+Version tags must match the version in `manifest.json`. Pushing a version tag runs the release workflow and uploads the files required by Obsidian.
 
-## 许可
+## Contributing
 
-Lumen 使用 [MIT License](LICENSE)。Apple、Obsidian 及其他产品名称和商标归各自权利人所有。
+Bug reports and pull requests are welcome. Please run `npm run check` before submitting a change.
+
+## License
+
+Lumen is available under the [MIT License](LICENSE).

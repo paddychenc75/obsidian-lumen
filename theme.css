@@ -1,36 +1,34 @@
 /* ============================================================================
-   琉光 Lumen — Obsidian theme
-   手触琉璃，心落纸上。
-   Glass is chrome. The note is paper.
+   Lumen — Obsidian theme
    ============================================================================ */
 
 /* @settings
 
-name: 琉光 Lumen
+name: Lumen
 id: lumen
 settings:
     -
-        id: lumen-brand
-        title: 琉光 Lumen
-        description: 手触琉璃，心落纸上。Glass for the hands. Paper for the mind.
+        id: lumen-about
+        title: Lumen
+        description: A translucent interface with a clear, focused reading surface.
         type: heading
         level: 1
     -
         id: lumen-env-h
-        title: 环境
+        title: Environment
         type: heading
         level: 2
     -
         id: lumen-wallpaper-image
-        title: 自定义墙纸
-        description: 填写 url("…") 或 none。正文纸面不会使用这张图。
+        title: Custom wallpaper
+        description: Enter url("…") or none. The wallpaper is not applied to note backgrounds.
         type: variable-text
         default: none
         quotes: false
     -
         id: lumen-ambient-bleed
-        title: 环境渗色
-        description: 只染色玻璃表面，不进正文。
+        title: Ambient color bleed
+        description: Applies wallpaper colors to translucent surfaces without affecting notes.
         type: variable-number-slider
         default: 36
         min: 0
@@ -39,44 +37,44 @@ settings:
         format: "%"
     -
         id: lumen-glass-h
-        title: 玻璃
+        title: Glass
         type: heading
         level: 2
     -
         id: lumen-glass-weight
-        title: 玻璃重量
+        title: Glass density
         type: class-select
         allowEmpty: false
         default: lumen-glass-regular
         options:
             -
-                label: 轻 Thin
+                label: Thin
                 value: lumen-glass-thin
             -
-                label: 标准 Regular
+                label: Regular
                 value: lumen-glass-regular
             -
-                label: 厚 Thick
+                label: Thick
                 value: lumen-glass-thick
     -
         id: lumen-chrome-flush
-        title: 铬贴边
+        title: Flush interface
         type: class-toggle
         default: false
     -
         id: lumen-hide-specular
-        title: 关闭镜面高光
+        title: Disable specular highlights
         type: class-toggle
         default: false
     -
         id: lumen-paper-h
-        title: 纸面
+        title: Reading surface
         type: heading
         level: 2
     -
         id: lumen-file-line-width
-        title: 正文宽度
-        description: 默认 46rem。窗口变窄时自动收缩，不会横向滚动。
+        title: Note width
+        description: Defaults to 46rem and shrinks with the window to prevent horizontal scrolling.
         type: variable-number-slider
         default: 46
         min: 32
@@ -85,32 +83,32 @@ settings:
         format: rem
     -
         id: lumen-editor-contrast
-        title: 正文高对比
+        title: High-contrast text
         type: class-toggle
         default: false
     -
         id: lumen-paper-neutral
-        title: 中性纸
+        title: Neutral surface
         type: class-toggle
         default: false
     -
         id: lumen-a11y-h
-        title: 可读与性能
+        title: Accessibility and performance
         type: heading
         level: 2
     -
         id: lumen-reduce-transparency
-        title: 降低透明度
+        title: Reduce transparency
         type: class-toggle
         default: false
     -
         id: lumen-increase-contrast
-        title: 增强对比
+        title: Increase contrast
         type: class-toggle
         default: false
     -
         id: lumen-accent
-        title: 强调色
+        title: Accent color
         type: variable-themed-color
         opacity: false
         format: hex
