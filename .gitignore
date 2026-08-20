@@ -1,0 +1,9 @@
+.DS_Store
+.idea/
+.vscode/
+node_modules/
+npm-debug.log*
+
+# Local design-review exports; the curated public screenshot is tracked.
+assets/preview-*.png
+assets/review-live.png

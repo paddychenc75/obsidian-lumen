@@ -1,0 +1,14 @@
+{
+  "name": "obsidian-lumen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lumen theme for Obsidian",
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/validate.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
