@@ -698,6 +698,9 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
 }
 
 .nav-files-container {
+  --nav-item-children-margin-start: 10px;
+  --nav-item-children-padding-start: 3px;
+
   padding: var(--lg-space-1) var(--lg-space-2) var(--lg-space-6);
 }
 
@@ -713,6 +716,7 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
   border-radius: var(--lg-radius-s);
   background: transparent;
   color: var(--lg-text-on-glass);
+  overflow: hidden;
   box-shadow: none;
   transition: background-color 140ms ease-out, color 140ms ease-out;
 }
@@ -731,20 +735,34 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
 
 body.theme-light .nav-files-container .collapse-icon,
 body.theme-dark .nav-files-container .collapse-icon {
-  flex: 0 0 14px;
+  top: 50%;
   width: 14px;
   height: 14px;
   margin-inline: 0 var(--lg-space-1);
   color: var(--lg-text-on-glass-2);
-  opacity: 0.5;
+  opacity: 0.45;
+  transform: translateY(-50%);
+  transition: color 140ms ease-out, opacity 140ms ease-out;
 }
 
 .nav-files-container .collapse-icon svg {
+  display: block;
+  flex: 0 0 auto;
   width: 14px;
   height: 14px;
 }
 
+body.theme-light .nav-files-container .collapse-icon:not(.is-collapsed),
+body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
+  opacity: 0.68;
+}
+
+.nav-files-container .nav-folder-title:hover .collapse-icon {
+  opacity: 0.82;
+}
+
 .nav-files-container .nav-folder-title-content {
+  flex: 1 1 auto;
   margin-inline-start: 18px;
 }
 
@@ -755,6 +773,8 @@ body.theme-dark .nav-files-container .collapse-icon {
 
 .nav-files-container .nav-file-title-content,
 .nav-files-container .nav-folder-title-content {
+  flex: 1 1 auto;
+  width: 0;
   min-width: 0;
   overflow: hidden;
   white-space: nowrap;
@@ -773,11 +793,16 @@ body.theme-dark .nav-files-container .collapse-icon {
   letter-spacing: 0.04em;
 }
 
-.nav-files-container .tree-item-self.is-active,
-.nav-files-container .tree-item-self.is-selected {
+.nav-files-container .nav-file-title.is-active {
   background: var(--lg-list-active-fill);
   color: var(--lg-text-on-glass);
   box-shadow: none;
+  border: 0;
+}
+
+.nav-files-container .tree-item-self:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--lg-accent) 85%, transparent);
+  outline-offset: -2px;
   border: 0;
 }
 
@@ -994,7 +1019,7 @@ body.theme-dark .workspace-split.mod-root .workspace-tab-header-inner-close-butt
 
 .status-bar {
   position: absolute;
-  inset: auto var(--lg-chrome-inset) var(--lg-chrome-inset) auto;
+  inset: auto var(--lg-space-2) var(--lg-space-2) auto;
   width: max-content;
   max-width: calc(100% - var(--lg-space-4));
   height: var(--lg-status-height);
@@ -1020,16 +1045,16 @@ body.obsidian-app.theme-dark .status-bar {
 @supports (anchor-name: --lumen-editor-column) {
   .status-bar {
     position-anchor: --lumen-editor-column;
-    inset: auto anchor(--lumen-editor-column right) var(--lg-chrome-inset) auto;
+    inset: auto anchor(--lumen-editor-column right) var(--lg-space-2) auto;
     max-width: calc(anchor-size(--lumen-editor-column width) - var(--lg-space-4));
-    margin-inline-end: var(--lg-chrome-inset);
+    margin-inline-end: var(--lg-space-2);
   }
 }
 
 body.is-mobile .status-bar {
   position: relative;
   inset: auto;
-  margin: 0 var(--lg-chrome-inset) var(--lg-chrome-inset);
+  margin: 0 var(--lg-space-2) var(--lg-space-2);
 }
 
 .status-bar-item {
@@ -1820,6 +1845,51 @@ input[type="password"],
 input[type="number"] {
   border-radius: var(--lg-radius-s);
   min-height: 36px;
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
+  background-color: color-mix(in srgb, var(--lg-sidebar-fill) 32%, var(--lg-paper-solid));
+  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 48%, var(--lg-paper-solid));
+  color: var(--text-normal);
+  box-shadow: 0 1px 1px color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover {
+  background-color: color-mix(in srgb, var(--lg-sidebar-fill) 48%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 58%, var(--lg-paper-solid));
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):active {
+  background-color: color-mix(in srgb, var(--lg-sidebar-fill) 62%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 62%, var(--lg-paper-solid));
+  box-shadow: none;
+}
+
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 8%, var(--lg-paper-solid));
+  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 38%, var(--lg-paper-solid));
+  color: var(--text-normal);
+  box-shadow: 0 1px 1px color-mix(in srgb, #000 24%, transparent);
+}
+
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 12%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 48%, var(--lg-paper-solid));
+}
+
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):active {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 16%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 52%, var(--lg-paper-solid));
+  box-shadow: none;
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):disabled,
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):disabled {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 5%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 28%, var(--lg-paper-solid));
+  color: var(--text-muted);
+  opacity: 0.72;
+  box-shadow: none;
 }
 
 textarea {

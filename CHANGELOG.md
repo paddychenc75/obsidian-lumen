@@ -4,6 +4,13 @@ All notable changes to Lumen Glass are documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - 2026-08-20
+
+### Fixed
+
+- Refined file tree indentation, disclosure alignment, truncation, active states, and status bar spacing.
+- Improved secondary button contrast and interaction states in both light and dark modes.
+
 ## [1.0.2] - 2026-08-20
 
 ### Fixed
@@ -32,6 +39,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 - Style Settings controls for wallpaper, glass weight, contrast, transparency, and accent color.
 - Automated repository validation and tag-based GitHub releases.
 
+[1.0.3]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.3
 [1.0.2]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.2
 [1.0.1]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.1
 [1.0.0]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.0
