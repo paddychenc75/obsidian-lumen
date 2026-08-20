@@ -1,15 +1,15 @@
 /* ============================================================================
-   Lumen — Obsidian theme
+   Lumen Glass — Obsidian theme
    ============================================================================ */
 
 /* @settings
 
-name: Lumen
+name: Lumen Glass
 id: lumen
 settings:
     -
         id: lumen-about
-        title: Lumen
+        title: Lumen Glass
         description: A translucent interface with a clear, focused reading surface.
         type: heading
         level: 1
@@ -19,16 +19,9 @@ settings:
         type: heading
         level: 2
     -
-        id: lumen-wallpaper-image
-        title: Custom wallpaper
-        description: Enter url("…") or none. The wallpaper is not applied to note backgrounds.
-        type: variable-text
-        default: none
-        quotes: false
-    -
         id: lumen-ambient-bleed
         title: Ambient color bleed
-        description: Applies wallpaper colors to translucent surfaces without affecting notes.
+        description: Applies the built-in backdrop colors to translucent surfaces without affecting notes.
         type: variable-number-slider
         default: 36
         min: 0
@@ -125,7 +118,6 @@ settings:
   --lumen-accent: #0a84ff;
   --lumen-ambient-bleed: 30%;
   --lumen-file-line-width: 46rem;
-  --lumen-wallpaper-image: none;
 
   --lg-accent: var(--lumen-accent);
   --lg-accent-hover: color-mix(in srgb, var(--lg-accent) 78%, #000);
@@ -557,7 +549,7 @@ body *::-webkit-scrollbar-thumb:hover {
 
 .app-container {
   background-color: var(--lg-wallpaper-fallback);
-  background-image: var(--lumen-wallpaper-image), var(--lg-wallpaper);
+  background-image: var(--lg-wallpaper);
   background-size: cover;
   background-position: center;
 }
@@ -1228,7 +1220,7 @@ body.is-mobile .status-bar {
 
 .markdown-rendered mark,
 .cm-highlight {
-  background: var(--text-highlight-bg) !important;
+  background: var(--text-highlight-bg);
   color: var(--text-normal);
   padding-inline: 0.08em;
   border-radius: var(--lg-radius-xs);
@@ -1519,7 +1511,7 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
 }
 
 .markdown-rendered mjx-container[display="true"] {
-  margin-block: var(--lg-space-6) !important;
+  margin-block: var(--lg-space-6);
   padding-block: var(--lg-space-1);
   overflow-x: auto;
   overflow-y: hidden;

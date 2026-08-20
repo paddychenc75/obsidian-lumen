@@ -1,4 +1,4 @@
-# 琉光 Lumen · 设计定稿
+# Lumen Glass · 设计定稿
 
 源文件：[`preview.html`](preview.html)
 

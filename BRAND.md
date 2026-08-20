@@ -1,4 +1,4 @@
-# 琉光 Lumen
+# Lumen Glass
 
 **手触琉璃，心落纸上。**
 **Glass for the hands. Paper for the mind.**
@@ -14,12 +14,12 @@
 | | |
 |---|---|
 | 中文名 | **琉光** |
-| 英文名 | **Lumen** |
-| 产品全称 | 琉光 Lumen |
-| 包名 | `obsidian-lumen` |
-| 读音 | 琉光 liú-guāng · Lumen /ˈluː.mən/ |
+| 英文名 | **Lumen Glass** |
+| 产品全称 | Lumen Glass |
+| 包名 | `obsidian-lumen-glass` |
+| 读音 | Lumen /ˈluː.mən/ · Glass /ɡlæs/ |
 
-**琉** 取自琉璃，玻璃的古名。**光** 是穿过玻璃后仍在的东西。Lumen 是光通量的单位——光被量过，而不是被装饰过。
+**琉** 取自琉璃，玻璃的古名。**光** 是穿过玻璃后仍在的东西。Lumen 是光通量的单位，Glass 点明主题的核心界面材质。
 
 不用 Apple 的产品名「Liquid Glass」当主题名。那是材质，不是品牌。
 

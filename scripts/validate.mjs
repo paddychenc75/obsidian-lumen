@@ -128,7 +128,8 @@ for (const file of requiredFiles) {
 
 const manifest = readJson("manifest.json");
 const pkg = readJson("package.json");
-const semver = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
+const releaseVersion = /^\d+\.\d+\.\d+$/;
+const expectedThemeName = "Lumen Glass";
 
 for (const key of ["name", "version", "minAppVersion", "author"]) {
   if (typeof manifest[key] !== "string" || !manifest[key].trim()) {
@@ -136,14 +137,23 @@ for (const key of ["name", "version", "minAppVersion", "author"]) {
   }
 }
 
-if (!semver.test(manifest.version ?? "")) {
-  fail(`manifest version is not valid SemVer: ${manifest.version}`);
+if (!releaseVersion.test(manifest.version ?? "")) {
+  fail(`manifest version must use the x.y.z release format: ${manifest.version}`);
 }
-if (!semver.test(manifest.minAppVersion ?? "")) {
-  fail(`manifest minAppVersion is not valid SemVer: ${manifest.minAppVersion}`);
+if (!releaseVersion.test(manifest.minAppVersion ?? "")) {
+  fail(`manifest minAppVersion must use the x.y.z format: ${manifest.minAppVersion}`);
 }
 if (pkg.version !== manifest.version) {
   fail(`package.json version ${pkg.version} does not match manifest ${manifest.version}`);
+}
+if (manifest.name !== expectedThemeName) {
+  fail(`manifest name must be ${expectedThemeName}; received ${manifest.name}`);
+}
+if (!/^[\x20-\x7E]+$/.test(manifest.name ?? "")) {
+  fail("manifest name must use Basic Latin characters only");
+}
+if (/\b(?:obsidian|theme)\b/i.test(manifest.name ?? "")) {
+  fail("manifest name must not contain Obsidian or Theme");
 }
 if (manifest.authorUrl && !/^https:\/\/github\.com\/[^/]+\/?$/.test(manifest.authorUrl)) {
   fail("manifest authorUrl must be an HTTPS GitHub profile URL");
@@ -159,6 +169,9 @@ if (releaseTag && releaseTag !== manifest.version) {
 const css = read("theme.css");
 if (!css.includes("/* @settings")) {
   fail("theme.css is missing the Style Settings metadata block");
+}
+if (!css.includes(`name: ${expectedThemeName}`) || !css.includes(`title: ${expectedThemeName}`)) {
+  fail("theme.css Style Settings metadata must match the manifest name");
 }
 checkBalancedCss(css);
 
@@ -190,6 +203,6 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Validated Lumen ${manifest.version}: ${requiredFiles.length} required files, ` +
+  `Validated ${expectedThemeName} ${manifest.version}: ${requiredFiles.length} required files, ` +
     `${importantCount} !important declarations, no remote theme assets.`,
 );

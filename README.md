@@ -1,8 +1,8 @@
-# Lumen
+# Lumen Glass
 
 A light and dark theme for [Obsidian](https://obsidian.md/) with translucent navigation, restrained interface styling, and a clear reading surface.
 
-![Lumen theme preview](assets/screenshot.png)
+![Lumen Glass theme preview](assets/screenshot.png)
 
 ## Features
 
@@ -19,14 +19,17 @@ A light and dark theme for [Obsidian](https://obsidian.md/) with translucent nav
 - Obsidian 1.13.0 or later
 - macOS, Windows, Linux, or Obsidian Mobile
 
+> [!IMPORTANT]
+> The historical 1.0.0 release predates the Lumen Glass rename and contains the former bilingual manifest name. Do not use it for Lumen Glass; the next supported release is 1.0.1.
+
 ## Installation
 
 ### GitHub release
 
 1. Download `manifest.json` and `theme.css` from the [latest release](https://github.com/paddychenc75/obsidian-lumen/releases/latest).
-2. Create a folder named `Lumen` inside your vault's `.obsidian/themes/` directory.
+2. Create a folder named `Lumen Glass` inside your vault's `.obsidian/themes/` directory.
 3. Copy both files into the new folder.
-4. Open **Settings → Appearance → Themes** and select **Lumen**.
+4. Open **Settings → Appearance → Themes** and select **Lumen Glass**.
 
 ### Git
 
@@ -34,7 +37,7 @@ Clone the repository directly into your vault's themes directory:
 
 ```bash
 git clone https://github.com/paddychenc75/obsidian-lumen.git \
-  "/path/to/vault/.obsidian/themes/Lumen"
+  "/path/to/vault/.obsidian/themes/Lumen Glass"
 ```
 
 Reload Obsidian or switch themes after editing `theme.css`.
@@ -43,7 +46,7 @@ Reload Obsidian or switch themes after editing `theme.css`.
 
 Install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) to configure:
 
-- Custom wallpaper and ambient color bleed
+- Built-in ambient color bleed
 - Thin, regular, or thick glass
 - Inset or flush interface layout
 - Specular highlights
@@ -51,7 +54,7 @@ Install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) to
 - Transparency and contrast preferences
 - Accent color
 
-Lumen also follows the matching accessibility preferences provided by your operating system.
+Lumen Glass also follows the matching accessibility preferences provided by your operating system.
 
 ## Development
 
@@ -61,7 +64,7 @@ The validation script requires Node.js 24 or later and has no third-party depend
 npm run check
 ```
 
-Version tags must match the version in `manifest.json`. Pushing a version tag runs the release workflow and uploads the files required by Obsidian.
+Version tags must match the version in `manifest.json`. Pushing a version tag runs the release workflow and uploads the files required by Obsidian. The 1.0.1 tag must be created from this renamed source state; the existing 1.0.0 tag and release remain immutable historical artifacts.
 
 ## Contributing
 
@@ -69,4 +72,4 @@ Bug reports and pull requests are welcome. Please run `npm run check` before sub
 
 ## License
 
-Lumen is available under the [MIT License](LICENSE).
+Lumen Glass is available under the [MIT License](LICENSE).

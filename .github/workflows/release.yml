@@ -37,6 +37,6 @@ jobs:
             gh release create "$TAG" \
               manifest.json theme.css assets/screenshot.png \
               --verify-tag \
-              --title "Lumen $TAG" \
+              --title "Lumen Glass $TAG" \
               --generate-notes
           fi

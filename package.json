@@ -1,8 +1,8 @@
 {
-  "name": "obsidian-lumen",
-  "version": "1.0.0",
+  "name": "obsidian-lumen-glass",
+  "version": "1.0.1",
   "private": true,
-  "description": "Lumen theme for Obsidian",
+  "description": "Lumen Glass theme for Obsidian",
   "type": "module",
   "scripts": {
     "check": "node scripts/validate.mjs"
