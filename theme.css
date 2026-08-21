@@ -1,7 +1,8 @@
 /* ============================================================================
    Lumen Glass — Obsidian theme
-   ============================================================================ */
 
+   GENERATED FILE — edit src/*.css instead, then run `npm run build`.
+   ============================================================================ */
 /* @settings
 
 name: Lumen Glass
@@ -67,13 +68,13 @@ settings:
     -
         id: lumen-file-line-width
         title: Note width
-        description: Defaults to 46rem and shrinks with the window to prevent horizontal scrolling.
+        description: Measured in characters of your body text, so the line holds its length when you change the font size. The default 40 gives about 37 Han characters or 77 Latin ones per line; it also shrinks with the window to prevent horizontal scrolling.
         type: variable-number-slider
-        default: 46
-        min: 32
-        max: 80
+        default: 40
+        min: 28
+        max: 70
         step: 1
-        format: rem
+        format: em
     -
         id: lumen-editor-contrast
         title: High-contrast text
@@ -84,6 +85,25 @@ settings:
         title: Neutral surface
         type: class-toggle
         default: false
+    -
+        id: lumen-plugins-h
+        title: Plugins
+        type: heading
+        level: 2
+    -
+        id: lumen-claudian-style
+        title: Claudian panel
+        description: Matches the Claudian chat panel to the theme. Choosing Plugin default hands the panel back untouched. Either way this does nothing unless Claudian is installed.
+        type: class-select
+        allowEmpty: false
+        default: lumen-claudian-themed
+        options:
+            -
+                label: Themed
+                value: lumen-claudian-themed
+            -
+                label: Plugin default
+                value: lumen-claudian-plain
     -
         id: lumen-a11y-h
         title: Accessibility and performance
@@ -117,13 +137,24 @@ settings:
 :root {
   --lumen-accent: #0a84ff;
   --lumen-ambient-bleed: 30%;
-  --lumen-file-line-width: 46rem;
+  --lumen-file-line-width: 40em;
 
   --lg-accent: var(--lumen-accent);
   --lg-accent-hover: color-mix(in srgb, var(--lg-accent) 78%, #000);
   --lg-accent-1: color-mix(in srgb, var(--lg-accent) 68%, #fff);
   --lg-accent-2: color-mix(in srgb, var(--lg-accent) 62%, #000);
-  --lg-focus: 0 0 0 3px color-mix(in srgb, var(--lg-accent) 42%, transparent);
+
+  /*
+   * One focus language for the whole theme. Every :focus-visible rule composes
+   * these, so `prefers-contrast: more` can widen the ring by overriding a
+   * token instead of fighting per-component selector specificity.
+   */
+  --lg-focus-color: color-mix(in srgb, var(--lg-accent) 85%, transparent);
+  --lg-focus-width: 2px;
+  --lg-focus-ring: var(--lg-focus-width) solid var(--lg-focus-color);
+  --lg-focus-offset: 2px;
+  /* Rows and cells whose parent clips overflow have to draw the ring inside. */
+  --lg-focus-offset-inset: -2px;
 
   --lg-glass-blur: 24px;
   --lg-glass-saturate: 112%;
@@ -146,8 +177,19 @@ settings:
   --lg-glass-solid: #e8eef2;
   --lg-overlay-solid: #f7f7f8;
   --lg-glass-highlight: radial-gradient(120% 70% at 28% 16%, rgba(255, 255, 255, 0.22), transparent 46%);
-  --lg-glass-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.4), 0 4px 14px rgba(0, 0, 0, 0.07);
-  --lg-overlay-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  /*
+   * Shadows are stacked rather than single-blur. Real light casts a tight dark
+   * contact shadow where an object nearly touches the surface and a wide faint
+   * one from the room; one blur radius can only be one of those, so it either
+   * looks pasted down or lost in fog. Total darkness is held near the old
+   * single-stop value — the stack buys edge definition, not weight.
+   */
+  --lg-glass-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 14px rgba(0, 0, 0, 0.055);
+  --lg-overlay-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07),
+    0 20px 48px rgba(0, 0, 0, 0.1);
   --lg-status-fill: rgba(255, 255, 255, 0.16);
   --lg-status-luma: rgba(255, 255, 255, 0.14);
   --lg-tooltip-bg: rgba(28, 28, 30, 0.88);
@@ -155,15 +197,13 @@ settings:
   --lg-scrollbar-thumb: rgba(60, 60, 67, 0.28);
   --lg-scrollbar-thumb-hover: rgba(60, 60, 67, 0.46);
 
-  --lg-paper: #fbfbfd;
   --lg-paper-solid: #fbfbfd;
   --lg-paper-border: rgba(0, 0, 0, 0.06);
   --lg-paper-link: #0066cc;
   --lg-paper-link-hover: #004f9e;
 
   --lg-text-on-glass: #1c1c1e;
-  --lg-text-on-glass-2: rgba(28, 28, 30, 0.68);
-  --lg-text-on-glass-shadow: none;
+  --lg-text-on-glass-2: rgba(28, 28, 30, 0.76);
 
   --lg-wallpaper-fallback: #7fa4b8;
   --lg-wallpaper:
@@ -174,8 +214,10 @@ settings:
   --lg-space-2: 8px;
   --lg-space-3: 12px;
   --lg-space-4: 16px;
+  --lg-space-5: 20px;
   --lg-space-6: 24px;
   --lg-space-8: 32px;
+  --lg-space-10: 40px;
 
   /*
    * Radius hierarchy: controls → surfaces → floating chrome → dialogs.
@@ -187,18 +229,37 @@ settings:
   --lg-radius-l: 14px;
   --lg-radius-xl: 18px;
   --lg-radius-pill: 999px;
-  --lg-chrome-inset: var(--lg-space-1);
-  --lg-chrome-gap: var(--lg-space-2);
+  /*
+   * Chrome separations are declared, not inferred from colliding margins.
+   * --lg-chrome-gap must stay above --lg-radius-m: where two rounded panels
+   * meet, the channel widens at the corners, so a seam narrower than the radius
+   * reads as pinched along the straight run. Panels sharing a seam each carry
+   * half of it; panels meeting the window edge carry --lg-chrome-frame.
+   *
+   * The halving stays at the use site rather than living in a derived token:
+   * these are declared on :root, so a derived value would be substituted here
+   * and inherited frozen, ignoring any later override of the gap further down
+   * the tree (which is exactly what .lumen-chrome-flush does).
+   */
+  --lg-chrome-frame: var(--lg-space-2);
+  --lg-chrome-gap: var(--lg-space-3);
   --lg-item-gap: var(--lg-space-1);
 
   --lg-control-size: 36px;
+  --lg-control-compact: 28px;
   --lg-row-height: 36px;
   --lg-status-height: 32px;
 
+  /*
+   * Three durations, scaled to travel distance: state changes on something
+   * already on screen, elements that move, and surfaces that enter or leave.
+   */
   --lg-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lg-duration-fast: 120ms;
   --lg-duration: 180ms;
+  --lg-press-scale: 0.97;
 
-  --lg-table-radius: 8px;
+  --lg-table-radius: var(--lg-radius-s);
   --lg-table-font-size: 14px;
   --lg-table-header-font-size: 14px;
   --lg-table-line-height: 1.47;
@@ -215,19 +276,25 @@ settings:
   --lg-cta: #0068d9;
   --lg-cta-hover: #0058b8;
   --lg-cta-active: #004b9f;
+  /*
+   * A quote rule is structure, so it has to read as drawn rather than as a
+   * rendering artifact. The ladder also has to stay legible at the second and
+   * third level: fading it to a quarter made nesting read as a broken line
+   * instead of a deeper one.
+   */
   --lg-quote-line: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 18%, var(--text-muted)) 62%,
+    color-mix(in srgb, var(--lg-accent) 18%, var(--text-muted)) 80%,
     transparent
   );
   --lg-quote-line-nested: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 10%, var(--text-muted)) 42%,
+    color-mix(in srgb, var(--lg-accent) 10%, var(--text-muted)) 56%,
     transparent
   );
   --lg-quote-line-deep: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 6%, var(--text-muted)) 30%,
+    color-mix(in srgb, var(--lg-accent) 6%, var(--text-muted)) 40%,
     transparent
   );
 
@@ -252,12 +319,13 @@ settings:
   --lg-tab-active-fill: rgba(18, 24, 32, 0.1);
   --lg-glass-solid: #e8eef2;
   --lg-overlay-solid: #f7f7f8;
-  --lg-overlay-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  --lg-overlay-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07),
+    0 20px 48px rgba(0, 0, 0, 0.1);
   --lg-scrollbar-thumb: rgba(60, 60, 67, 0.28);
   --lg-scrollbar-thumb-hover: rgba(60, 60, 67, 0.46);
   --lg-status-fill: rgba(255, 255, 255, 0.16);
   --lg-status-luma: rgba(255, 255, 255, 0.14);
-  --lg-paper: #fbfbfd;
   --lg-paper-solid: #fbfbfd;
   --lg-paper-border: rgba(0, 0, 0, 0.06);
   --lg-paper-link: #0066cc;
@@ -289,17 +357,17 @@ settings:
   --lg-table-control-surface: #f8f8fa;
   --lg-quote-line: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 16%, var(--text-muted)) 56%,
+    color-mix(in srgb, var(--lg-accent) 16%, var(--text-muted)) 78%,
     transparent
   );
   --lg-quote-line-nested: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 8%, var(--text-muted)) 36%,
+    color-mix(in srgb, var(--lg-accent) 8%, var(--text-muted)) 54%,
     transparent
   );
   --lg-quote-line-deep: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 4%, var(--text-muted)) 24%,
+    color-mix(in srgb, var(--lg-accent) 4%, var(--text-muted)) 38%,
     transparent
   );
 }
@@ -327,7 +395,30 @@ settings:
   --lg-tab-active-fill: rgba(0, 0, 0, 0.28);
   --lg-glass-solid: #1c1a2a;
   --lg-overlay-solid: #2c2c2e;
-  --lg-overlay-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
+  --lg-overlay-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.26), 0 8px 22px rgba(0, 0, 0, 0.24),
+    0 24px 56px rgba(0, 0, 0, 0.3);
+  /*
+   * The light recipe is a strong top highlight plus a faint cast shadow. In
+   * dark that inverts: a soft edge highlight for the glass rim, and a much
+   * deeper cast shadow, because 7% black over a dark canvas renders as nothing.
+   */
+  --lg-glass-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.14), 0 1px 2px rgba(0, 0, 0, 0.24),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+  /*
+   * The light CTA is tuned to carry white text on a white page, which leaves
+   * it darker than it needs to be here. Raising it toward the accent lifts it
+   * off the dark canvas — 3.7:1 against glass, up from 3.2:1 — while the label
+   * still clears 4.5:1. There is no headroom above this: full accent would
+   * drop white text to 3.65:1.
+   *
+   * Hover and press keep darkening, as they do in light, so the interaction
+   * reads the same in both appearances.
+   */
+  --lg-cta: color-mix(in srgb, var(--lg-accent) 88%, #000);
+  --lg-cta-hover: color-mix(in srgb, var(--lg-accent) 80%, #000);
+  --lg-cta-active: color-mix(in srgb, var(--lg-accent) 72%, #000);
   --lg-glass-highlight: radial-gradient(120% 70% at 28% 16%, rgba(255, 255, 255, 0.14), transparent 46%);
   --lg-status-fill: rgba(28, 26, 42, 0.28);
   --lg-status-luma: rgba(255, 255, 255, 0.04);
@@ -335,7 +426,6 @@ settings:
   --lg-tooltip-text: #ffffff;
   --lg-scrollbar-thumb: rgba(235, 235, 245, 0.28);
   --lg-scrollbar-thumb-hover: rgba(235, 235, 245, 0.46);
-  --lg-paper: #1c1c1e;
   --lg-paper-solid: #1c1c1e;
   --lg-paper-border: rgba(255, 255, 255, 0.10);
   --lg-paper-link: #2997ff;
@@ -367,17 +457,17 @@ settings:
   --lg-table-control-surface: #222224;
   --lg-quote-line: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 14%, var(--text-muted)) 68%,
+    color-mix(in srgb, var(--lg-accent) 14%, var(--text-muted)) 84%,
     transparent
   );
   --lg-quote-line-nested: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 7%, var(--text-muted)) 44%,
+    color-mix(in srgb, var(--lg-accent) 7%, var(--text-muted)) 60%,
     transparent
   );
   --lg-quote-line-deep: color-mix(
     in srgb,
-    color-mix(in srgb, var(--lg-accent) 3%, var(--text-muted)) 30%,
+    color-mix(in srgb, var(--lg-accent) 3%, var(--text-muted)) 44%,
     transparent
   );
 }
@@ -495,25 +585,75 @@ body {
   --prompt-max-width: calc(100vw - 48px);
 
   --font-text-size: 17px;
-  --line-height-normal: 1.66;
-  --h1-size: 2rem;
-  --h2-size: 1.5rem;
-  --h3-size: 1.25rem;
-  --h4-size: 1.125rem;
-  --h5-size: 1.0625rem;
-  --h6-size: 1rem;
+  /*
+   * Above the Latin norm because Han glyphs fill the em box: with no x-height to
+   * fall back on, the visible gap between lines is the whole of what leading
+   * buys, so a value that reads open in English reads cramped in Chinese.
+   */
+  --line-height-normal: 1.7;
+
+  /*
+   * Sized in em, not rem, so the whole scale tracks the body size the reader
+   * picks in Style Settings instead of staying pinned to the root.
+   *
+   * Steps compress as they descend (1.22 → 1.19 → 1.17 → 1.12), which is what
+   * keeps the top of the scale dramatic and the bottom of it usable. Size runs
+   * out before the scale does, so h5 and h6 switch channel: they go bolder than
+   * h4 while getting smaller, the same weight inversion macOS uses between
+   * Title 3 and Headline. h6 also drops to muted, reading as a label rather
+   * than a title.
+   */
+  --h1-size: 1.9em;
+  --h2-size: 1.55em;
+  --h3-size: 1.3em;
+  --h4-size: 1.12em;
+  --h5-size: 1em;
+  --h6-size: 0.875em;
   --h1-weight: 700;
-  --h2-weight: 600;
+  --h2-weight: 700;
   --h3-weight: 600;
   --h4-weight: 600;
-  --h5-weight: 600;
-  --h6-weight: 600;
-  --h1-line-height: 1.18;
-  --h2-line-height: 1.24;
+  --h5-weight: 700;
+  --h6-weight: 700;
+  --h1-line-height: 1.16;
+  --h2-line-height: 1.22;
   --h3-line-height: 1.3;
   --h4-line-height: 1.4;
-  --p-spacing: var(--lg-space-4);
-  --file-line-width: var(--lumen-file-line-width, 46rem);
+  --h5-line-height: 1.45;
+  --h6-line-height: 1.5;
+
+  /*
+   * Optical tracking: type set large needs to be pulled in, type set small
+   * needs to be opened up. Without this the scale reads as one font enlarged
+   * rather than as sizes designed for their own measure.
+   *
+   * These go through Obsidian's own --hN-letter-spacing and --h6-color rather
+   * than a .markdown-rendered rule, because the editor styles headings with a
+   * different set of selectors (.cm-header-N, .HyperMD-header-N) that read the
+   * same variables. Setting the property directly would leave Live Preview and
+   * source mode untracked while Reading View was tracked.
+   */
+  --lg-tracking-h1: -0.02em;
+  --lg-tracking-h2: -0.016em;
+  --lg-tracking-h3: -0.012em;
+  --lg-tracking-h4: -0.008em;
+  --lg-tracking-h5: -0.003em;
+  --lg-tracking-h6: 0.006em;
+  --h1-letter-spacing: var(--lg-tracking-h1);
+  --h2-letter-spacing: var(--lg-tracking-h2);
+  --h3-letter-spacing: var(--lg-tracking-h3);
+  --h4-letter-spacing: var(--lg-tracking-h4);
+  --h5-letter-spacing: var(--lg-tracking-h5);
+  --h6-letter-spacing: var(--lg-tracking-h6);
+  --h6-color: var(--text-muted);
+  /*
+   * Both measured in the reader's own body size rather than in px or rem, so the
+   * line keeps its character count and the paragraph keeps its gap when the font
+   * size changes. Custom properties substitute as tokens, so the em resolves at
+   * the sizer and the paragraph — not here on body, where it would freeze.
+   */
+  --p-spacing: 1em;
+  --file-line-width: var(--lumen-file-line-width, 40em);
   --caret-color: var(--lg-accent);
 
   --icon-color: var(--lg-text-on-glass);
@@ -586,8 +726,8 @@ body {
   --blockquote-border-thickness: 2px;
   --blockquote-border-color: var(--lg-quote-line);
   --blockquote-color: var(--text-muted);
-  --code-radius: var(--lg-radius-m);
-  --callout-radius: var(--lg-radius-m);
+  --code-radius: var(--lg-radius-s);
+  --callout-radius: var(--lg-radius-s);
   --callout-blend-mode: normal;
   --callout-border-width: 0 0 0 2px;
   --callout-padding: 8px 12px;
@@ -597,6 +737,81 @@ body {
   --graph-node-focused: var(--lg-accent-hover);
 }
 
+/*
+ * Properties. Obsidian ships this block fully transparent and borderless, which
+ * reads fine for three fields and turns into an undifferentiated wall at
+ * fifteen. Rows get a hairline separator so the block scans like a list, and the
+ * label column widens because the default 7.5em clips the longer keys.
+ */
+body {
+  --metadata-max-width: 100%;
+  --metadata-padding: 0;
+  --metadata-gap: 0;
+  --metadata-label-width: 8.5em;
+  --metadata-label-text-color: var(--text-muted);
+  --metadata-label-text-color-hover: var(--text-normal);
+  --metadata-input-text-color: var(--text-normal);
+  --metadata-divider-width: 1px;
+  --metadata-divider-color: var(--lg-doc-divider);
+  --metadata-divider-color-hover: transparent;
+  --metadata-divider-color-focus: transparent;
+  --metadata-property-radius: var(--lg-radius-xs);
+  --metadata-property-radius-hover: var(--lg-radius-xs);
+  --metadata-property-radius-focus: var(--lg-radius-xs);
+  --metadata-property-background-hover: var(--lg-state-hover);
+  --metadata-property-background-active: var(--lg-list-active-fill);
+  --metadata-property-box-shadow: none;
+  --metadata-property-box-shadow-hover: none;
+  --metadata-property-box-shadow-focus: 0 0 0 var(--lg-focus-width) var(--lg-focus-color);
+  --metadata-input-background-hover: transparent;
+  --metadata-input-background-active: transparent;
+}
+
+/*
+ * Search results default to an opaque `--background-primary` panel, which cuts a
+ * solid rectangle out of the translucent sidebar. Transparent lets the pane
+ * material show through and leaves the row states to carry the structure.
+ */
+body {
+  --search-result-background: transparent;
+  --search-input-radius: var(--lg-radius-s);
+  --search-icon-color: var(--text-muted);
+  --search-clear-button-color: var(--text-muted);
+}
+
+/*
+ * The accent rail Obsidian puts on embeds is the same device as a blockquote's,
+ * so a quoted embed grows two of them. The embed keeps its card and gives up the
+ * rail; the blockquote keeps the rail.
+ */
+body {
+  --embed-border-start: none;
+  --embed-block-shadow-hover: 0 0 0 1px var(--lg-paper-border);
+  --embed-actions-background: var(--lg-overlay-solid);
+  --embed-actions-shadow: var(--lg-overlay-shadow);
+  --embed-action-radius: var(--lg-radius-xs);
+}
+
+/*
+ * A drag ghost and a tooltip are the same object — a small label floating over
+ * the page — so they share a material instead of the ghost keeping its own
+ * hardcoded black.
+ */
+body {
+  --drag-ghost-background: var(--lg-tooltip-bg);
+  --drag-ghost-text-color: var(--lg-tooltip-text);
+  --drag-item-background: var(--lg-state-hover);
+  --drag-item-shadow: var(--lg-overlay-shadow);
+}
+
+body {
+  --slider-track-background: var(--background-modifier-border);
+  --slider-track-height: 4px;
+  --slider-thumb-border-width: 0;
+  --slider-thumb-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.1);
+  --slider-thumb-shadow-focus: var(--slider-thumb-shadow), 0 0 0 var(--lg-focus-width) var(--lg-focus-color);
+}
+
 /* --------------------------------------------------------------------------
    2. Environment (no fixed attachment, two layers max)
    -------------------------------------------------------------------------- */
@@ -604,6 +819,21 @@ body {
 body {
   background-color: var(--lg-wallpaper-fallback);
   -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * macOS draws its window controls over our panels at a fixed inset — measured at
+ * x 14..74, y 12..25 — and will not move them for us. A frame wider than that
+ * inset leaves the panel edge only a few pixels from buttons it cannot avoid, so
+ * cap the frame here instead of shaving the top edge alone and going asymmetric.
+ * The seam between panels is unaffected.
+ *
+ * The flush opt-out is excluded by selector rather than left to the cascade:
+ * this selector outweighs `body.lumen-chrome-flush`, so without it the platform
+ * cap would quietly hold a 4px frame against a reader who asked for none.
+ */
+body.mod-macos.is-hidden-frameless:not(.is-popout-window):not(.lumen-chrome-flush) {
+  --lg-chrome-frame: var(--lg-space-1);
 }
 
 body * {
@@ -705,17 +935,35 @@ body.theme-dark .workspace-split.mod-right-split {
 
 .workspace-ribbon.side-dock-ribbon.mod-left {
   width: 48px;
-  margin: var(--lg-chrome-inset) 0 var(--lg-chrome-inset) var(--lg-chrome-inset);
+  /* Flush to the left split on its inner edge, so no seam there. */
+  margin: var(--lg-chrome-frame) 0 var(--lg-chrome-frame) var(--lg-chrome-frame);
   border-inline-end: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 9%, transparent);
   border-radius: var(--lg-radius-m) 0 0 var(--lg-radius-m);
   box-shadow: none;
   overflow: hidden;
+  position: relative;
+}
+
+/*
+ * The window controls end at x 74, past this rail's inner edge, so the divider
+ * would run between the yellow and green buttons and split a cluster the OS
+ * draws as one. Drop the divider across the control band and let the rail and
+ * the sidebar read as a single surface up there; resume it below.
+ */
+body.mod-macos.is-hidden-frameless:not(.is-popout-window)
+  .workspace-ribbon.side-dock-ribbon.mod-left {
+  padding-top: 36px;
+  border-inline-end-color: transparent;
 }
 
 body.mod-macos.is-hidden-frameless:not(.is-popout-window)
-  .workspace-ribbon.side-dock-ribbon.mod-left {
-  margin-top: var(--lg-chrome-inset);
-  padding-top: 36px;
+  .workspace-ribbon.side-dock-ribbon.mod-left::after {
+  content: "";
+  position: absolute;
+  inset: 32px 0 0 auto;
+  width: 1px;
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 9%, transparent);
+  pointer-events: none;
 }
 
 .workspace-ribbon.side-dock-ribbon::before {
@@ -758,8 +1006,9 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
 
 .workspace-split.mod-left-split,
 .workspace-split.mod-right-split {
-  height: calc(100% - var(--lg-chrome-inset) - var(--lg-chrome-inset));
-  margin: var(--lg-chrome-inset) var(--lg-chrome-inset) var(--lg-chrome-inset) 0;
+  height: calc(100% - var(--lg-chrome-frame) - var(--lg-chrome-frame));
+  /* Left split: flush to the ribbon, so only the inner edge carries a seam. */
+  margin: var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2) var(--lg-chrome-frame) 0;
   border-radius: var(--lg-radius-m);
   /*
    * The split's resize handle lives on its outer edge. Clipping the split
@@ -775,7 +1024,7 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
 }
 
 .workspace-split.mod-right-split {
-  margin: var(--lg-chrome-inset);
+  margin: var(--lg-chrome-frame) var(--lg-chrome-frame) var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2);
   box-shadow: none;
 }
 
@@ -806,7 +1055,9 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
   color: var(--lg-text-on-glass);
   overflow: hidden;
   box-shadow: none;
-  transition: background-color 140ms ease-out, color 140ms ease-out;
+  transition:
+    background-color var(--lg-duration-fast) var(--lg-ease),
+    color var(--lg-duration-fast) var(--lg-ease);
 }
 
 .nav-files-container .nav-folder-title {
@@ -830,7 +1081,9 @@ body.theme-dark .nav-files-container .collapse-icon {
   color: var(--lg-text-on-glass-2);
   opacity: 0.45;
   transform: translateY(-50%);
-  transition: color 140ms ease-out, opacity 140ms ease-out;
+  transition:
+    color var(--lg-duration-fast) var(--lg-ease),
+    opacity var(--lg-duration-fast) var(--lg-ease);
 }
 
 .nav-files-container .collapse-icon svg {
@@ -889,8 +1142,8 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
 }
 
 .nav-files-container .tree-item-self:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--lg-accent) 85%, transparent);
-  outline-offset: -2px;
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset-inset);
   border: 0;
 }
 
@@ -908,6 +1161,12 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   color: var(--lg-text-on-glass);
 }
 
+/*
+ * 16px puts the row's highlight 12px from the panel edge, which is where the tag
+ * and link panes already start theirs — core pulls these rows 4px back out with
+ * an inline margin, so the panel has to give the 4px back. Getting this wrong is
+ * visible: the highlight slides sideways when you switch tabs in the same panel.
+ */
 .workspace-leaf-content[data-type="outline"] .view-content,
 .workspace-leaf-content[data-type="all-properties"] .view-content {
   padding-inline: var(--lg-space-4);
@@ -918,12 +1177,111 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   padding-block: var(--lg-space-2) var(--lg-space-8);
 }
 
+/*
+ * Sidebar rows hang their leading icon 20px to the left of the row's text box, so
+ * that a row with a disclosure arrow and a row without one still put their labels
+ * in the same column. The tag pane proves the hang is load-bearing: at equal
+ * depth, a collapsible row and a plain one start their label at the same x. So the
+ * hang stays, and it is given somewhere to hang into instead.
+ *
+ * Core reserves 24px of leading padding for exactly that in --nav-item-padding,
+ * then hands these views 8px, which leaves the icon hanging into the panel's own
+ * edge margin — measured 4px from the panel edge in the properties list, about 0
+ * in the link panes, i.e. outside the row's own hover shape. Nothing in a sidebar
+ * row should sit outside its highlight.
+ *
+ * 24px is not a new number: it is what core reserves and what the tag pane keeps,
+ * so the icon lands 16px from the panel edge as it already does there. The file
+ * explorer is excluded — its rows are .tree-item-self too, but their metrics are
+ * set above.
+ */
+.workspace-leaf-content[data-type="tag"] .tree-item-self,
+.workspace-leaf-content[data-type="backlink"] .tree-item-self,
+.workspace-leaf-content[data-type="outgoing-link"] .tree-item-self,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-self {
+  padding-inline-start: var(--lg-space-6);
+}
+
+/*
+ * The outline and properties panes cannot be reached that way: core writes their
+ * indentation as an inline `padding-inline-start: 12px !important`, which no style
+ * sheet can outbid. So the same 16px landing point is reached from the other side
+ * — the icon is absolutely positioned, offset from the row's content edge by its
+ * own margin, so shortening the hang to 8px moves it without touching the rest.
+ *
+ * Because the icon is out of flow, the label does not follow it, and shortening
+ * the hang alone would run the icon straight over the first characters (measured
+ * 8px of overlap). The label is moved the same 12px separately, which lands it at
+ * 36px like every other pane, and keeps the 4px between icon and text.
+ */
+.workspace-leaf-content[data-type="all-properties"] .tree-item-icon,
+.workspace-leaf-content[data-type="outline"] .tree-item-icon {
+  margin-inline-start: calc(-1 * var(--lg-space-2));
+}
+
+.workspace-leaf-content[data-type="all-properties"] .tree-item-inner,
+.workspace-leaf-content[data-type="outline"] .tree-item-inner {
+  padding-inline-start: var(--lg-space-3);
+}
+
+/*
+ * The trailing count sits at the row's own padding edge, so it needs 4px rather
+ * than 8px to land 20px from the panel edge — level with the icon on the other
+ * side, and level with the counts in the tag and link panes.
+ */
+.workspace-leaf-content[data-type="all-properties"] .tree-item-self {
+  padding-inline-end: var(--lg-space-1);
+}
+
+/*
+ * Search results are a two-level list — a file, then the lines that matched
+ * inside it. Obsidian gives both levels the same visual weight, so a result with
+ * six matches reads as seven equal rows. The file line keeps the list language
+ * used by the file tree; the matches recede and indent under it.
+ */
+.search-result-file-title {
+  border-radius: var(--lg-radius-xs);
+  color: var(--lg-text-on-glass);
+  font-weight: 500;
+}
+
+.search-result-file-title:hover {
+  background-color: var(--lg-state-hover);
+}
+
+.search-result-file-match {
+  border-radius: var(--lg-radius-xs);
+  color: var(--lg-text-on-glass-2);
+  line-height: 1.5;
+}
+
+.search-result-file-match:hover {
+  background-color: var(--lg-state-hover);
+}
+
+/*
+ * The matched run is the only reason the row is on screen, so it gets the same
+ * highlight the reader already knows from `==marked==` text in a note.
+ */
+.search-result-file-matched-text {
+  border-radius: var(--lg-radius-xs);
+  padding: 0 2px;
+  background-color: var(--lg-mark-bg);
+  color: var(--lg-text-on-glass);
+}
+
+.search-results-info,
+.search-empty-state {
+  color: var(--lg-text-on-glass-2);
+  font-size: var(--font-ui-smaller);
+}
+
 /* --------------------------------------------------------------------------
    6. Tabs
    -------------------------------------------------------------------------- */
 
 .workspace-split.mod-root .workspace-tab-header-container {
-  margin: var(--lg-chrome-inset) var(--lg-chrome-inset) 0;
+  margin: var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2) calc(var(--lg-chrome-gap) / 2);
   border-radius: var(--lg-radius-m);
   display: flex;
   align-items: center;
@@ -1049,7 +1407,9 @@ body.theme-dark .workspace-split.mod-root .workspace-tab-header-inner-close-butt
   height: 24px;
   border-radius: var(--lg-radius-s);
   opacity: 0;
-  transition: opacity 140ms ease-out, background-color 140ms ease-out;
+  transition:
+    opacity var(--lg-duration-fast) var(--lg-ease),
+    background-color var(--lg-duration-fast) var(--lg-ease);
 }
 
 .workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner-close-button {
@@ -1164,7 +1524,7 @@ body.is-mobile .status-bar {
 }
 
 .workspace-split.mod-root .workspace-tab-container {
-  margin: var(--lg-chrome-inset);
+  margin: calc(var(--lg-chrome-gap) / 2) calc(var(--lg-chrome-gap) / 2) var(--lg-chrome-frame);
 }
 
 .workspace-split.mod-root .workspace-leaf-content {
@@ -1192,7 +1552,8 @@ body.is-mobile .status-bar {
   font-size: var(--h1-size);
   font-weight: var(--h1-weight);
   line-height: var(--h1-line-height);
-  letter-spacing: normal;
+  letter-spacing: var(--lg-tracking-h1);
+  text-wrap: balance;
 }
 
 .markdown-source-view,
@@ -1214,6 +1575,70 @@ body.is-mobile .status-bar {
   max-width: min(var(--file-line-width), 100%);
   padding-inline: var(--lg-space-6);
   padding-bottom: calc(var(--lg-status-height) + var(--lg-space-4));
+}
+
+/*
+ * `balance` is for headings, where every line is worth evening out. Body copy
+ * uses `pretty`, which only fixes the end of the paragraph — it clears single
+ * word last lines without re-flowing the whole block on each keystroke.
+ */
+.markdown-rendered p,
+.markdown-rendered li {
+  text-wrap: pretty;
+}
+
+/*
+ * Print sets a thin space where a Han character meets Latin or a digit. The
+ * browser leaves this off by default, so `强缓存由Cache-Control控制` renders with
+ * the two scripts jammed together.
+ *
+ * This is additive rather than corrective: measured on Chromium 142, a boundary
+ * that already has a typed space gets nothing extra, so a vault whose house
+ * style is to type the space sees no change and one that forgot it gets the
+ * space anyway. Applied to both views so the line does not reflow when the
+ * reader switches between editing and reading.
+ */
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content {
+  text-autospace: normal;
+}
+
+/*
+ * The properties block is interface furniture that happens to sit inside the
+ * reading surface. A closing rule keeps it from bleeding into the first
+ * paragraph, which is what makes a fifteen field frontmatter read as a header
+ * rather than as the start of the note.
+ */
+.metadata-container {
+  margin-block-end: var(--lg-space-6);
+  padding-block-end: var(--lg-space-2);
+  border-bottom: 1px solid var(--lg-doc-divider);
+}
+
+.metadata-properties-heading {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+}
+
+/*
+ * The key cell aligns its children to the top so a wrapped value keeps its label
+ * on the first line. That makes the icon's own height, not the row's, decide where
+ * it lands — and Obsidian sizes it for its own 28px field, while our form floor
+ * gives the field --lg-control-size. Left alone the icon sat half the difference
+ * above the label on every row: measured 4px on all ten. It follows the field.
+ */
+.metadata-property-icon {
+  height: var(--lg-control-size);
+}
+
+.metadata-container .metadata-add-button.clickable-icon {
+  color: var(--text-faint);
+  transition: color var(--lg-duration-fast) var(--lg-ease);
+}
+
+.metadata-container:hover .metadata-add-button.clickable-icon,
+.metadata-container .metadata-add-button.clickable-icon:focus-visible {
+  color: var(--text-muted);
 }
 
 /* --------------------------------------------------------------------------
@@ -1248,31 +1673,34 @@ body.is-mobile .status-bar {
   line-height: var(--line-height-normal);
 }
 
+/*
+ * Colour is deliberately left to Obsidian's --hN-color so the h6 override
+ * survives; a `color` here would win on source order and re-normalise it.
+ */
 .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
-  color: var(--text-normal);
   font-family: var(--font-text-theme);
   font-synthesis-weight: none;
-  letter-spacing: normal;
+  text-wrap: balance;
 }
 
 .markdown-rendered h1 {
-  margin-block: 0 24px;
+  margin-block: 0 var(--lg-space-6);
 }
 
 .markdown-rendered h2 {
-  margin-block: 40px var(--lg-space-4);
+  margin-block: var(--lg-space-10) var(--lg-space-4);
 }
 
 .markdown-rendered h3 {
-  margin-block: 32px 12px;
+  margin-block: var(--lg-space-8) var(--lg-space-3);
 }
 
 .markdown-rendered h4 {
-  margin-block: 24px 8px;
+  margin-block: var(--lg-space-6) var(--lg-space-2);
 }
 
 .markdown-rendered h5 {
-  margin-block: 20px var(--lg-space-2);
+  margin-block: var(--lg-space-5) var(--lg-space-2);
 }
 
 .markdown-rendered h6 {
@@ -1330,10 +1758,25 @@ body.is-mobile .status-bar {
   margin-block: var(--lg-space-1);
 }
 
+/*
+ * The marker is scaffolding, not content. At full text weight a dense outline
+ * reads as two columns competing for the eye; muted, the items stay countable
+ * and the prose keeps the foreground.
+ */
+.markdown-rendered li::marker {
+  color: var(--text-faint);
+}
+
 .markdown-rendered li > :is(ul, ol) {
   margin-block: var(--lg-space-1) var(--lg-space-2);
 }
 
+/*
+ * The underline is an inset shadow rather than text-decoration so it can sit
+ * clear of descenders. That needs `clone`: on the default `slice`, a link that
+ * wraps draws the rule as one box across both fragments, leaving the first
+ * line unmarked.
+ */
 .markdown-rendered a.internal-link,
 .markdown-rendered a.external-link,
 .cm-hmd-internal-link,
@@ -1341,6 +1784,8 @@ body.is-mobile .status-bar {
 .cm-url {
   color: var(--lg-paper-link);
   box-shadow: inset 0 -1px 0 color-mix(in srgb, currentcolor 45%, transparent);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .markdown-rendered :is(a.internal-link, a.external-link):hover,
@@ -1361,21 +1806,27 @@ body.is-mobile .status-bar {
   box-decoration-break: clone;
 }
 
+/*
+ * 3px rather than 2px: at hairline width the rule competed with the text's own
+ * stems and read as an artifact of rendering. The extra pixel is what makes it
+ * read as drawn, and it lets the nesting ladder step down in colour without any
+ * level becoming a smudge.
+ */
 .markdown-rendered blockquote {
   background: transparent;
   border-inline-start-color: var(--lg-quote-line);
-  border-inline-start-width: 2px;
-  border-radius: 2px;
-  margin-block: 16px;
+  border-inline-start-width: 3px;
+  border-radius: var(--lg-radius-xs);
+  margin-block: var(--lg-space-4);
   padding: 2px 0;
-  padding-inline-start: 16px;
+  padding-inline-start: var(--lg-space-4);
   color: var(--text-muted);
 }
 
 .markdown-rendered blockquote blockquote {
   --blockquote-border-color: var(--lg-quote-line-nested);
   border-inline-start-color: var(--lg-quote-line-nested);
-  border-inline-start-width: 2px;
+  border-inline-start-width: 3px;
   margin-inline-start: 16px;
 }
 
@@ -1395,28 +1846,33 @@ body.is-mobile .status-bar {
 
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before {
   border-inline-start-color: var(--lg-quote-line);
-  border-inline-start-width: 2px;
+  border-inline-start-width: 3px;
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
   border-inline-start-color: var(--lg-quote-line-nested);
-  border-inline-start-width: 2px;
+  border-inline-start-width: 3px;
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote-3 .cm-blockquote-border::before {
   border-inline-start-color: var(--lg-quote-line-deep);
 }
 
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::before {
-  border-start-start-radius: 2px;
-}
+/*
+ * The rule is square at both ends. Live preview draws it per line, so a cap can
+ * only be put on the first or last line currently in the DOM — and CodeMirror
+ * only keeps the viewport in the DOM, so a rounded cap would appear wherever the
+ * quote happens to be cut off by scrolling, and travel as the reader scrolls. A
+ * 3px stroke gains almost nothing from a 1.5px radius anyway, and square keeps
+ * live preview identical to reading view.
+ */
 
 .markdown-rendered .callout,
 .callout {
   background-color: color-mix(in srgb, var(--callout-color) 5%, transparent);
   border: 0;
   border-inline-start: 2px solid color-mix(in srgb, var(--callout-color) 44%, transparent);
-  border-radius: var(--lg-radius-s);
+  border-radius: var(--callout-radius);
   margin-block: var(--lg-space-4);
   padding: var(--callout-padding);
   box-shadow: none;
@@ -1473,9 +1929,34 @@ body.is-mobile .status-bar {
   margin-block: var(--lg-space-8) var(--lg-space-4);
 }
 
+/*
+ * Syntax colors are chosen against the code surface instead of being inherited
+ * from the interface palette, which is tuned for chrome and collapses on a near
+ * white block: Obsidian's default maps functions to yellow, which lands at
+ * 1.9:1 here, and all nine of its tokens miss 4.5:1 in light mode. Every value
+ * below is measured against its own `--code-background`.
+ *
+ * Six hues carry meaning. Comments, operators and punctuation deliberately
+ * share one neutral family — they are structure rather than content, and giving
+ * each its own hue is what makes a code block look like plaid. Comments take
+ * italic instead, so they stay separable while staying quiet.
+ *
+ * One mapping covers both renderers: these variables feed Prism's `.token-*` in
+ * reading view and CodeMirror's `.cm-*` in the editor.
+ */
 .theme-light {
   --code-background: #f2f2f7;
   --code-normal: #242426;
+  --lg-syn-keyword: #9b2393;
+  --lg-syn-tag: #b02867;
+  --lg-syn-string: #b3261e;
+  --lg-syn-function: #0b6a70;
+  --lg-syn-property: #2f5fb3;
+  --lg-syn-value: #4c2ecc;
+  --lg-syn-important: #9a4a00;
+  --lg-syn-comment: #5b6570;
+  --lg-syn-operator: #45454a;
+  --lg-syn-punctuation: #6a6a70;
   --lg-inline-code-bg: #edf1f5;
   --lg-inline-code-border: rgb(56 64 74 / 55%);
   --lg-inline-code-text: #20242a;
@@ -1486,6 +1967,16 @@ body.is-mobile .status-bar {
 .theme-dark {
   --code-background: #242426;
   --code-normal: #e8e8ed;
+  --lg-syn-keyword: #e88ce0;
+  --lg-syn-tag: #f2879f;
+  --lg-syn-string: #f0907f;
+  --lg-syn-function: #5fd4cf;
+  --lg-syn-property: #7ab0f0;
+  --lg-syn-value: #b39cff;
+  --lg-syn-important: #f0a35e;
+  --lg-syn-comment: #8b95a1;
+  --lg-syn-operator: #c8c8ce;
+  --lg-syn-punctuation: #96969c;
   --lg-inline-code-bg: #292b30;
   --lg-inline-code-border: rgb(235 235 245 / 35%);
   --lg-inline-code-text: #e8e8ed;
@@ -1493,8 +1984,30 @@ body.is-mobile .status-bar {
   --lg-doc-divider: rgba(235, 235, 245, 0.18);
 }
 
+body {
+  --code-keyword: var(--lg-syn-keyword);
+  --code-tag: var(--lg-syn-tag);
+  --code-string: var(--lg-syn-string);
+  --code-function: var(--lg-syn-function);
+  --code-property: var(--lg-syn-property);
+  --code-value: var(--lg-syn-value);
+  --code-important: var(--lg-syn-important);
+  --code-comment: var(--lg-syn-comment);
+  --code-operator: var(--lg-syn-operator);
+  --code-punctuation: var(--lg-syn-punctuation);
+}
+
+/*
+ * Scoped to code so that `%%…%%` markdown comments, which share `.cm-comment`,
+ * are left upright.
+ */
+.markdown-rendered .token.comment,
+.cm-s-obsidian .HyperMD-codeblock .cm-comment {
+  font-style: italic;
+}
+
 .markdown-rendered pre {
-  border-radius: var(--lg-radius-s);
+  border-radius: var(--code-radius);
   overflow: hidden;
   margin-block: var(--lg-space-6);
   padding: 0;
@@ -1507,7 +2020,7 @@ body.is-mobile .status-bar {
 .cm-s-obsidian .cm-inline-code:not(.cm-formatting) {
   padding: 1px var(--lg-space-1);
   border: 0;
-  border-radius: 4px;
+  border-radius: var(--lg-radius-xs);
   background: var(--lg-inline-code-bg);
   color: var(--lg-inline-code-text);
   box-shadow: inset 0 0 0 1px var(--lg-inline-code-border);
@@ -1817,7 +2330,7 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
   .table-row-drag-handle,
   .table-col-drag-handle
 ):focus-visible {
-  outline-offset: -2px;
+  outline-offset: var(--lg-focus-offset-inset);
 }
 
 .markdown-rendered hr {
@@ -2129,12 +2642,53 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   line-height: 1.4;
 }
 
+/*
+ * The in-note find bar is opaque `--background-primary` by default, which butts
+ * a hard rectangle against the top of the page. It behaves like a floating
+ * panel, so it gets the overlay material and a shadow to sit above the text.
+ */
+.document-search-container {
+  border: 1px solid var(--lg-paper-border);
+  border-radius: var(--lg-radius-s);
+  background-color: var(--lg-overlay-solid);
+  box-shadow: var(--lg-overlay-shadow);
+}
+
+.document-search-count {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Every match takes the reader's own highlight color; the one the cursor is on
+ * takes the accent, so paging through results is legible without a count.
+ */
+.obsidian-search-match-highlight {
+  border-radius: var(--lg-radius-xs);
+  background-color: var(--lg-mark-bg);
+}
+
+.cm-searchMatch-selected .obsidian-search-match-highlight,
+.obsidian-search-match-highlight.is-flashing {
+  background-color: color-mix(in srgb, var(--lg-accent) 42%, transparent);
+}
+
 /* --------------------------------------------------------------------------
    11. Controls
    -------------------------------------------------------------------------- */
 
+/*
+ * Covers the controls Obsidian hands straight to the platform — native
+ * checkboxes, radios and range inputs inside Settings and inside plugin panes —
+ * which would otherwise render in the OS accent and read as somebody else's blue.
+ */
+body {
+  accent-color: var(--lg-accent);
+}
+
 button.mod-cta {
-  min-height: 36px;
+  min-height: var(--lg-control-size);
   background-color: var(--lg-cta);
   color: #fff;
   border-radius: var(--lg-radius-s);
@@ -2148,6 +2702,27 @@ button.mod-cta:active {
   background-color: var(--lg-cta-active);
 }
 
+/*
+ * A colour change alone reads as a state, not as a press. The compression is
+ * what makes a control feel physical, and it is the one cue that survives on
+ * a touch screen where the cursor never hovers.
+ */
+button.mod-cta,
+.clickable-icon,
+.side-dock-ribbon-action {
+  transition:
+    background-color var(--lg-duration) var(--lg-ease),
+    border-color var(--lg-duration) var(--lg-ease),
+    color var(--lg-duration) var(--lg-ease),
+    transform var(--lg-duration-fast) var(--lg-ease);
+}
+
+button.mod-cta:active,
+.clickable-icon:active,
+.side-dock-ribbon-action:active {
+  transform: scale(var(--lg-press-scale));
+}
+
 button:not(.mod-cta):not(.clickable-icon),
 .dropdown,
 input[type="text"],
@@ -2156,7 +2731,7 @@ input[type="email"],
 input[type="password"],
 input[type="number"] {
   border-radius: var(--lg-radius-s);
-  min-height: 36px;
+  min-height: var(--lg-control-size);
 }
 
 body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
@@ -2216,7 +2791,6 @@ textarea {
   background-color: var(--lg-accent);
 }
 
-button:not(.mod-cta):not(.clickable-icon):active,
 .dropdown:active,
 .clickable-icon:active {
   background-color: var(--lg-list-active-fill);
@@ -2242,8 +2816,8 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--lg-accent) 85%, transparent);
-  outline-offset: 2px;
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset);
   box-shadow: none;
 }
 
@@ -2252,8 +2826,8 @@ select:focus-visible {
 }
 
 .workspace-split.mod-root .workspace-tab-header:focus-visible .workspace-tab-header-inner {
-  outline: 2px solid color-mix(in srgb, var(--lg-accent) 85%, transparent);
-  outline-offset: -2px;
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset-inset);
 }
 
 :is(button, input, textarea, select, .dropdown, .checkbox-container, .clickable-icon):disabled,
@@ -2297,29 +2871,40 @@ body :is(
 }
 
 /*
- * Claudian
+ * Claudian — targets plugin 2.2.3
  *
  * Keep the integration scoped to Claudian's registered view and stable
  * component classes. The plugin owns behavior; Lumen only maps its surfaces,
  * type, controls and states onto the theme's glass/paper token system.
+ *
+ * Every selector below must stay behind [data-type="claudian-view"] so the
+ * adaptation cannot match anything when the plugin is absent.
+ * `npm run check` fails the build if a rule escapes that gate.
+ *
+ * Surfaces are limited to three fills — canvas (recessed chrome), surface
+ * (raised control) and fill (subtle tint) — because a sidebar this narrow
+ * cannot carry more without reading as noise.
  */
-.workspace-leaf-content[data-type="claudian-view"] .view-content.claudian-container {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .view-content.claudian-container {
   --lg-claudian-pane: transparent;
   --lg-claudian-canvas: color-mix(in srgb, var(--lg-paper-solid) 18%, var(--lg-sidebar-fill));
   --lg-claudian-surface: color-mix(in srgb, var(--lg-paper-solid) 58%, var(--lg-sidebar-fill));
-  --lg-claudian-surface-muted: color-mix(in srgb, var(--lg-text-on-glass) 5%, transparent);
-  --lg-claudian-user-surface: color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+  --lg-claudian-fill: color-mix(in srgb, var(--lg-text-on-glass) 7%, transparent);
   --lg-claudian-border: var(--background-modifier-border);
   --lg-claudian-border-hover: var(--background-modifier-border-hover);
   --lg-claudian-error-surface: color-mix(in srgb, var(--lg-danger) 10%, transparent);
   --lg-claudian-control-gutter: clamp(10px, 3.6%, 12px);
-  --lg-claudian-toggle-track: color-mix(in srgb, var(--text-muted) 22%, var(--lg-sidebar-fill));
-  --lg-claudian-toggle-track-on: color-mix(
-    in srgb,
-    var(--lg-accent) 8%,
-    color-mix(in srgb, var(--text-muted) 12%, var(--lg-sidebar-fill))
-  );
+  /* Offset from the interface size so it still tracks the reader's setting. */
+  --lg-claudian-prose-size: calc(var(--font-ui-small) + 1.5px);
+  /*
+   * A switch reads as on or off before it reads as tasteful, so the checked
+   * track keeps full accent saturation and the unchecked track sits light
+   * enough to clear 3:1 against it — the same relationship macOS uses.
+   */
+  --lg-claudian-toggle-track-on: var(--lg-accent);
   --lg-claudian-toggle-border: color-mix(in srgb, var(--lg-text-on-glass) 18%, transparent);
+  --lg-claudian-toggle-border-on: color-mix(in srgb, var(--lg-accent) 84%, #000);
+  --lg-claudian-toggle-thumb: #ffffff;
   --claudian-error: var(--lg-danger);
   --claudian-compact: var(--text-muted);
 
@@ -2329,46 +2914,46 @@ body :is(
   color: var(--text-normal);
 }
 
-.theme-light .workspace-leaf-content[data-type="claudian-view"] .view-content.claudian-container {
-  --lg-claudian-toggle-thumb: color-mix(in srgb, var(--text-muted) 16%, var(--lg-paper-solid));
+body:not(.lumen-claudian-plain).theme-light .workspace-leaf-content[data-type="claudian-view"] .view-content.claudian-container {
+  --lg-claudian-toggle-track: color-mix(in srgb, var(--text-muted) 10%, var(--lg-paper-solid));
 }
 
-.theme-dark .workspace-leaf-content[data-type="claudian-view"] .view-content.claudian-container {
-  --lg-claudian-toggle-thumb: color-mix(in srgb, var(--text-normal) 90%, var(--lg-overlay-solid));
+body:not(.lumen-claudian-plain).theme-dark .workspace-leaf-content[data-type="claudian-view"] .view-content.claudian-container {
+  --lg-claudian-toggle-track: color-mix(in srgb, var(--text-muted) 12%, var(--lg-sidebar-fill));
 }
 
-.workspace-leaf-content[data-type="claudian-view"] > .view-header {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] > .view-header {
   border-bottom: 1px solid color-mix(in srgb, var(--lg-claudian-border) 72%, transparent);
   background: color-mix(in srgb, var(--lg-claudian-canvas) 72%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] > .view-header .view-header-title {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] > .view-header .view-header-title {
   color: var(--text-muted);
   font-size: var(--font-ui-smaller);
   font-weight: 600;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] > .view-header .clickable-icon {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] > .view-header .clickable-icon {
   width: 28px;
   height: 28px;
   border-radius: var(--lg-radius-s);
   color: var(--text-muted);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] > .view-header .clickable-icon:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] > .view-header .clickable-icon:hover {
   background: var(--lg-state-hover);
   color: var(--text-normal);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-chat-panel,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-content-container,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-content,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-messages-wrapper,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-footer,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-row,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-composer,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-container,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-wrapper {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-chat-panel,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-content-container,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-content,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-messages-wrapper,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-footer,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-row,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-composer,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-container,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-wrapper {
   box-sizing: border-box;
   width: auto;
   max-width: 100%;
@@ -2376,41 +2961,44 @@ body :is(
   margin-inline: 0;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-chat-panel {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-chat-panel {
   border-radius: 0;
   background: transparent;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-messages {
-  gap: var(--lg-space-4);
+/*
+ * With the assistant rail gone, the gap between turns is what separates them.
+ */
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-messages {
+  gap: var(--lg-space-6);
   padding: var(--lg-space-3) var(--lg-space-2) var(--lg-space-6);
   overscroll-behavior: contain;
   scrollbar-gutter: auto;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-messages::-webkit-scrollbar {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-messages::-webkit-scrollbar {
   width: 8px;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-messages::-webkit-scrollbar-thumb {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-messages::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: var(--lg-radius-pill);
   background: var(--lg-scrollbar-thumb);
   background-clip: padding-box;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-messages::-webkit-scrollbar-thumb:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-messages::-webkit-scrollbar-thumb:hover {
   background: var(--lg-scrollbar-thumb-hover);
   background-clip: padding-box;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-welcome {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-welcome {
   gap: var(--lg-space-3);
   min-width: 0;
   padding: var(--lg-space-6) var(--lg-space-4);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-welcome-text {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-welcome-text {
   color: var(--text-muted);
   font-family: var(--font-interface-theme);
   font-size: 22px;
@@ -2418,15 +3006,21 @@ body :is(
   letter-spacing: -0.012em;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-linked-content-selector-row {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-linked-content-selector-row {
   min-height: 28px;
   padding: var(--lg-space-1) var(--lg-space-2);
   border: 1px solid var(--lg-claudian-border);
   border-radius: var(--lg-radius-s);
-  background: var(--lg-claudian-surface-muted);
+  background: var(--lg-claudian-fill);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message {
+/*
+ * One turn is a filled card, the other is plain prose. Giving the assistant a
+ * left rule instead would collide twice: it mixes a second shape metaphor into
+ * the same transcript, and it reuses the exact device blockquotes already own,
+ * so a quoted passage inside a reply became a rule nested in a rule.
+ */
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message {
   min-width: 0;
   max-width: min(92%, 42rem);
   padding: var(--lg-space-2) var(--lg-space-3);
@@ -2434,77 +3028,86 @@ body :is(
   border-radius: var(--lg-radius-m);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-user {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-user {
   border: 1px solid var(--lg-claudian-border);
-  border-end-end-radius: var(--lg-radius-xs);
-  background: var(--lg-claudian-user-surface);
+  background: var(--lg-claudian-fill);
   box-shadow: inset 0 0.5px 0 color-mix(in srgb, var(--lg-text-on-glass) 7%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-assistant {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-assistant {
   width: auto;
   max-width: 100%;
-  padding-inline-start: var(--lg-space-3);
-  border-inline-start: 2px solid color-mix(in srgb, var(--lg-accent) 42%, var(--lg-claudian-border));
-  border-end-start-radius: 0;
+  /* Offsets the user card's 1px border so both turns share one text edge. */
+  padding-inline: calc(var(--lg-space-3) + 1px);
+  border: 0;
+  border-radius: 0;
   background: transparent;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-text-block,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-thinking-content,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tool-content {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-text-block,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-thinking-content,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tool-content {
   min-width: 0;
   max-width: 100%;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content {
+/*
+ * This is a transcript people read at length, not a row of UI labels, so it
+ * gets a reading size of its own rather than the interface small size.
+ */
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content {
   color: var(--text-normal);
-  font-size: var(--font-ui-small);
-  line-height: 1.55;
+  font-size: var(--lg-claudian-prose-size);
+  line-height: 1.6;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content :is(h1, h2, h3, h4, h5, h6) {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content :is(h1,
+body:not(.lumen-claudian-plain) h2,
+body:not(.lumen-claudian-plain) h3,
+body:not(.lumen-claudian-plain) h4,
+body:not(.lumen-claudian-plain) h5,
+body:not(.lumen-claudian-plain) h6) {
   margin-block: 1.1em 0.5em;
   color: var(--text-normal);
   line-height: 1.3;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content a {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content a {
   color: var(--text-accent);
   box-shadow: inset 0 -1px 0 color-mix(in srgb, currentcolor 42%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content a:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content a:hover {
   color: var(--text-accent-hover);
   box-shadow: inset 0 -1px 0 currentcolor;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content blockquote {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content blockquote {
   margin: var(--lg-space-2) 0;
   padding: var(--lg-space-1) var(--lg-space-3);
   border-inline-start: 2px solid var(--lg-quote-line);
   color: var(--text-muted);
-  background: var(--lg-claudian-surface-muted);
+  background: var(--lg-claudian-fill);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content blockquote blockquote {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content blockquote blockquote {
   border-inline-start-width: 2px;
   border-inline-start-color: var(--lg-quote-line-nested);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content :not(pre) > code {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content :not(pre) > code {
   padding: 0.12em 0.32em;
   border: 1px solid var(--lg-claudian-border);
   border-radius: var(--lg-radius-xs);
-  background: var(--lg-claudian-surface-muted);
+  background: var(--lg-claudian-fill);
   color: var(--text-normal);
   overflow-wrap: anywhere;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-code-wrapper pre,
-  .claudian-message-content pre
+body:not(.lumen-claudian-plain) .claudian-message-content pre
 ) {
   max-width: 100%;
   padding: var(--lg-space-2) var(--lg-space-3);
@@ -2514,8 +3117,8 @@ body :is(
   box-shadow: inset 0 0.5px 0 color-mix(in srgb, var(--lg-text-on-glass) 6%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-code-wrapper .claudian-code-lang-label,
-.workspace-leaf-content[data-type="claudian-view"] .claudian-code-wrapper .copy-code-button {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-code-wrapper .claudian-code-lang-label,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-code-wrapper .copy-code-button {
   min-height: 24px;
   border: 1px solid var(--lg-claudian-border);
   border-radius: var(--lg-radius-xs);
@@ -2523,7 +3126,7 @@ body :is(
   color: var(--text-muted);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content table {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content table {
   display: block;
   max-width: 100%;
   overflow-x: auto;
@@ -2531,42 +3134,43 @@ body :is(
   border-radius: var(--lg-radius-s);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content :is(th, td) {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content :is(th,
+body:not(.lumen-claudian-plain) td) {
   min-width: 7rem;
   padding: 6px var(--lg-space-2);
   border-color: var(--lg-claudian-border);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-message-content th {
-  background: var(--lg-claudian-surface-muted);
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content th {
+  background: var(--lg-claudian-fill);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-thinking-header,
-  .claudian-tool-header,
-  .claudian-status-panel-header,
-  .claudian-subagent-header
+body:not(.lumen-claudian-plain) .claudian-tool-header,
+body:not(.lumen-claudian-plain) .claudian-status-panel-header,
+body:not(.lumen-claudian-plain) .claudian-subagent-header
 ) {
   min-width: 0;
   min-height: 28px;
   padding: var(--lg-space-1) var(--lg-space-2);
   border-radius: var(--lg-radius-s);
-  background: var(--lg-claudian-surface-muted);
+  background: var(--lg-claudian-fill);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-thinking-header,
-  .claudian-tool-header,
-  .claudian-status-panel-header,
-  .claudian-subagent-header
+body:not(.lumen-claudian-plain) .claudian-tool-header,
+body:not(.lumen-claudian-plain) .claudian-status-panel-header,
+body:not(.lumen-claudian-plain) .claudian-subagent-header
 ):hover {
   background: var(--lg-state-hover);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-thinking-content,
-  .claudian-tool-content,
-  .claudian-subagent-content
+body:not(.lumen-claudian-plain) .claudian-tool-content,
+body:not(.lumen-claudian-plain) .claudian-subagent-content
 ) {
   margin-inline-start: var(--lg-space-2);
   padding: var(--lg-space-2) 0 var(--lg-space-1) var(--lg-space-3);
@@ -2574,11 +3178,11 @@ body :is(
   color: var(--text-muted);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-tool-summary,
-  .claudian-tool-current,
-  .claudian-status-panel-current,
-  .claudian-subagent-tool-summary
+body:not(.lumen-claudian-plain) .claudian-tool-current,
+body:not(.lumen-claudian-plain) .claudian-status-panel-current,
+body:not(.lumen-claudian-plain) .claudian-subagent-tool-summary
 ) {
   min-width: 0;
   overflow: hidden;
@@ -2586,45 +3190,45 @@ body :is(
   white-space: nowrap;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-tool-lines,
-  .claudian-tool-result-text,
-  .claudian-subagent-prompt-text,
-  .claudian-subagent-result-output
+body:not(.lumen-claudian-plain) .claudian-tool-result-text,
+body:not(.lumen-claudian-plain) .claudian-subagent-prompt-text,
+body:not(.lumen-claudian-plain) .claudian-subagent-result-output
 ) {
   max-width: 100%;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-interrupted,
-  .claudian-tab-hydration-error,
-  .claudian-tool-status.status-error,
-  .claudian-subagent-status.status-error,
-  .claudian-subagent-status-text.status-error
+body:not(.lumen-claudian-plain) .claudian-tab-hydration-error,
+body:not(.lumen-claudian-plain) .claudian-tool-status.status-error,
+body:not(.lumen-claudian-plain) .claudian-subagent-status.status-error,
+body:not(.lumen-claudian-plain) .claudian-subagent-status-text.status-error
 ) {
   color: var(--lg-danger);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-hydration-error {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-hydration-error {
   padding: var(--lg-space-3);
   border: 1px solid color-mix(in srgb, var(--lg-danger) 38%, transparent);
   border-radius: var(--lg-radius-s);
   background: var(--lg-claudian-error-surface);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-baked-duration {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-baked-duration {
   color: var(--text-faint);
   font-size: 11px;
   font-weight: 500;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-nav-sidebar {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-nav-sidebar {
   gap: var(--lg-space-1);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-nav-btn {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-nav-btn {
   width: 32px;
   height: 32px;
   border-color: var(--lg-claudian-border);
@@ -2634,14 +3238,14 @@ body :is(
   box-shadow: var(--lg-glass-shadow);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-nav-btn:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-nav-btn:hover {
   transform: none;
   border-color: var(--lg-claudian-border-hover);
   background: var(--lg-state-hover);
   color: var(--text-normal);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-nav-toc-popover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-nav-toc-popover {
   border-color: var(--lg-glass-border);
   border-radius: var(--lg-radius-m);
   background-color: var(--lg-overlay-solid);
@@ -2649,28 +3253,29 @@ body :is(
   box-shadow: var(--lg-overlay-shadow);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-row {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-row {
   justify-content: space-between;
   gap: var(--lg-space-2);
   padding: 0 var(--lg-claudian-control-gutter) var(--lg-space-2);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badges {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badges {
   flex: 0 1 auto;
   width: max-content;
   max-width: calc(100% - 104px);
   gap: 2px;
   padding: 2px;
   border: 1px solid var(--background-modifier-border);
-  border-radius: 8px;
+  /* Concentric with the 6px badges it wraps, plus the 2px gutter. */
+  border-radius: calc(var(--lg-radius-s) + 2px);
   background: color-mix(in srgb, var(--lg-tab-active-fill) 58%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge {
-  flex-basis: 28px;
-  width: 28px;
-  max-width: 28px;
-  height: 28px;
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge {
+  flex-basis: var(--lg-control-compact);
+  width: var(--lg-control-compact);
+  max-width: var(--lg-control-compact);
+  height: var(--lg-control-compact);
   border-width: 1px;
   border-color: transparent;
   border-radius: var(--lg-radius-s);
@@ -2683,16 +3288,16 @@ body :is(
     color var(--lg-duration) var(--lg-ease);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge-idle {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge-idle {
   border-color: transparent;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge:hover {
   background: color-mix(in srgb, var(--lg-text-on-glass) 7%, transparent);
   color: var(--text-normal);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge-active {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge-active {
   border-color: transparent;
   background: color-mix(in srgb, var(--lg-text-on-glass) 10%, var(--lg-tab-active-fill));
   color: var(--text-normal);
@@ -2700,17 +3305,17 @@ body :is(
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lg-text-on-glass) 11%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge-active:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badge-active:hover {
   background: color-mix(in srgb, var(--lg-text-on-glass) 13%, var(--lg-tab-active-fill));
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-actions {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-actions {
   gap: var(--lg-space-1);
   margin-inline-start: var(--lg-space-2);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-btn,
-.workspace-leaf-content[data-type="claudian-view"] button.claudian-input-nav-btn {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-btn,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] button.claudian-input-nav-btn {
   flex-basis: 28px;
   width: 28px;
   min-width: 28px;
@@ -2719,11 +3324,11 @@ body :is(
   border-radius: var(--lg-radius-s);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-btn:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-btn:hover {
   background: var(--lg-state-hover);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-wrapper {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-wrapper {
   min-width: 0;
   border-color: var(--background-modifier-border);
   border-radius: var(--lg-radius-m);
@@ -2733,17 +3338,17 @@ body :is(
     box-shadow var(--lg-duration) var(--lg-ease);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-wrapper:focus-within {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-wrapper:focus-within {
   border-color: color-mix(in srgb, var(--lg-accent) 76%, transparent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--lg-accent) 20%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-context-row {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-row {
   gap: var(--lg-space-1);
   padding: var(--lg-space-2) var(--lg-space-2) 0;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip {
   height: 28px;
   padding: 3px var(--lg-space-1) 3px var(--lg-space-2);
   border-color: var(--background-modifier-border);
@@ -2751,13 +3356,13 @@ body :is(
   background: color-mix(in srgb, var(--lg-text-on-glass) 5%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip:hover {
   border-color: var(--background-modifier-border-hover);
   background: var(--lg-state-hover);
 }
 
-body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-main,
-body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-remove {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-main,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-remove {
   min-height: 0;
   border: 0;
   background: transparent;
@@ -2765,47 +3370,47 @@ body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip >
   box-shadow: none;
 }
 
-body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-main {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-main {
   height: 20px;
   border-radius: var(--lg-radius-xs);
 }
 
-body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-remove {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-remove {
   flex-basis: 20px;
   width: 20px;
   height: 20px;
   border-radius: var(--lg-radius-xs);
 }
 
-body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-main:hover,
-body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-remove:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-main:hover,
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip > button.claudian-context-chip-remove:hover {
   border: 0;
   background: var(--lg-state-hover);
   box-shadow: none;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-toolbar {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-toolbar {
   min-width: 0;
   gap: var(--lg-space-1);
   row-gap: var(--lg-space-1);
   padding: var(--lg-space-1) var(--lg-claudian-control-gutter) var(--lg-space-2);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] textarea.claudian-input {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] textarea.claudian-input {
   min-width: 0;
   padding-inline: var(--lg-claudian-control-gutter);
   color: var(--text-normal);
   caret-color: var(--lg-accent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] textarea.claudian-input::placeholder {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] textarea.claudian-input::placeholder {
   color: var(--text-faint);
   opacity: 1;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-model-btn,
-  .claudian-thinking-current
+body:not(.lumen-claudian-plain) .claudian-thinking-current
 ) {
   display: flex;
   align-items: center;
@@ -2822,73 +3427,73 @@ body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip >
     color var(--lg-duration) var(--lg-ease);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-model-btn,
-  .claudian-thinking-current
+body:not(.lumen-claudian-plain) .claudian-thinking-current
 ):hover {
   border-color: var(--background-modifier-border-hover);
   background: var(--lg-state-hover);
   color: var(--text-normal);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-model-selector,
-  .claudian-thinking-selector,
-  .claudian-thinking-effort
+body:not(.lumen-claudian-plain) .claudian-thinking-selector,
+body:not(.lumen-claudian-plain) .claudian-thinking-effort
 ) {
   min-width: 0;
   max-width: 100%;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-thinking-effort {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-thinking-effort {
   min-height: 28px;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-external-context-selector {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-external-context-selector {
   margin-left: 0;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-external-context-icon {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-external-context-icon {
   width: 28px;
   height: 28px;
   border-radius: var(--lg-radius-s);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-external-context-icon:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-external-context-icon:hover {
   background: var(--lg-state-hover);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-service-tier-button,
-  .claudian-context-meter-gauge,
-  .claudian-status-panel-bash-action,
-  .claudian-queue-indicator-icon-action
+body:not(.lumen-claudian-plain) .claudian-context-meter-gauge,
+body:not(.lumen-claudian-plain) .claudian-status-panel-bash-action,
+body:not(.lumen-claudian-plain) .claudian-queue-indicator-icon-action
 ) {
   width: 28px;
   height: 28px;
   border-radius: var(--lg-radius-s);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-service-tier-button,
-  .claudian-status-panel-bash-action,
-  .claudian-queue-indicator-icon-action
+body:not(.lumen-claudian-plain) .claudian-status-panel-bash-action,
+body:not(.lumen-claudian-plain) .claudian-queue-indicator-icon-action
 ):hover {
   background: var(--lg-state-hover);
   color: var(--text-normal);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-permission-toggle {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-permission-toggle {
   min-height: 28px;
   gap: var(--lg-space-1);
   margin-left: auto;
   padding-inline: var(--lg-space-1);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-model-dropdown,
-  .claudian-thinking-options,
-  .claudian-external-context-dropdown
+body:not(.lumen-claudian-plain) .claudian-thinking-options,
+body:not(.lumen-claudian-plain) .claudian-external-context-dropdown
 ) {
   border-color: var(--lg-glass-border);
   border-radius: var(--lg-radius-s);
@@ -2896,37 +3501,37 @@ body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip >
   box-shadow: var(--lg-overlay-shadow);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-model-option,
-  .claudian-thinking-gear,
-  .claudian-nav-toc-item
+body:not(.lumen-claudian-plain) .claudian-thinking-gear,
+body:not(.lumen-claudian-plain) .claudian-nav-toc-item
 ) {
   min-height: 28px;
   border-radius: var(--lg-radius-xs);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-model-option,
-  .claudian-thinking-gear,
-  .claudian-nav-toc-item
+body:not(.lumen-claudian-plain) .claudian-thinking-gear,
+body:not(.lumen-claudian-plain) .claudian-nav-toc-item
 ):hover {
   background: var(--lg-state-hover);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-model-option,
-  .claudian-thinking-gear
+body:not(.lumen-claudian-plain) .claudian-thinking-gear
 ).selected {
   background: var(--lg-list-active-fill);
   color: var(--text-normal);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch {
   box-sizing: content-box;
   width: 30px;
   height: 16px;
   border: 1px solid var(--lg-claudian-toggle-border);
-  border-radius: 9px;
+  border-radius: var(--lg-radius-pill);
   background: var(--lg-claudian-toggle-track);
   box-shadow: inset 0 0.5px 1px color-mix(in srgb, var(--lg-text-on-glass) 7%, transparent);
   transition:
@@ -2935,67 +3540,87 @@ body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip >
     box-shadow var(--lg-duration) var(--lg-ease);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch.active {
-  border-color: var(--lg-claudian-toggle-border);
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch.active {
+  border-color: var(--lg-claudian-toggle-border-on);
   background: var(--lg-claudian-toggle-track-on);
+  box-shadow: none;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch::after {
+/*
+ * The thumb is only 14px across, so a 1px border would read as a grey ring
+ * around it. Definition comes from the drop shadow and a half-pixel hairline,
+ * the way a macOS switch knob is drawn.
+ */
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch::after {
   box-sizing: border-box;
   width: 14px;
   height: 14px;
   top: 1px;
   left: 1px;
-  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 14%, transparent);
+  border: 0;
   background: var(--lg-claudian-toggle-thumb);
-  box-shadow: 0 1px 2px color-mix(in srgb, #000 22%, transparent);
+  box-shadow:
+    0 0.5px 1.5px color-mix(in srgb, #000 26%, transparent),
+    0 0 0 0.5px color-mix(in srgb, #000 6%, transparent);
   transition:
     transform var(--lg-duration) var(--lg-ease),
     background-color var(--lg-duration) var(--lg-ease),
     box-shadow var(--lg-duration) var(--lg-ease);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch.active::after {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch.active::after {
   transform: translateX(14px);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch::before {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch::before {
   content: "";
   position: absolute;
   inset: -5px;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:hover {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:hover {
   border-color: var(--lg-claudian-border-hover);
   box-shadow:
     inset 0 0.5px 1px color-mix(in srgb, var(--lg-text-on-glass) 9%, transparent),
     0 0 0 2px color-mix(in srgb, var(--lg-text-on-glass) 4%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:active::after {
-  box-shadow: 0 0.5px 1px color-mix(in srgb, #000 18%, transparent);
+/*
+ * The unchecked hover rule would otherwise win on source order and put a grey
+ * ring back around a checked switch.
+ */
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch.active:hover {
+  border-color: var(--lg-claudian-toggle-border-on);
+  background: var(--lg-accent-hover);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--lg-accent) 18%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--lg-accent) 78%, transparent);
-  outline-offset: 2px;
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:active::after {
+  box-shadow:
+    0 0.5px 1px color-mix(in srgb, #000 20%, transparent),
+    0 0 0 0.5px color-mix(in srgb, #000 6%, transparent);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:focus-visible {
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset);
+}
+
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch:is(
   :disabled,
-  [aria-disabled="true"],
-  .is-disabled
+body:not(.lumen-claudian-plain) [aria-disabled="true"],
+body:not(.lumen-claudian-plain) .is-disabled
 ) {
   opacity: 0.45;
   cursor: default;
   pointer-events: none;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-input-footer {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-footer {
   padding: 6px 0 0;
 }
 
-.workspace-leaf-content[data-type="claudian-view"] .claudian-context-meter::after {
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-context-meter::after {
   border-color: var(--lg-glass-border);
   border-radius: var(--lg-radius-s);
   background: var(--lg-tooltip-bg);
@@ -3003,61 +3628,63 @@ body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip >
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-tab-badge,
-  .claudian-input-nav-btn,
-  .claudian-model-btn,
-  .claudian-thinking-current,
-  .claudian-external-context-icon,
-  .claudian-toggle-switch,
-  .claudian-context-chip-main,
-  .claudian-context-chip-remove
+body:not(.lumen-claudian-plain) .claudian-input-nav-btn,
+body:not(.lumen-claudian-plain) .claudian-model-btn,
+body:not(.lumen-claudian-plain) .claudian-thinking-current,
+body:not(.lumen-claudian-plain) .claudian-external-context-icon,
+body:not(.lumen-claudian-plain) .claudian-toggle-switch,
+body:not(.lumen-claudian-plain) .claudian-context-chip-main,
+body:not(.lumen-claudian-plain) .claudian-context-chip-remove
 ):focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--lg-accent) 85%, transparent);
-  outline-offset: 2px;
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-tab-badge,
-  .claudian-input-nav-btn,
-  .claudian-model-btn,
-  .claudian-thinking-current,
-  .claudian-external-context-icon,
-  .claudian-toggle-switch,
-  .claudian-context-chip-main,
-  .claudian-context-chip-remove
+body:not(.lumen-claudian-plain) .claudian-input-nav-btn,
+body:not(.lumen-claudian-plain) .claudian-model-btn,
+body:not(.lumen-claudian-plain) .claudian-thinking-current,
+body:not(.lumen-claudian-plain) .claudian-external-context-icon,
+body:not(.lumen-claudian-plain) .claudian-toggle-switch,
+body:not(.lumen-claudian-plain) .claudian-context-chip-main,
+body:not(.lumen-claudian-plain) .claudian-context-chip-remove
 ):active {
   background: var(--lg-list-active-fill);
 }
 
-.workspace-leaf-content[data-type="claudian-view"] :is(
+body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
   .claudian-tab-badge,
-  .claudian-input-nav-btn,
-  .claudian-model-btn,
-  .claudian-thinking-current,
-  .claudian-external-context-icon,
-  .claudian-toggle-switch,
-  .claudian-context-chip-main,
-  .claudian-context-chip-remove
-):is(:disabled, [aria-disabled="true"], .is-disabled) {
+body:not(.lumen-claudian-plain) .claudian-input-nav-btn,
+body:not(.lumen-claudian-plain) .claudian-model-btn,
+body:not(.lumen-claudian-plain) .claudian-thinking-current,
+body:not(.lumen-claudian-plain) .claudian-external-context-icon,
+body:not(.lumen-claudian-plain) .claudian-toggle-switch,
+body:not(.lumen-claudian-plain) .claudian-context-chip-main,
+body:not(.lumen-claudian-plain) .claudian-context-chip-remove
+):is(:disabled,
+body:not(.lumen-claudian-plain) [aria-disabled="true"],
+body:not(.lumen-claudian-plain) .is-disabled) {
   opacity: 0.45;
   cursor: default;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .workspace-leaf-content[data-type="claudian-view"] :is(
+  body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] :is(
     .claudian-thinking,
-    .claudian-external-context-icon.active
+  body:not(.lumen-claudian-plain) .claudian-external-context-icon.active
   ) {
     animation: none;
   }
 
-  .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-hydration-loading::before {
+  body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-hydration-loading::before {
     animation: none;
   }
 
-  .workspace-leaf-content[data-type="claudian-view"] * {
+  body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] * {
     scroll-behavior: auto;
   }
 }
@@ -3069,11 +3696,11 @@ body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip >
 }
 
 body.is-mobile .mobile-navbar {
-  inset-inline: var(--lg-chrome-inset);
+  inset-inline: var(--lg-chrome-frame);
   width: auto;
   max-width: none;
   border-radius: var(--lg-radius-pill);
-  margin: 0 0 calc(var(--lg-chrome-inset) + env(safe-area-inset-bottom));
+  margin: 0 0 calc(var(--lg-chrome-frame) + env(safe-area-inset-bottom));
   min-height: 52px;
   background-color: var(--lg-glass-fill);
   background-image: var(--lg-glass-highlight), linear-gradient(var(--lg-glass-luma), var(--lg-glass-luma));
@@ -3137,7 +3764,8 @@ body.lumen-glass-thick.theme-dark {
 }
 
 body.lumen-chrome-flush {
-  --lg-chrome-inset: 0px;
+  --lg-chrome-frame: 0px;
+  --lg-chrome-gap: 0px;
 }
 
 body.lumen-chrome-flush .workspace-ribbon.side-dock-ribbon.mod-left,
@@ -3157,7 +3785,6 @@ body.lumen-editor-contrast.theme-light,
 body.lumen-increase-contrast.theme-light {
   --text-normal: #111113;
   --text-muted: #2c2c31;
-  --lg-paper: #ffffff;
   --lg-paper-solid: #ffffff;
   --lg-table-outline: rgba(17, 17, 19, 0.44);
   --lg-table-row-divider: rgba(17, 17, 19, 0.32);
@@ -3170,7 +3797,6 @@ body.lumen-editor-contrast.theme-dark,
 body.lumen-increase-contrast.theme-dark {
   --text-normal: #ffffff;
   --text-muted: #d8d8e2;
-  --lg-paper: #0e0d14;
   --lg-paper-solid: #0e0d14;
   --lg-table-outline: rgba(255, 255, 255, 0.46);
   --lg-table-row-divider: rgba(255, 255, 255, 0.34);
@@ -3180,12 +3806,10 @@ body.lumen-increase-contrast.theme-dark {
 }
 
 body.lumen-paper-neutral.theme-light {
-  --lg-paper: #f6f6f8;
   --lg-paper-solid: #f6f6f8;
 }
 
 body.lumen-paper-neutral.theme-dark {
-  --lg-paper: #16151c;
   --lg-paper-solid: #16151c;
 }
 
@@ -3268,8 +3892,13 @@ body.lumen-increase-contrast .prompt {
     --table-border-color: var(--lg-table-row-divider);
   }
 
-  :focus-visible {
-    outline-width: 3px;
+  /*
+   * Widening the ring through the token instead of a bare `:focus-visible`
+   * rule, which lost on specificity to every component's own focus selector.
+   */
+  body {
+    --lg-focus-width: 3px;
+    --lg-focus-color: var(--lg-accent);
   }
 }
 
@@ -3317,7 +3946,11 @@ body.lumen-increase-contrast .prompt {
 
 @media (max-width: 700px) {
   body:not(.is-mobile) {
-    --lg-chrome-inset: var(--lg-space-1);
+    /*
+     * Narrow windows give back the decorative frame but keep the seam, which
+     * still has to clear the panel radius to read as a channel.
+     */
+    --lg-chrome-frame: var(--lg-space-1);
     --lg-control-size: 32px;
     --lg-row-height: 32px;
     --ribbon-width: 44px;
@@ -3325,7 +3958,6 @@ body.lumen-increase-contrast .prompt {
 
   body:not(.is-mobile) .workspace-ribbon.side-dock-ribbon.mod-left {
     width: 40px;
-    margin: var(--lg-space-1) 0 var(--lg-space-1) var(--lg-space-1);
   }
 
   body:not(.is-mobile) .cm-sizer,
@@ -3360,6 +3992,17 @@ button.mod-cta {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /*
+   * Zeroing the tokens covers every consumer, including ones added later.
+   * The press scale goes to 1 rather than merely losing its transition, since
+   * an instant jump in size is exactly the kind of movement being opted out of.
+   */
+  body {
+    --lg-duration-fast: 0ms;
+    --lg-duration: 0ms;
+    --lg-press-scale: 1;
+  }
+
   .workspace-tab-header,
   .nav-file-title,
   .nav-folder-title,
@@ -3368,8 +4011,84 @@ button.mod-cta {
   .menu-item,
   .side-dock-ribbon-action,
   button.mod-cta,
+  .clickable-icon,
   .workspace-tab-header-inner-close-button,
   .markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th, td) {
     transition: none;
+  }
+}
+/* --------------------------------------------------------------------------
+   16. Print
+   -------------------------------------------------------------------------- */
+
+@media print {
+  /*
+   * Obsidian already hides the interface and resets the note's text color to
+   * black, but it leaves the theme's own surfaces alone — and it prints
+   * backgrounds exactly, by way of `print-color-adjust: exact`. In dark mode
+   * that pairing puts black text on near-black paper. The printed page is
+   * therefore forced to a light palette whatever is on screen, since a PDF has
+   * no appearance to follow.
+   *
+   * Syntax color collapses to one ink rather than being restated in light
+   * values. Printed code is conventionally monochrome, it survives being
+   * photocopied, and it does not spend color on a page nobody can hover.
+   */
+  body {
+    --lg-paper-solid: #ffffff;
+    --lg-paper-border: rgba(0, 0, 0, 0.18);
+    --lg-doc-divider: rgba(0, 0, 0, 0.2);
+    --lg-mark-bg: #ffefa8;
+    --code-background: #f4f4f6;
+    --code-normal: #1c1c1e;
+    --lg-inline-code-bg: #f1f1f4;
+    --lg-inline-code-text: #1c1c1e;
+    --lg-inline-code-border: rgba(0, 0, 0, 0.2);
+    --lg-syn-keyword: #1c1c1e;
+    --lg-syn-tag: #1c1c1e;
+    --lg-syn-string: #1c1c1e;
+    --lg-syn-function: #1c1c1e;
+    --lg-syn-property: #1c1c1e;
+    --lg-syn-value: #1c1c1e;
+    --lg-syn-important: #1c1c1e;
+    --lg-syn-operator: #1c1c1e;
+    --lg-syn-punctuation: #45454a;
+    --lg-syn-comment: #5b6570;
+  }
+
+  /*
+   * Glass is a screen effect. On paper a blur costs render time and resolves to
+   * a muddy gray, and a drop shadow prints as a smudge along the edge.
+   */
+  .print,
+  .print .markdown-preview-view {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  /*
+   * The reading measure exists to keep a line scannable on a wide monitor. A
+   * printed page is already narrower than that, so holding the measure would
+   * just indent the text and waste the sheet.
+   */
+  .print .markdown-preview-sizer {
+    max-width: none;
+    padding-inline: 0;
+    padding-bottom: 0;
+  }
+
+  .print .markdown-preview-view :is(h1, h2, h3, h4, h5, h6) {
+    break-after: avoid;
+  }
+
+  .print .markdown-preview-view :is(pre, blockquote, table, .callout, .markdown-embed) {
+    break-inside: avoid;
+  }
+
+  .print .markdown-preview-view :is(p, li) {
+    orphans: 2;
+    widows: 2;
   }
 }

@@ -1,0 +1,49 @@
+/* --------------------------------------------------------------------------
+   3. Glass chrome — one blur layer, no nested filters
+   -------------------------------------------------------------------------- */
+
+.workspace-ribbon.side-dock-ribbon,
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split,
+.workspace-split.mod-root .workspace-tab-header-container,
+.status-bar,
+.prompt {
+  background-color: var(--lg-glass-fill);
+  background-image: var(--lg-glass-highlight), linear-gradient(var(--lg-glass-luma), var(--lg-glass-luma));
+  border: 1px solid var(--lg-glass-border);
+  backdrop-filter: blur(var(--lg-glass-blur)) saturate(var(--lg-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur)) saturate(var(--lg-glass-saturate));
+  box-shadow: var(--lg-glass-shadow);
+}
+
+body.theme-light .workspace-ribbon.side-dock-ribbon.mod-left,
+body.theme-dark .workspace-ribbon.side-dock-ribbon.mod-left,
+body.theme-light .workspace-split.mod-left-split,
+body.theme-dark .workspace-split.mod-left-split,
+body.theme-light .workspace-split.mod-right-split,
+body.theme-dark .workspace-split.mod-right-split {
+  background-image: var(--lg-sidebar-material);
+}
+
+.workspace-ribbon.side-dock-ribbon,
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split {
+  --text-muted: var(--lg-text-on-glass-2);
+  --text-faint: color-mix(in srgb, var(--lg-text-on-glass) 56%, transparent);
+}
+
+.workspace-split.mod-left-split .workspace-tabs,
+.workspace-split.mod-right-split .workspace-tabs,
+.workspace-split.mod-left-split .workspace-leaf,
+.workspace-split.mod-right-split .workspace-leaf,
+.workspace-split.mod-left-split .workspace-leaf-content,
+.workspace-split.mod-right-split .workspace-leaf-content,
+.workspace-split.mod-left-split .workspace-tab-header-container,
+.workspace-split.mod-right-split .workspace-tab-header-container {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+

@@ -76,6 +76,113 @@ function checkBalancedCss(css) {
   if (braces !== 0) fail(`theme.css has ${braces} unclosed block(s)`);
 }
 
+/*
+ * Plugin adaptations must never match when the plugin is absent. Every rule
+ * that names a plugin class has to stay behind the view's data-type gate, so a
+ * stray unscoped selector fails the build instead of leaking into vanilla
+ * Obsidian.
+ */
+const scopedPluginViews = [
+  {
+    label: "Claudian",
+    token: "claudian",
+    scope: '[data-type="claudian-view"]',
+    gate: "body:not(.lumen-claudian-plain)",
+  },
+];
+
+function checkPluginScoping(css) {
+  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  const selectors = withoutComments.matchAll(/(^|[{}])\s*([^{}@;]+?)\s*\{/g);
+  const seen = new Map(scopedPluginViews.map(({ token }) => [token, 0]));
+
+  for (const match of selectors) {
+    const selector = match[2].replace(/\s+/g, " ").trim();
+    if (!selector) continue;
+
+    for (const { label, token, scope, gate } of scopedPluginViews) {
+      if (!selector.toLowerCase().includes(token)) continue;
+      seen.set(token, seen.get(token) + 1);
+
+      if (!selector.includes(scope)) {
+        fail(`${label} rule is not scoped to ${scope}: ${selector.slice(0, 120)}`);
+      }
+
+      /*
+       * Every comma-separated branch needs the opt-out gate, not just the
+       * first — a selector list where one branch escapes would keep styling
+       * that element after the reader turned the adaptation off.
+       */
+      const ungated = selector.split(",").filter((part) => !part.includes(gate));
+      if (ungated.length > 0) {
+        fail(`${label} rule is missing the ${gate} gate: ${ungated[0].trim().slice(0, 120)}`);
+      }
+    }
+  }
+
+  /*
+   * The gate is injected at build time, so an empty result would mean the
+   * injection silently stopped matching rather than that the work is done.
+   */
+  for (const { label, token } of scopedPluginViews) {
+    if (seen.get(token) === 0) fail(`${label} adaptation produced no rules; the build gate may be broken`);
+  }
+}
+
+/*
+ * Only the theme's own namespaces are audited. Obsidian's variables are
+ * declared by the app, so a `var(--text-muted)` with no local declaration is
+ * expected, and a `--callout-radius` the theme sets for the app to read is not
+ * dead just because the theme never reads it back.
+ */
+const ownedPrefixes = ["--lg-", "--lumen-"];
+
+function isOwned(name) {
+  return ownedPrefixes.some((prefix) => name.startsWith(prefix));
+}
+
+function checkTokenGraph(css) {
+  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  const declared = new Set();
+  const referenced = new Set();
+
+  for (const match of withoutComments.matchAll(/(--[a-z0-9-]+)\s*:/g)) {
+    if (isOwned(match[1])) declared.add(match[1]);
+  }
+  for (const match of withoutComments.matchAll(/var\(\s*(--[a-z0-9-]+)/g)) {
+    referenced.add(match[1]);
+  }
+
+  const dangling = [...referenced].filter((name) => isOwned(name) && !declared.has(name));
+  if (dangling.length > 0) {
+    fail(`theme.css references undeclared tokens: ${dangling.sort().join(", ")}`);
+  }
+
+  const unused = [...declared].filter((name) => !referenced.has(name));
+  if (unused.length > 0) {
+    warn(`theme.css declares unused tokens: ${unused.sort().join(", ")}`);
+  }
+}
+
+const radiusScale = new Set(["0", "0px", "50%", "999px", "inherit"]);
+
+function checkRadiusScale(css) {
+  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  const offScale = new Set();
+
+  for (const match of withoutComments.matchAll(/border(?:-[a-z-]+)?-radius: *([^;]+);/g)) {
+    const value = match[1].trim();
+    if (value.includes("var(") || value.includes("calc(")) continue;
+    for (const part of value.split(/\s+/)) {
+      if (!radiusScale.has(part)) offScale.add(part);
+    }
+  }
+
+  if (offScale.size > 0) {
+    warn(`theme.css hardcodes off-scale radii: ${[...offScale].sort().join(", ")}`);
+  }
+}
+
 function checkMarkdownLinks(markdown) {
   const links = markdown.matchAll(/!?\[[^\]]*]\(([^)]+)\)/g);
 
@@ -174,6 +281,9 @@ if (!css.includes(`name: ${expectedThemeName}`) || !css.includes(`title: ${expec
   fail("theme.css Style Settings metadata must match the manifest name");
 }
 checkBalancedCss(css);
+checkPluginScoping(css);
+checkTokenGraph(css);
+checkRadiusScale(css);
 
 const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
 if (/@import\s+(?:url\()?["']?https?:/i.test(cssWithoutComments)) {

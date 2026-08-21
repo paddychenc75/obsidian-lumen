@@ -1,0 +1,401 @@
+/* --------------------------------------------------------------------------
+   9. Markdown
+   -------------------------------------------------------------------------- */
+
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content {
+  font-family: var(--font-text-theme);
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  font-synthesis-style: none;
+}
+
+.markdown-rendered {
+  line-height: var(--line-height-normal);
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-break: strict;
+}
+
+.lumen-markdown-specimen .inline-title {
+  display: none;
+}
+
+.markdown-rendered p {
+  margin-block: 0 var(--p-spacing);
+}
+
+.markdown-rendered :is(p, li, blockquote, td) {
+  line-height: var(--line-height-normal);
+}
+
+/*
+ * Colour is deliberately left to Obsidian's --hN-color so the h6 override
+ * survives; a `color` here would win on source order and re-normalise it.
+ */
+.markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-text-theme);
+  font-synthesis-weight: none;
+  text-wrap: balance;
+}
+
+.markdown-rendered h1 {
+  margin-block: 0 var(--lg-space-6);
+}
+
+.markdown-rendered h2 {
+  margin-block: var(--lg-space-10) var(--lg-space-4);
+}
+
+.markdown-rendered h3 {
+  margin-block: var(--lg-space-8) var(--lg-space-3);
+}
+
+.markdown-rendered h4 {
+  margin-block: var(--lg-space-6) var(--lg-space-2);
+}
+
+.markdown-rendered h5 {
+  margin-block: var(--lg-space-5) var(--lg-space-2);
+}
+
+.markdown-rendered h6 {
+  margin-block: var(--lg-space-4) var(--lg-space-2);
+}
+
+.markdown-rendered strong {
+  font-weight: 600;
+}
+
+.markdown-rendered small {
+  color: var(--text-muted);
+  font-size: 0.82em;
+  line-height: 1.5;
+}
+
+.markdown-rendered abbr[title] {
+  border-bottom: 1px dotted color-mix(in srgb, currentColor 45%, transparent);
+  cursor: help;
+}
+
+.markdown-rendered kbd {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55em;
+  padding-inline: 0.38em;
+  border: 1px solid var(--lg-doc-divider);
+  border-bottom-color: color-mix(in srgb, var(--text-normal) 22%, transparent);
+  border-radius: var(--lg-radius-s);
+  background: var(--background-primary-alt);
+  color: var(--text-normal);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--text-normal) 10%, transparent);
+  font-family: var(--font-interface-theme);
+  font-size: 0.78em;
+  line-height: 1;
+  vertical-align: 0.08em;
+}
+
+.markdown-rendered details {
+  margin-block: var(--lg-space-4);
+}
+
+.markdown-rendered summary {
+  color: var(--text-normal);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.markdown-rendered :is(ul, ol) {
+  margin-block: var(--lg-space-2) var(--lg-space-4);
+  padding-inline-start: 1.5em;
+}
+
+.markdown-rendered li {
+  margin-block: var(--lg-space-1);
+}
+
+/*
+ * The marker is scaffolding, not content. At full text weight a dense outline
+ * reads as two columns competing for the eye; muted, the items stay countable
+ * and the prose keeps the foreground.
+ */
+.markdown-rendered li::marker {
+  color: var(--text-faint);
+}
+
+.markdown-rendered li > :is(ul, ol) {
+  margin-block: var(--lg-space-1) var(--lg-space-2);
+}
+
+/*
+ * The underline is an inset shadow rather than text-decoration so it can sit
+ * clear of descenders. That needs `clone`: on the default `slice`, a link that
+ * wraps draws the rule as one box across both fragments, leaving the first
+ * line unmarked.
+ */
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link,
+.cm-hmd-internal-link,
+.cm-link,
+.cm-url {
+  color: var(--lg-paper-link);
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, currentcolor 45%, transparent);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.markdown-rendered :is(a.internal-link, a.external-link):hover,
+.cm-hmd-internal-link:hover,
+.cm-link:hover,
+.cm-url:hover {
+  box-shadow: inset 0 -1px 0 currentcolor;
+}
+
+.markdown-rendered mark,
+.cm-highlight {
+  background: var(--text-highlight-bg);
+  color: var(--text-normal);
+  padding-inline: 0.08em;
+  border-radius: var(--lg-radius-xs);
+  box-shadow: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/*
+ * 3px rather than 2px: at hairline width the rule competed with the text's own
+ * stems and read as an artifact of rendering. The extra pixel is what makes it
+ * read as drawn, and it lets the nesting ladder step down in colour without any
+ * level becoming a smudge.
+ */
+.markdown-rendered blockquote {
+  background: transparent;
+  border-inline-start-color: var(--lg-quote-line);
+  border-inline-start-width: 3px;
+  border-radius: var(--lg-radius-xs);
+  margin-block: var(--lg-space-4);
+  padding: 2px 0;
+  padding-inline-start: var(--lg-space-4);
+  color: var(--text-muted);
+}
+
+.markdown-rendered blockquote blockquote {
+  --blockquote-border-color: var(--lg-quote-line-nested);
+  border-inline-start-color: var(--lg-quote-line-nested);
+  border-inline-start-width: 3px;
+  margin-inline-start: 16px;
+}
+
+.markdown-rendered blockquote blockquote blockquote {
+  --blockquote-border-color: var(--lg-quote-line-deep);
+  border-inline-start-color: var(--lg-quote-line-deep);
+}
+
+.markdown-rendered blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,
+.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
+  border-radius: 0;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before {
+  border-inline-start-color: var(--lg-quote-line);
+  border-inline-start-width: 3px;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
+  border-inline-start-color: var(--lg-quote-line-nested);
+  border-inline-start-width: 3px;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote-3 .cm-blockquote-border::before {
+  border-inline-start-color: var(--lg-quote-line-deep);
+}
+
+/*
+ * The rule is square at both ends. Live preview draws it per line, so a cap can
+ * only be put on the first or last line currently in the DOM — and CodeMirror
+ * only keeps the viewport in the DOM, so a rounded cap would appear wherever the
+ * quote happens to be cut off by scrolling, and travel as the reader scrolls. A
+ * 3px stroke gains almost nothing from a 1.5px radius anyway, and square keeps
+ * live preview identical to reading view.
+ */
+
+.markdown-rendered .callout,
+.callout {
+  background-color: color-mix(in srgb, var(--callout-color) 5%, transparent);
+  border: 0;
+  border-inline-start: 2px solid color-mix(in srgb, var(--callout-color) 44%, transparent);
+  border-radius: var(--callout-radius);
+  margin-block: var(--lg-space-4);
+  padding: var(--callout-padding);
+  box-shadow: none;
+  mix-blend-mode: normal;
+}
+
+.markdown-rendered .callout-title {
+  align-items: center;
+  gap: var(--lg-space-2);
+  font-size: 0.9em;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.markdown-rendered .callout-icon {
+  opacity: 0.78;
+}
+
+.markdown-rendered .callout-content {
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+.markdown-rendered .callout-content > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-rendered .callout::before,
+.callout::before {
+  content: none;
+}
+
+.release-notes-view .markdown-preview-view {
+  padding-top: var(--lg-space-4);
+}
+
+.release-notes-view .callout {
+  margin-block: 0 var(--lg-space-2);
+}
+
+.release-notes-view .callout.is-collapsible:hover {
+  background-color: color-mix(in srgb, var(--callout-color) 8%, transparent);
+}
+
+.release-notes-view hr {
+  margin-block: var(--lg-space-4);
+}
+
+.release-notes-view h1 {
+  margin-block: var(--lg-space-3);
+}
+
+.view-content.release-notes-view h2 {
+  margin-block: var(--lg-space-8) var(--lg-space-4);
+}
+
+/*
+ * Syntax colors are chosen against the code surface instead of being inherited
+ * from the interface palette, which is tuned for chrome and collapses on a near
+ * white block: Obsidian's default maps functions to yellow, which lands at
+ * 1.9:1 here, and all nine of its tokens miss 4.5:1 in light mode. Every value
+ * below is measured against its own `--code-background`.
+ *
+ * Six hues carry meaning. Comments, operators and punctuation deliberately
+ * share one neutral family — they are structure rather than content, and giving
+ * each its own hue is what makes a code block look like plaid. Comments take
+ * italic instead, so they stay separable while staying quiet.
+ *
+ * One mapping covers both renderers: these variables feed Prism's `.token-*` in
+ * reading view and CodeMirror's `.cm-*` in the editor.
+ */
+.theme-light {
+  --code-background: #f2f2f7;
+  --code-normal: #242426;
+  --lg-syn-keyword: #9b2393;
+  --lg-syn-tag: #b02867;
+  --lg-syn-string: #b3261e;
+  --lg-syn-function: #0b6a70;
+  --lg-syn-property: #2f5fb3;
+  --lg-syn-value: #4c2ecc;
+  --lg-syn-important: #9a4a00;
+  --lg-syn-comment: #5b6570;
+  --lg-syn-operator: #45454a;
+  --lg-syn-punctuation: #6a6a70;
+  --lg-inline-code-bg: #edf1f5;
+  --lg-inline-code-border: rgb(56 64 74 / 55%);
+  --lg-inline-code-text: #20242a;
+  --lg-mark-bg: color-mix(in srgb, var(--lg-accent) 18%, var(--lg-paper-solid));
+  --lg-doc-divider: rgba(60, 60, 67, 0.14);
+}
+
+.theme-dark {
+  --code-background: #242426;
+  --code-normal: #e8e8ed;
+  --lg-syn-keyword: #e88ce0;
+  --lg-syn-tag: #f2879f;
+  --lg-syn-string: #f0907f;
+  --lg-syn-function: #5fd4cf;
+  --lg-syn-property: #7ab0f0;
+  --lg-syn-value: #b39cff;
+  --lg-syn-important: #f0a35e;
+  --lg-syn-comment: #8b95a1;
+  --lg-syn-operator: #c8c8ce;
+  --lg-syn-punctuation: #96969c;
+  --lg-inline-code-bg: #292b30;
+  --lg-inline-code-border: rgb(235 235 245 / 35%);
+  --lg-inline-code-text: #e8e8ed;
+  --lg-mark-bg: color-mix(in srgb, var(--lg-accent) 24%, var(--lg-paper-solid));
+  --lg-doc-divider: rgba(235, 235, 245, 0.18);
+}
+
+body {
+  --code-keyword: var(--lg-syn-keyword);
+  --code-tag: var(--lg-syn-tag);
+  --code-string: var(--lg-syn-string);
+  --code-function: var(--lg-syn-function);
+  --code-property: var(--lg-syn-property);
+  --code-value: var(--lg-syn-value);
+  --code-important: var(--lg-syn-important);
+  --code-comment: var(--lg-syn-comment);
+  --code-operator: var(--lg-syn-operator);
+  --code-punctuation: var(--lg-syn-punctuation);
+}
+
+/*
+ * Scoped to code so that `%%…%%` markdown comments, which share `.cm-comment`,
+ * are left upright.
+ */
+.markdown-rendered .token.comment,
+.cm-s-obsidian .HyperMD-codeblock .cm-comment {
+  font-style: italic;
+}
+
+.markdown-rendered pre {
+  border-radius: var(--code-radius);
+  overflow: hidden;
+  margin-block: var(--lg-space-6);
+  padding: 0;
+  border: 1px solid var(--background-modifier-border);
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.markdown-rendered :not(pre) > code,
+.cm-s-obsidian .cm-inline-code:not(.cm-formatting) {
+  padding: 1px var(--lg-space-1);
+  border: 0;
+  border-radius: var(--lg-radius-xs);
+  background: var(--lg-inline-code-bg);
+  color: var(--lg-inline-code-text);
+  box-shadow: inset 0 0 0 1px var(--lg-inline-code-border);
+  font-size: 0.9em;
+  vertical-align: 0.01em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.markdown-rendered :not(pre) > code {
+  line-height: inherit;
+}
+
+body[class] .workspace-leaf-content .markdown-rendered pre > code {
+  display: block;
+  padding: var(--lg-space-3) var(--lg-space-4);
+  background: transparent;
+  font-size: 0.875em;
+  overflow-x: auto;
+}
+

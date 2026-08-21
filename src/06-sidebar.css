@@ -1,0 +1,276 @@
+/* --------------------------------------------------------------------------
+   5. Sidebars + file tree
+   -------------------------------------------------------------------------- */
+
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split {
+  height: calc(100% - var(--lg-chrome-frame) - var(--lg-chrome-frame));
+  /* Left split: flush to the ribbon, so only the inner edge carries a seam. */
+  margin: var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2) var(--lg-chrome-frame) 0;
+  border-radius: var(--lg-radius-m);
+  /*
+   * The split's resize handle lives on its outer edge. Clipping the split
+   * hides that handle and leaves a misleading dead strip between panes.
+   */
+  overflow: visible;
+}
+
+.workspace-split.mod-left-split {
+  border-inline-start: 0;
+  border-radius: 0 var(--lg-radius-m) var(--lg-radius-m) 0;
+  box-shadow: none;
+}
+
+.workspace-split.mod-right-split {
+  margin: var(--lg-chrome-frame) var(--lg-chrome-frame) var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2);
+  box-shadow: none;
+}
+
+.workspace-split.mod-left-split > .workspace-tabs,
+.workspace-split.mod-right-split > .workspace-tabs {
+  border-radius: inherit;
+  overflow: clip;
+}
+
+.nav-files-container {
+  --nav-item-children-margin-start: 10px;
+  --nav-item-children-padding-start: 3px;
+
+  padding: var(--lg-space-1) var(--lg-space-2) var(--lg-space-6);
+}
+
+.nav-files-container .tree-item-self {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 28px;
+  margin: 0 0 1px;
+  padding-block: 0;
+  padding-inline-end: var(--lg-space-2);
+  border: 0;
+  border-radius: var(--lg-radius-s);
+  background: transparent;
+  color: var(--lg-text-on-glass);
+  overflow: hidden;
+  box-shadow: none;
+  transition:
+    background-color var(--lg-duration-fast) var(--lg-ease),
+    color var(--lg-duration-fast) var(--lg-ease);
+}
+
+.nav-files-container .nav-folder-title {
+  font-weight: 500;
+}
+
+.nav-files-container .nav-file-title {
+  font-weight: 400;
+}
+
+.nav-files-container .tree-item-self:hover:not(.is-active):not(.is-selected) {
+  background: var(--lg-state-hover);
+}
+
+body.theme-light .nav-files-container .collapse-icon,
+body.theme-dark .nav-files-container .collapse-icon {
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-inline: 0 var(--lg-space-1);
+  color: var(--lg-text-on-glass-2);
+  opacity: 0.45;
+  transform: translateY(-50%);
+  transition:
+    color var(--lg-duration-fast) var(--lg-ease),
+    opacity var(--lg-duration-fast) var(--lg-ease);
+}
+
+.nav-files-container .collapse-icon svg {
+  display: block;
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+}
+
+body.theme-light .nav-files-container .collapse-icon:not(.is-collapsed),
+body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
+  opacity: 0.68;
+}
+
+.nav-files-container .nav-folder-title:hover .collapse-icon {
+  opacity: 0.82;
+}
+
+.nav-files-container .nav-folder-title-content {
+  flex: 1 1 auto;
+  margin-inline-start: 18px;
+}
+
+.nav-files-container .nav-file-title::before {
+  content: "";
+  flex: 0 0 18px;
+}
+
+.nav-files-container .nav-file-title-content,
+.nav-files-container .nav-folder-title-content {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nav-files-container .nav-file-tag {
+  flex: 0 0 auto;
+  margin-inline-start: var(--lg-space-2);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--lg-text-on-glass-2);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.nav-files-container .nav-file-title.is-active {
+  background: var(--lg-list-active-fill);
+  color: var(--lg-text-on-glass);
+  box-shadow: none;
+  border: 0;
+}
+
+.nav-files-container .tree-item-self:focus-visible {
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset-inset);
+  border: 0;
+}
+
+.workspace-sidedock-vault-profile {
+  background: transparent;
+  border-top: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 10%, transparent);
+}
+
+.mod-left-split .view-header,
+.mod-right-split .view-header,
+.mod-left-split .view-content,
+.mod-right-split .view-content {
+  background: transparent;
+  border: none;
+  color: var(--lg-text-on-glass);
+}
+
+/*
+ * 16px puts the row's highlight 12px from the panel edge, which is where the tag
+ * and link panes already start theirs — core pulls these rows 4px back out with
+ * an inline margin, so the panel has to give the 4px back. Getting this wrong is
+ * visible: the highlight slides sideways when you switch tabs in the same panel.
+ */
+.workspace-leaf-content[data-type="outline"] .view-content,
+.workspace-leaf-content[data-type="all-properties"] .view-content {
+  padding-inline: var(--lg-space-4);
+  scroll-padding-inline: var(--lg-space-4);
+}
+
+.workspace-leaf-content[data-type="all-properties"] .view-content {
+  padding-block: var(--lg-space-2) var(--lg-space-8);
+}
+
+/*
+ * Sidebar rows hang their leading icon 20px to the left of the row's text box, so
+ * that a row with a disclosure arrow and a row without one still put their labels
+ * in the same column. The tag pane proves the hang is load-bearing: at equal
+ * depth, a collapsible row and a plain one start their label at the same x. So the
+ * hang stays, and it is given somewhere to hang into instead.
+ *
+ * Core reserves 24px of leading padding for exactly that in --nav-item-padding,
+ * then hands these views 8px, which leaves the icon hanging into the panel's own
+ * edge margin — measured 4px from the panel edge in the properties list, about 0
+ * in the link panes, i.e. outside the row's own hover shape. Nothing in a sidebar
+ * row should sit outside its highlight.
+ *
+ * 24px is not a new number: it is what core reserves and what the tag pane keeps,
+ * so the icon lands 16px from the panel edge as it already does there. The file
+ * explorer is excluded — its rows are .tree-item-self too, but their metrics are
+ * set above.
+ */
+.workspace-leaf-content[data-type="tag"] .tree-item-self,
+.workspace-leaf-content[data-type="backlink"] .tree-item-self,
+.workspace-leaf-content[data-type="outgoing-link"] .tree-item-self,
+.workspace-leaf-content[data-type="bookmarks"] .tree-item-self {
+  padding-inline-start: var(--lg-space-6);
+}
+
+/*
+ * The outline and properties panes cannot be reached that way: core writes their
+ * indentation as an inline `padding-inline-start: 12px !important`, which no style
+ * sheet can outbid. So the same 16px landing point is reached from the other side
+ * — the icon is absolutely positioned, offset from the row's content edge by its
+ * own margin, so shortening the hang to 8px moves it without touching the rest.
+ *
+ * Because the icon is out of flow, the label does not follow it, and shortening
+ * the hang alone would run the icon straight over the first characters (measured
+ * 8px of overlap). The label is moved the same 12px separately, which lands it at
+ * 36px like every other pane, and keeps the 4px between icon and text.
+ */
+.workspace-leaf-content[data-type="all-properties"] .tree-item-icon,
+.workspace-leaf-content[data-type="outline"] .tree-item-icon {
+  margin-inline-start: calc(-1 * var(--lg-space-2));
+}
+
+.workspace-leaf-content[data-type="all-properties"] .tree-item-inner,
+.workspace-leaf-content[data-type="outline"] .tree-item-inner {
+  padding-inline-start: var(--lg-space-3);
+}
+
+/*
+ * The trailing count sits at the row's own padding edge, so it needs 4px rather
+ * than 8px to land 20px from the panel edge — level with the icon on the other
+ * side, and level with the counts in the tag and link panes.
+ */
+.workspace-leaf-content[data-type="all-properties"] .tree-item-self {
+  padding-inline-end: var(--lg-space-1);
+}
+
+/*
+ * Search results are a two-level list — a file, then the lines that matched
+ * inside it. Obsidian gives both levels the same visual weight, so a result with
+ * six matches reads as seven equal rows. The file line keeps the list language
+ * used by the file tree; the matches recede and indent under it.
+ */
+.search-result-file-title {
+  border-radius: var(--lg-radius-xs);
+  color: var(--lg-text-on-glass);
+  font-weight: 500;
+}
+
+.search-result-file-title:hover {
+  background-color: var(--lg-state-hover);
+}
+
+.search-result-file-match {
+  border-radius: var(--lg-radius-xs);
+  color: var(--lg-text-on-glass-2);
+  line-height: 1.5;
+}
+
+.search-result-file-match:hover {
+  background-color: var(--lg-state-hover);
+}
+
+/*
+ * The matched run is the only reason the row is on screen, so it gets the same
+ * highlight the reader already knows from `==marked==` text in a note.
+ */
+.search-result-file-matched-text {
+  border-radius: var(--lg-radius-xs);
+  padding: 0 2px;
+  background-color: var(--lg-mark-bg);
+  color: var(--lg-text-on-glass);
+}
+
+.search-results-info,
+.search-empty-state {
+  color: var(--lg-text-on-glass-2);
+  font-size: var(--font-ui-smaller);
+}
+

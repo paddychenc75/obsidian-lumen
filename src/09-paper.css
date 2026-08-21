@@ -1,0 +1,127 @@
+/* --------------------------------------------------------------------------
+   8. Paper
+   -------------------------------------------------------------------------- */
+
+.workspace-split.mod-root,
+.workspace-split.mod-root .workspace-tabs {
+  background: transparent;
+}
+
+.workspace-split.mod-root .workspace-tab-container {
+  margin: calc(var(--lg-chrome-gap) / 2) calc(var(--lg-chrome-gap) / 2) var(--lg-chrome-frame);
+}
+
+.workspace-split.mod-root .workspace-leaf-content {
+  isolation: isolate;
+  background-color: var(--lg-paper-solid);
+  border: 1px solid var(--lg-paper-border);
+  border-radius: var(--lg-radius-m);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.mod-root .view-header {
+  background: transparent;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.mod-root .view-header-title,
+.mod-root .inline-title {
+  color: var(--text-normal);
+}
+
+.mod-root .inline-title {
+  margin-bottom: var(--lg-space-6);
+  font-family: var(--font-text-theme);
+  font-size: var(--h1-size);
+  font-weight: var(--h1-weight);
+  line-height: var(--h1-line-height);
+  letter-spacing: var(--lg-tracking-h1);
+  text-wrap: balance;
+}
+
+.markdown-source-view,
+.markdown-preview-view,
+.markdown-reading-view,
+.cm-editor,
+.cm-scroller {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.cm-sizer,
+.markdown-preview-sizer {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(var(--file-line-width), 100%);
+  padding-inline: var(--lg-space-6);
+  padding-bottom: calc(var(--lg-status-height) + var(--lg-space-4));
+}
+
+/*
+ * `balance` is for headings, where every line is worth evening out. Body copy
+ * uses `pretty`, which only fixes the end of the paragraph — it clears single
+ * word last lines without re-flowing the whole block on each keystroke.
+ */
+.markdown-rendered p,
+.markdown-rendered li {
+  text-wrap: pretty;
+}
+
+/*
+ * Print sets a thin space where a Han character meets Latin or a digit. The
+ * browser leaves this off by default, so `强缓存由Cache-Control控制` renders with
+ * the two scripts jammed together.
+ *
+ * This is additive rather than corrective: measured on Chromium 142, a boundary
+ * that already has a typed space gets nothing extra, so a vault whose house
+ * style is to type the space sees no change and one that forgot it gets the
+ * space anyway. Applied to both views so the line does not reflow when the
+ * reader switches between editing and reading.
+ */
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content {
+  text-autospace: normal;
+}
+
+/*
+ * The properties block is interface furniture that happens to sit inside the
+ * reading surface. A closing rule keeps it from bleeding into the first
+ * paragraph, which is what makes a fifteen field frontmatter read as a header
+ * rather than as the start of the note.
+ */
+.metadata-container {
+  margin-block-end: var(--lg-space-6);
+  padding-block-end: var(--lg-space-2);
+  border-bottom: 1px solid var(--lg-doc-divider);
+}
+
+.metadata-properties-heading {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+}
+
+/*
+ * The key cell aligns its children to the top so a wrapped value keeps its label
+ * on the first line. That makes the icon's own height, not the row's, decide where
+ * it lands — and Obsidian sizes it for its own 28px field, while our form floor
+ * gives the field --lg-control-size. Left alone the icon sat half the difference
+ * above the label on every row: measured 4px on all ten. It follows the field.
+ */
+.metadata-property-icon {
+  height: var(--lg-control-size);
+}
+
+.metadata-container .metadata-add-button.clickable-icon {
+  color: var(--text-faint);
+  transition: color var(--lg-duration-fast) var(--lg-ease);
+}
+
+.metadata-container:hover .metadata-add-button.clickable-icon,
+.metadata-container .metadata-add-button.clickable-icon:focus-visible {
+  color: var(--text-muted);
+}
+

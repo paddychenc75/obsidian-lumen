@@ -1,0 +1,50 @@
+.is-mobile .workspace-drawer.mod-left,
+.is-mobile .workspace-drawer.mod-right {
+  border-radius: var(--lg-radius-xl) var(--lg-radius-xl) 0 0;
+  margin: 0;
+}
+
+body.is-mobile .mobile-navbar {
+  inset-inline: var(--lg-chrome-frame);
+  width: auto;
+  max-width: none;
+  border-radius: var(--lg-radius-pill);
+  margin: 0 0 calc(var(--lg-chrome-frame) + env(safe-area-inset-bottom));
+  min-height: 52px;
+  background-color: var(--lg-glass-fill);
+  background-image: var(--lg-glass-highlight), linear-gradient(var(--lg-glass-luma), var(--lg-glass-luma));
+  border: 1px solid var(--lg-glass-border);
+  box-shadow: var(--lg-glass-shadow);
+  color: var(--lg-text-on-glass);
+  justify-content: space-around;
+  backdrop-filter: blur(var(--lg-glass-blur)) saturate(var(--lg-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--lg-glass-blur)) saturate(var(--lg-glass-saturate));
+}
+
+body.is-mobile.is-floating-nav .mobile-navbar.mod-raised {
+  border: 1px solid var(--lg-glass-border);
+}
+
+.is-mobile .nav-file-title,
+.is-mobile .nav-folder-title,
+.is-mobile .tree-item-self,
+.is-mobile .suggestion-item,
+.is-mobile button.mod-cta,
+.is-mobile .workspace-tab-header {
+  min-height: 44px;
+}
+
+@media (pointer: coarse) {
+  .clickable-icon,
+  .side-dock-ribbon-action,
+  .workspace-tab-header-inner-close-button,
+  .workspace-tab-header-new-tab .clickable-icon,
+  .menu-item,
+  button,
+  .dropdown,
+  .checkbox-container {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+

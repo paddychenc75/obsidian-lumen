@@ -58,17 +58,22 @@ Lumen Glass also follows the matching accessibility preferences provided by your
 
 ## Development
 
-The validation script requires Node.js 24 or later and has no third-party dependencies.
+The build and validation scripts require Node.js 24 or later and have no third-party dependencies.
+
+`theme.css` is a build artifact. Edit the modules in `src/` and rebuild:
 
 ```bash
+npm run build
 npm run check
 ```
+
+`npm run check` verifies that `theme.css` matches `src/`, so a source edit that was never rebuilt fails rather than shipping silently. It also checks that plugin adaptations stay scoped to their own view, which is what keeps them inert for anyone who does not have the plugin installed.
 
 Version tags must match the version in `manifest.json`. Pushing a version tag runs the release workflow and uploads the files required by Obsidian. Existing tags and releases remain immutable historical artifacts.
 
 ## Contributing
 
-Bug reports and pull requests are welcome. Please run `npm run check` before submitting a change.
+Bug reports and pull requests are welcome. Please run `npm run build` and `npm run check` before submitting a change, and commit the rebuilt `theme.css` along with your source edits.
 
 ## License
 

@@ -1,0 +1,58 @@
+/* --------------------------------------------------------------------------
+   7. Status bar — compact island anchored to the editor
+   -------------------------------------------------------------------------- */
+
+/*
+ * The sidebars have user-resizable inline widths and Obsidian exposes no
+ * stable CSS variable for them. CSS anchors let the compact status island
+ * follow the real root split without drawing an empty full-width rail.
+ */
+.workspace-split.mod-root {
+  anchor-name: --lumen-editor-column;
+  padding-bottom: 0;
+}
+
+.status-bar {
+  position: absolute;
+  inset: auto var(--lg-space-2) var(--lg-space-2) auto;
+  width: max-content;
+  max-width: calc(100% - var(--lg-space-4));
+  height: var(--lg-status-height);
+  min-height: var(--lg-status-height);
+  margin: 0;
+  border-radius: var(--lg-radius-pill);
+  background-color: var(--lg-status-fill);
+  background-image: var(--lg-glass-highlight), linear-gradient(var(--lg-status-luma), var(--lg-status-luma));
+  color: var(--lg-text-on-glass-2);
+  justify-content: flex-end;
+  box-shadow:
+    inset 0 0.5px 0 color-mix(in srgb, #fff 24%, transparent),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: var(--layer-status-bar, 15);
+}
+
+body.obsidian-app.theme-light .status-bar,
+body.obsidian-app.theme-dark .status-bar {
+  padding-right: var(--lg-space-3);
+  padding-left: var(--lg-space-3);
+}
+
+@supports (anchor-name: --lumen-editor-column) {
+  .status-bar {
+    position-anchor: --lumen-editor-column;
+    inset: auto anchor(--lumen-editor-column right) var(--lg-space-2) auto;
+    max-width: calc(anchor-size(--lumen-editor-column width) - var(--lg-space-4));
+    margin-inline-end: var(--lg-space-2);
+  }
+}
+
+body.is-mobile .status-bar {
+  position: relative;
+  inset: auto;
+  margin: 0 var(--lg-space-2) var(--lg-space-2);
+}
+
+.status-bar-item {
+  color: inherit;
+}
+

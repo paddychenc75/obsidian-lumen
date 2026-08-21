@@ -1,0 +1,347 @@
+.markdown-preview-view .el-table {
+  width: 100%;
+  max-width: 100%;
+  margin-block: var(--lg-space-6);
+  border: 1px solid var(--lg-table-outline);
+  border-radius: var(--lg-table-radius);
+  background: var(--lg-table-surface);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: var(--lg-scrollbar-thumb) transparent;
+}
+
+.markdown-preview-view .el-table::-webkit-scrollbar,
+.markdown-source-view.mod-cm6 .cm-table-widget::-webkit-scrollbar {
+  width: var(--lg-table-scrollbar-size);
+  height: var(--lg-table-scrollbar-size);
+}
+
+.markdown-preview-view .el-table::-webkit-scrollbar-thumb,
+.markdown-source-view.mod-cm6 .cm-table-widget::-webkit-scrollbar-thumb {
+  min-width: 32px;
+  min-height: 32px;
+  border-width: 2px;
+}
+
+.markdown-preview-view .el-table > table {
+  width: 100%;
+  min-width: 100%;
+  max-width: none;
+  table-layout: auto;
+  margin: 0;
+  border: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: inherit;
+  background: var(--lg-table-surface);
+  color: var(--lg-table-text);
+  font-size: var(--lg-table-font-size);
+  line-height: var(--lg-table-line-height);
+}
+
+.markdown-preview-view .el-table > table :is(th, td) {
+  min-width: 0;
+  padding: var(--lg-table-cell-padding-y) var(--lg-table-cell-padding-x);
+  border: 0;
+  border-bottom: 1px solid var(--lg-table-row-divider);
+  border-inline-end: 1px solid var(--lg-table-col-divider);
+  vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: normal;
+  font-size: var(--lg-table-font-size);
+  line-height: var(--lg-table-line-height);
+}
+
+.markdown-preview-view .el-table > table tr > :is(th, td):first-child {
+  padding-inline-start: calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra));
+}
+
+.markdown-preview-view .el-table > table tr > :is(th, td):last-child {
+  padding-inline-end: calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra));
+}
+
+.markdown-preview-view .el-table > table th {
+  background: var(--lg-table-header-surface);
+  color: var(--lg-table-text);
+  border-bottom-color: var(--lg-table-header-divider);
+  font-size: var(--lg-table-header-font-size);
+  font-weight: 600;
+  text-align: start;
+  white-space: normal;
+}
+
+.markdown-preview-view .el-table > table :is(th, td)[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.markdown-preview-view .el-table > table tbody tr:hover > td {
+  background: var(--lg-table-row-hover);
+}
+
+.markdown-preview-view .el-table > table tr > :is(th, td):last-child {
+  border-inline-end: 0;
+}
+
+.markdown-preview-view .el-table > table tbody tr:last-child > td {
+  border-bottom: 0;
+}
+
+/*
+ * Live Preview shares the same paper, header, grid and spacing tokens as
+ * Reading View. Each cell paints only its trailing and bottom edges so
+ * adjacent cells share one 1px boundary without doubled seams.
+ */
+.markdown-source-view.mod-cm6 .cm-table-widget {
+  --table-header-background: var(--lg-table-header-surface);
+  --table-header-background-hover: var(--lg-table-header-surface);
+  --table-row-background-hover: var(--lg-table-row-hover);
+  --table-border-color: var(--lg-table-row-divider);
+  --table-selection: var(--lg-table-focus-surface);
+  --table-selection-border-color: var(--lg-table-focus-ring);
+  --table-selection-border-width: var(--lg-table-focus-width);
+  --table-selection-border-radius: calc(var(--lg-table-radius) - 2px);
+  --table-drag-handle-background: var(--lg-table-control-surface);
+  --table-drag-handle-background-active: var(--lg-table-focus-surface);
+  --table-drag-handle-color: var(--text-muted);
+  --table-drag-handle-color-active: var(--lg-accent);
+  --table-add-button-background: var(--lg-table-control-surface);
+  --table-add-button-border-color: var(--lg-table-outline);
+
+  max-width: calc(100% + 32px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: var(--lg-scrollbar-thumb) transparent;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-wrapper {
+  width: 100%;
+  min-width: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor {
+  width: 100%;
+  min-width: 100%;
+  max-width: none;
+  table-layout: auto;
+  border: 1px solid var(--lg-table-outline);
+  border-radius: var(--lg-table-radius);
+  border-spacing: 0;
+  background: var(--lg-table-surface);
+  color: var(--lg-table-text);
+  font-size: var(--lg-table-font-size);
+  line-height: var(--lg-table-line-height);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th, td) {
+  min-width: 0;
+  border: 0;
+  border-bottom: 1px solid var(--lg-table-row-divider);
+  border-inline-end: 1px solid var(--lg-table-col-divider);
+  vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: normal;
+  font-size: var(--lg-table-font-size);
+  line-height: var(--lg-table-line-height);
+  transition:
+    background-color var(--lg-duration) var(--lg-ease),
+    box-shadow var(--lg-duration) var(--lg-ease);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor th {
+  background: var(--lg-table-header-surface);
+  color: var(--lg-table-text);
+  border-bottom-color: var(--lg-table-header-divider);
+  font-size: var(--lg-table-header-font-size);
+  font-weight: 600;
+  white-space: normal;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor .table-cell-wrapper {
+  min-width: 0;
+  padding: var(--lg-table-cell-padding-y) var(--lg-table-cell-padding-x);
+  font-size: var(--lg-table-font-size);
+  line-height: var(--lg-table-line-height);
+  white-space: break-spaces;
+}
+
+.markdown-source-view.mod-cm6
+  .cm-table-widget
+  .table-editor
+  tr
+  > :is(th, td):first-child
+  > .table-cell-wrapper {
+  padding-inline-start: calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra));
+}
+
+.markdown-source-view.mod-cm6
+  .cm-table-widget
+  .table-editor
+  tr
+  > :is(th, td):last-child
+  > .table-cell-wrapper {
+  padding-inline-end: calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra));
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th, td)[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:hover > td {
+  background: var(--lg-table-row-hover);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget.has-focus .table-editor :is(th, td):focus-within {
+  z-index: 2;
+  background: var(--lg-table-focus-surface);
+  box-shadow: inset 0 0 0 var(--lg-table-focus-width) var(--lg-table-focus-ring);
+}
+
+/*
+ * An active cell mounts a nested CM6 editor. Core sets its editor/scroller to
+ * overflow:auto even when the overflow delta is zero; the global scrollbar
+ * theme then paints a minimum-size thumb as an isolated gray block. The cell
+ * itself grows with content, so these nested scrollers need no scrollbars.
+ */
+.markdown-source-view.mod-cm6 .cm-table-widget .table-cell-wrapper :is(.cm-editor, .cm-scroller) {
+  overflow: visible;
+  scrollbar-width: none;
+}
+
+.markdown-source-view.mod-cm6
+  .cm-table-widget
+  .table-cell-wrapper
+  :is(.cm-editor, .cm-scroller)::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child > td {
+  border-bottom: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tr > :is(th, td):last-child {
+  border-inline-end: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor thead th:first-child {
+  border-start-start-radius: calc(var(--lg-table-radius) - 1px);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor thead th:last-child {
+  border-start-end-radius: calc(var(--lg-table-radius) - 1px);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child > td:first-child {
+  border-end-start-radius: calc(var(--lg-table-radius) - 1px);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child > td:last-child {
+  border-end-end-radius: calc(var(--lg-table-radius) - 1px);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget :is(
+  .table-row-btn,
+  .table-col-btn,
+  .table-row-drag-handle,
+  .table-col-drag-handle
+) {
+  border-radius: var(--lg-radius-xs);
+  color: var(--text-muted);
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget :is(.table-row-btn, .table-col-btn) {
+  opacity: 0.22;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget :is(.table-row-btn, .table-col-btn)::before {
+  content: "";
+  position: absolute;
+  pointer-events: auto;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-row-btn::before {
+  inset-block: -8px;
+  inset-inline: 0 24px;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget .table-col-btn::before {
+  inset-block: 0 24px;
+  inset-inline-start: -16px;
+  inset-inline-end: 0;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget :is(.table-row-btn, .table-col-btn):is(:hover, :focus-visible) {
+  color: var(--lg-accent);
+  opacity: 1;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget :is(
+  .table-row-btn,
+  .table-col-btn,
+  .table-row-drag-handle,
+  .table-col-drag-handle
+):focus-visible {
+  outline-offset: var(--lg-focus-offset-inset);
+}
+
+.markdown-rendered hr {
+  margin-block: 24px;
+  border-width: 1px 0 0;
+  border-color: var(--lg-doc-divider);
+}
+
+.markdown-rendered .footnotes {
+  margin-top: var(--lg-space-8);
+  padding-top: var(--lg-space-3);
+  border-top: 1px solid var(--lg-doc-divider);
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.markdown-rendered .task-list-item {
+  margin-block: var(--lg-space-1);
+}
+
+.markdown-rendered .task-list-item-checkbox {
+  width: 16px;
+  height: 16px;
+  margin-inline: 0 var(--lg-space-2);
+  border-radius: var(--lg-radius-xs);
+  transform: translateY(2px);
+}
+
+.markdown-rendered .task-list-item.is-checked {
+  color: var(--text-muted);
+  opacity: 0.72;
+}
+
+.markdown-rendered .MathJax:not([display="true"]) {
+  font-size: 1em;
+}
+
+.markdown-rendered .MathJax[display="true"] {
+  margin-block: var(--lg-space-6);
+  padding-block: var(--lg-space-1);
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: var(--text-normal);
+  font-size: 1.05em;
+}
+
+.markdown-source-view.mod-cm6 .cm-line {
+  line-height: var(--line-height-normal);
+}
+
+.internal-embed,
+.markdown-embed {
+  border-radius: var(--lg-radius-s);
+  background: var(--background-primary-alt);
+  padding: var(--lg-space-2) var(--lg-space-3);
+}
+

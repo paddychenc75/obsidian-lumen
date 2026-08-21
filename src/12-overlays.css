@@ -1,0 +1,285 @@
+/* --------------------------------------------------------------------------
+   10. Overlays — palette keeps glass; modal/menu stay solid
+   -------------------------------------------------------------------------- */
+
+.modal-bg,
+.prompt-overlay {
+  background: rgba(0, 0, 0, 0.46);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.modal,
+.menu,
+.popover,
+.suggestion-container,
+.vertical-tab-header,
+.tooltip,
+.notice {
+  background: var(--lg-overlay-solid);
+  border: 1px solid var(--lg-glass-border);
+  box-shadow: var(--lg-overlay-shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.modal {
+  border-radius: var(--lg-radius-l);
+  padding: var(--lg-space-2);
+  color: var(--lg-text-on-glass);
+}
+
+.modal.mod-settings {
+  background-color: var(--lg-sidebar-fill);
+  background-image: var(--lg-sidebar-material);
+  color: var(--lg-text-on-glass);
+}
+
+.modal.mod-settings .vertical-tab-header {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--lg-text-on-glass);
+}
+
+/*
+ * Obsidian 1.13 can open Settings in its own native window.  In that mode
+ * the modal fills the viewport, so the generic dialog radius/padding is
+ * intentionally replaced by an inset glass frame and one continuous paper.
+ */
+body.is-popout-window.is-popout-modal .titlebar {
+  background-color: var(--lg-sidebar-fill);
+  background-image: var(--lg-sidebar-material);
+  border-bottom: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+}
+
+body.is-popout-window.is-popout-modal .modal.mod-settings {
+  padding: var(--lg-space-2);
+  background-color: var(--lg-sidebar-fill);
+  background-image: var(--lg-sidebar-material);
+}
+
+body.is-popout-window.is-popout-modal .modal.mod-settings .modal-content.vertical-tabs-container {
+  gap: var(--lg-space-2);
+}
+
+body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-header {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content-container {
+  border-radius: var(--lg-radius-m);
+  overflow: clip;
+}
+
+body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content {
+  border-radius: var(--lg-radius-m);
+  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+}
+
+.modal.mod-settings .vertical-tab-content,
+.vertical-tabs-container .vertical-tab-content {
+  background: var(--lg-paper-solid);
+  border-radius: var(--lg-radius-m);
+  color: var(--text-normal);
+  border: 1px solid var(--lg-paper-border);
+  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+}
+
+.modal.mod-settings .setting-group .setting-items {
+  background: var(--setting-items-background);
+  border-color: var(--setting-items-border-color);
+}
+
+.modal.mod-settings .setting-group .setting-item:not(.setting-item-heading) {
+  padding: var(--setting-items-padding-y) var(--setting-items-padding-x);
+}
+
+.modal.mod-settings .setting-group .setting-item:not(.setting-item-heading)::before {
+  border-color: color-mix(in srgb, var(--text-normal) 10%, transparent);
+}
+
+.modal.mod-settings.mod-sidebar-layout .vertical-tab-content {
+  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+}
+
+.vertical-tab-header-group {
+  padding-block: var(--lg-space-2);
+}
+
+.modal.mod-settings .vertical-tab-header-group-items,
+.vertical-tab-header-group-items {
+  gap: var(--lg-item-gap);
+}
+
+.vertical-tab-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--lg-space-2);
+  box-sizing: border-box;
+  min-height: var(--lg-row-height);
+  border-radius: var(--lg-radius-s);
+  color: var(--lg-text-on-glass-2);
+  padding: var(--lg-space-1) var(--lg-space-2);
+}
+
+.vertical-tab-nav-item .vertical-tab-nav-item-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.vertical-tab-nav-item .vertical-tab-nav-item-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.modal.mod-settings .vertical-tab-nav-item.is-active,
+.vertical-tab-nav-item.is-active {
+  background: var(--lg-list-active-fill);
+  color: var(--lg-text-on-glass);
+  font-weight: 600;
+  border: 0;
+  box-shadow: none;
+}
+
+.modal.mod-settings .setting-item,
+.setting-item {
+  padding: var(--lg-space-4) 0;
+  gap: var(--lg-space-2) var(--lg-space-4);
+}
+
+.modal.mod-settings .setting-item.setting-item-heading,
+.setting-item.setting-item-heading {
+  padding-block: 0;
+}
+
+.prompt {
+  border-radius: var(--lg-radius-l);
+  padding: var(--lg-space-2);
+  color: var(--lg-text-on-glass);
+  box-shadow: var(--lg-overlay-shadow);
+}
+
+.prompt .prompt-input-container {
+  min-height: 44px;
+  height: 44px;
+}
+
+.prompt .prompt-input {
+  height: 44px;
+  min-height: 44px;
+  padding: 0 44px 0 var(--lg-space-4);
+  border: none;
+  border-radius: var(--lg-radius-s);
+  background: var(--lg-glass-hover);
+  color: var(--lg-text-on-glass);
+}
+
+.prompt-results {
+  padding: var(--lg-space-2) 0 0;
+}
+
+.suggestion-item,
+.prompt .suggestion-item {
+  min-height: 40px;
+  border-radius: var(--lg-radius-s);
+  color: var(--lg-text-on-glass);
+  padding: var(--lg-space-2) var(--lg-space-3);
+  margin-bottom: var(--lg-item-gap);
+}
+
+.prompt .suggestion-item:last-child {
+  margin-bottom: 0;
+}
+
+.suggestion-item.is-selected {
+  background: var(--lg-list-active-fill);
+  box-shadow: none;
+}
+
+.prompt-instructions {
+  gap: var(--lg-space-3);
+  padding: var(--lg-space-2) var(--lg-space-3);
+  border-top: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 10%, transparent);
+}
+
+.menu {
+  border-radius: var(--lg-radius-m);
+  padding: var(--lg-space-2);
+}
+
+.menu-item {
+  min-height: 36px;
+  border-radius: var(--lg-radius-s);
+  color: var(--lg-text-on-glass);
+}
+
+.menu-item:hover,
+.menu-item.selected {
+  background: var(--lg-glass-selected);
+}
+
+.menu-item:active {
+  background: color-mix(in srgb, var(--lg-glass-selected) 78%, var(--lg-text-on-glass) 6%);
+}
+
+.tooltip,
+.notice {
+  border-radius: var(--lg-radius-s);
+}
+
+.notice {
+  color: var(--text-normal);
+}
+
+.tooltip {
+  color: var(--lg-tooltip-text);
+  padding: var(--lg-space-1) var(--lg-space-2);
+  background: var(--lg-tooltip-bg);
+  border: 0;
+  border-radius: var(--lg-radius-s);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/*
+ * The in-note find bar is opaque `--background-primary` by default, which butts
+ * a hard rectangle against the top of the page. It behaves like a floating
+ * panel, so it gets the overlay material and a shadow to sit above the text.
+ */
+.document-search-container {
+  border: 1px solid var(--lg-paper-border);
+  border-radius: var(--lg-radius-s);
+  background-color: var(--lg-overlay-solid);
+  box-shadow: var(--lg-overlay-shadow);
+}
+
+.document-search-count {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Every match takes the reader's own highlight color; the one the cursor is on
+ * takes the accent, so paging through results is legible without a count.
+ */
+.obsidian-search-match-highlight {
+  border-radius: var(--lg-radius-xs);
+  background-color: var(--lg-mark-bg);
+}
+
+.cm-searchMatch-selected .obsidian-search-match-highlight,
+.obsidian-search-match-highlight.is-flashing {
+  background-color: color-mix(in srgb, var(--lg-accent) 42%, transparent);
+}
+

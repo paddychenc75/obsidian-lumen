@@ -1,0 +1,68 @@
+/* --------------------------------------------------------------------------
+   2. Environment (no fixed attachment, two layers max)
+   -------------------------------------------------------------------------- */
+
+body {
+  background-color: var(--lg-wallpaper-fallback);
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * macOS draws its window controls over our panels at a fixed inset — measured at
+ * x 14..74, y 12..25 — and will not move them for us. A frame wider than that
+ * inset leaves the panel edge only a few pixels from buttons it cannot avoid, so
+ * cap the frame here instead of shaving the top edge alone and going asymmetric.
+ * The seam between panels is unaffected.
+ *
+ * The flush opt-out is excluded by selector rather than left to the cascade:
+ * this selector outweighs `body.lumen-chrome-flush`, so without it the platform
+ * cap would quietly hold a 4px frame against a reader who asked for none.
+ */
+body.mod-macos.is-hidden-frameless:not(.is-popout-window):not(.lumen-chrome-flush) {
+  --lg-chrome-frame: var(--lg-space-1);
+}
+
+body * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--lg-scrollbar-thumb) transparent;
+}
+
+body *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+body *::-webkit-scrollbar-track,
+body *::-webkit-scrollbar-track-piece,
+body *::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+body *::-webkit-scrollbar-thumb {
+  min-width: 40px;
+  min-height: 40px;
+  border: 3px solid transparent;
+  border-radius: var(--lg-radius-pill);
+  background-color: var(--lg-scrollbar-thumb);
+  background-clip: padding-box;
+}
+
+body *::-webkit-scrollbar-thumb:hover {
+  background-color: var(--lg-scrollbar-thumb-hover);
+}
+
+.app-container {
+  background-color: var(--lg-wallpaper-fallback);
+  background-image: var(--lg-wallpaper);
+  background-size: cover;
+  background-position: center;
+}
+
+.horizontal-main-container,
+.workspace,
+.workspace-split,
+.titlebar,
+.titlebar-inner {
+  background-color: transparent;
+}
+

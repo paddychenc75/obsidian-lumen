@@ -4,6 +4,58 @@ All notable changes to Lumen Glass are documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## [1.0.7] - 2026-08-21
+
+### Added
+
+- Added a Style Settings control for the Claudian panel, defaulting to the themed treatment. The gate is applied at build time and verified by `npm run check`, so a rule cannot escape it and the adaptation still applies for readers who do not have Style Settings.
+- Styled the properties block: separated rows, a wider label column, row hover and focus, and a rule closing it off from the note body. None of Obsidian's 46 metadata variables had been mapped.
+- Styled search: file and match rows now differ in weight, matches take the reader's highlight color, and the in-note find bar reads as a floating panel instead of an opaque rectangle.
+- Added print styles, a monochrome code palette for paper, and page-break rules for code blocks, tables and callouts.
+- Set spacing between Han characters and adjacent Latin or digits in notes, and applied `accent-color` so native controls follow the theme rather than the OS.
+
+### Fixed
+
+- Replaced the code syntax palette. Obsidian's default derives from the interface colors, where all nine tokens missed 4.5:1 against this theme's light code surface and function names sat at 1.9:1; every token now clears 4.5:1 in both appearances.
+- Declared the chrome separations instead of leaving them to collide: one 4px inset on every panel rendered as 8px between the sidebars and the note, 4px between the tab bar and the note, and 4px at the window edge. The seam is now 12px throughout and the frame 8px, and the seam clears the 10px panel radius so the channel no longer pinches where two rounded corners face each other.
+- Capped the frame at 4px on frameless macOS windows, where the system paints its controls over our panels at a fixed inset — measured at x 14..74, y 12..25 — and an 8px frame left the panel edge 4px from buttons it cannot move.
+- Stopped the ribbon divider from cutting through the window controls. Their cluster reaches x 74, past the ribbon's inner edge, so the hairline ran between the yellow and green buttons and split a group the system draws as one; it now begins below the control band and the ribbon and sidebar read as a single surface up there.
+- Brought the leading icon in sidebar tree rows back inside the row. Rows hang that icon 20px to the left of their text box so that collapsible and plain rows still share one label column, but core gives several views 8px of leading padding instead of the 24px it reserves for the hang, so the icon hung into the panel's own edge margin — 4px from the panel edge in the properties list, about 0 in the link panes, and outside the row's hover shape while the trailing count sat comfortably at 24px. All five panes now read 12px to the highlight, 16px to the icon, 36px to the text and 20px to the count.
+- Centred the property icons against their labels in the note's properties block. The key cell aligns its children to the top so a wrapped value keeps its label on the first line, which makes the icon's own height decide where it lands — Obsidian sizes it for its own 28px field while our form floor gives the field 36px, so the icon sat half the difference above the label on all ten rows. The icon now follows `--lg-control-size`, and both shrink together in narrow windows.
+- Fixed PDF export from dark mode, which produced black text on a near-black page because Obsidian resets the note's text color for print but not the theme's surfaces.
+- Removed the accent rail Obsidian draws on embeds, which duplicated the blockquote's rail whenever an embed was quoted.
+- Aligned `--code-radius` with the radius the code block rule actually applied.
+
+### Changed
+
+- Measured the note width in characters of the reader's body text rather than in rem, and shortened it from 46rem to 40em. The old value was a constant 736px regardless of font size, so the line ran 43 Han or 86 Latin characters at the default and swung from 52 down to 35 Han as the reader moved the size from 14px to 21px; it now holds about 37 Han or 77 Latin at any size, with paragraph spacing and leading following the same unit.
+- Raised body leading from 1.66 to 1.7 and muted list markers to `--text-faint`.
+- Redrew the blockquote rule at 3px and raised it from 56% to 78% opacity in light, 68% to 84% in dark, tightening the nesting ladder to 54% and 38% at the second and third levels. A rule lighter than the text's own stems read as an artifact rather than as structure, and a ladder ending at a quarter made a nested quote read as a broken line. Both ends are now square in both views: live preview draws the rule per line, so a cap could only land on the first or last line currently in the DOM, and CodeMirror keeps only the viewport — the rounded cap appeared wherever scrolling cut the quote off and travelled with the scroll.
+- Stacked the glass and overlay shadows into a tight contact layer plus a wide ambient one, holding total darkness near the previous single-blur value.
+- Set comments in italic and grouped comments, operators and punctuation into one neutral family, leaving six hues to carry meaning.
+- Gave paragraphs and list items `text-wrap: pretty`, and mapped the drag ghost onto the tooltip material instead of its hardcoded black.
+
+## [1.0.6] - 2026-08-21
+
+### Added
+
+- Split the stylesheet into `src/*.css` modules built into `theme.css` by `npm run build`; `npm run check` fails when the two diverge.
+- Added a validation guard that fails the build if a plugin adaptation rule escapes its view scope, and a warning for border radii outside the token scale.
+
+### Fixed
+
+- Made the Claudian permission toggle distinguishable: checked and unchecked tracks now clear 3:1 in both appearances, up from 1.08:1 and 1.14:1.
+- Filled in the dark-mode call-to-action and glass shadow tokens, which previously inherited light-tuned values.
+- Widened the focus ring under `prefers-contrast: more`, which had no effect because a bare `:focus-visible` rule lost on specificity to every component's own focus selector.
+- Kept link underlines on both fragments when a link wraps across lines.
+- Restored heading hierarchy at h5 and h6, which had collapsed into the body size.
+
+### Changed
+
+- Sized the heading scale in `em` so it tracks the reader's body size setting, with per-level optical tracking and balanced wrapping.
+- Consolidated focus rings, durations, and press feedback into single tokens; added a press compression to primary controls.
+- Gave the Claudian transcript one shape family and its own reading size, and reduced its surface fills from five levels to three.
+
 ## [1.0.5] - 2026-08-21
 
 ### Changed
@@ -56,6 +108,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 - Style Settings controls for wallpaper, glass weight, contrast, transparency, and accent color.
 - Automated repository validation and tag-based GitHub releases.
 
+[1.0.6]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.6
 [1.0.5]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.5
 [1.0.4]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.4
 [1.0.3]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.3

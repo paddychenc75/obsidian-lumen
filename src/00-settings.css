@@ -1,0 +1,127 @@
+/* @settings
+
+name: Lumen Glass
+id: lumen
+settings:
+    -
+        id: lumen-about
+        title: Lumen Glass
+        description: A translucent interface with a clear, focused reading surface.
+        type: heading
+        level: 1
+    -
+        id: lumen-env-h
+        title: Environment
+        type: heading
+        level: 2
+    -
+        id: lumen-ambient-bleed
+        title: Ambient color bleed
+        description: Applies the built-in backdrop colors to translucent surfaces without affecting notes.
+        type: variable-number-slider
+        default: 36
+        min: 0
+        max: 80
+        step: 1
+        format: "%"
+    -
+        id: lumen-glass-h
+        title: Glass
+        type: heading
+        level: 2
+    -
+        id: lumen-glass-weight
+        title: Glass density
+        type: class-select
+        allowEmpty: false
+        default: lumen-glass-regular
+        options:
+            -
+                label: Thin
+                value: lumen-glass-thin
+            -
+                label: Regular
+                value: lumen-glass-regular
+            -
+                label: Thick
+                value: lumen-glass-thick
+    -
+        id: lumen-chrome-flush
+        title: Flush interface
+        type: class-toggle
+        default: false
+    -
+        id: lumen-hide-specular
+        title: Disable specular highlights
+        type: class-toggle
+        default: false
+    -
+        id: lumen-paper-h
+        title: Reading surface
+        type: heading
+        level: 2
+    -
+        id: lumen-file-line-width
+        title: Note width
+        description: Measured in characters of your body text, so the line holds its length when you change the font size. The default 40 gives about 37 Han characters or 77 Latin ones per line; it also shrinks with the window to prevent horizontal scrolling.
+        type: variable-number-slider
+        default: 40
+        min: 28
+        max: 70
+        step: 1
+        format: em
+    -
+        id: lumen-editor-contrast
+        title: High-contrast text
+        type: class-toggle
+        default: false
+    -
+        id: lumen-paper-neutral
+        title: Neutral surface
+        type: class-toggle
+        default: false
+    -
+        id: lumen-plugins-h
+        title: Plugins
+        type: heading
+        level: 2
+    -
+        id: lumen-claudian-style
+        title: Claudian panel
+        description: Matches the Claudian chat panel to the theme. Choosing Plugin default hands the panel back untouched. Either way this does nothing unless Claudian is installed.
+        type: class-select
+        allowEmpty: false
+        default: lumen-claudian-themed
+        options:
+            -
+                label: Themed
+                value: lumen-claudian-themed
+            -
+                label: Plugin default
+                value: lumen-claudian-plain
+    -
+        id: lumen-a11y-h
+        title: Accessibility and performance
+        type: heading
+        level: 2
+    -
+        id: lumen-reduce-transparency
+        title: Reduce transparency
+        type: class-toggle
+        default: false
+    -
+        id: lumen-increase-contrast
+        title: Increase contrast
+        type: class-toggle
+        default: false
+    -
+        id: lumen-accent
+        title: Accent color
+        type: variable-themed-color
+        opacity: false
+        format: hex
+        default-light: '#0A84FF'
+        default-dark: '#0A84FF'
+
+*/
+

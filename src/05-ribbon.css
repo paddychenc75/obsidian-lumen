@@ -1,0 +1,71 @@
+/* --------------------------------------------------------------------------
+   4. Ribbon
+   -------------------------------------------------------------------------- */
+
+.workspace-ribbon.side-dock-ribbon.mod-left {
+  width: 48px;
+  /* Flush to the left split on its inner edge, so no seam there. */
+  margin: var(--lg-chrome-frame) 0 var(--lg-chrome-frame) var(--lg-chrome-frame);
+  border-inline-end: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 9%, transparent);
+  border-radius: var(--lg-radius-m) 0 0 var(--lg-radius-m);
+  box-shadow: none;
+  overflow: hidden;
+  position: relative;
+}
+
+/*
+ * The window controls end at x 74, past this rail's inner edge, so the divider
+ * would run between the yellow and green buttons and split a cluster the OS
+ * draws as one. Drop the divider across the control band and let the rail and
+ * the sidebar read as a single surface up there; resume it below.
+ */
+body.mod-macos.is-hidden-frameless:not(.is-popout-window)
+  .workspace-ribbon.side-dock-ribbon.mod-left {
+  padding-top: 36px;
+  border-inline-end-color: transparent;
+}
+
+body.mod-macos.is-hidden-frameless:not(.is-popout-window)
+  .workspace-ribbon.side-dock-ribbon.mod-left::after {
+  content: "";
+  position: absolute;
+  inset: 32px 0 0 auto;
+  width: 1px;
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 9%, transparent);
+  pointer-events: none;
+}
+
+.workspace-ribbon.side-dock-ribbon::before {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.workspace-ribbon .clickable-icon,
+.side-dock-ribbon-action {
+  width: var(--lg-control-size);
+  height: var(--lg-control-size);
+  color: var(--lg-text-on-glass);
+  border-radius: var(--lg-radius-s);
+}
+
+.workspace-ribbon .clickable-icon:hover,
+.side-dock-ribbon-action:hover {
+  background-color: var(--lg-glass-hover);
+}
+
+.workspace-ribbon .clickable-icon:active,
+.side-dock-ribbon-action:active {
+  background-color: var(--lg-list-active-fill);
+}
+
+.workspace-ribbon .clickable-icon.is-active,
+.side-dock-ribbon-action.is-active {
+  background-color: var(--lg-list-active-fill);
+  box-shadow: none;
+}
+
+.sidebar-toggle-button {
+  background: transparent;
+}
+

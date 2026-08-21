@@ -1,0 +1,179 @@
+/* --------------------------------------------------------------------------
+   11. Controls
+   -------------------------------------------------------------------------- */
+
+/*
+ * Covers the controls Obsidian hands straight to the platform — native
+ * checkboxes, radios and range inputs inside Settings and inside plugin panes —
+ * which would otherwise render in the OS accent and read as somebody else's blue.
+ */
+body {
+  accent-color: var(--lg-accent);
+}
+
+button.mod-cta {
+  min-height: var(--lg-control-size);
+  background-color: var(--lg-cta);
+  color: #fff;
+  border-radius: var(--lg-radius-s);
+}
+
+button.mod-cta:hover {
+  background-color: var(--lg-cta-hover);
+}
+
+button.mod-cta:active {
+  background-color: var(--lg-cta-active);
+}
+
+/*
+ * A colour change alone reads as a state, not as a press. The compression is
+ * what makes a control feel physical, and it is the one cue that survives on
+ * a touch screen where the cursor never hovers.
+ */
+button.mod-cta,
+.clickable-icon,
+.side-dock-ribbon-action {
+  transition:
+    background-color var(--lg-duration) var(--lg-ease),
+    border-color var(--lg-duration) var(--lg-ease),
+    color var(--lg-duration) var(--lg-ease),
+    transform var(--lg-duration-fast) var(--lg-ease);
+}
+
+button.mod-cta:active,
+.clickable-icon:active,
+.side-dock-ribbon-action:active {
+  transform: scale(var(--lg-press-scale));
+}
+
+button:not(.mod-cta):not(.clickable-icon),
+.dropdown,
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+  border-radius: var(--lg-radius-s);
+  min-height: var(--lg-control-size);
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
+  background-color: color-mix(in srgb, var(--lg-sidebar-fill) 32%, var(--lg-paper-solid));
+  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 48%, var(--lg-paper-solid));
+  color: var(--text-normal);
+  box-shadow: 0 1px 1px color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover {
+  background-color: color-mix(in srgb, var(--lg-sidebar-fill) 48%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 58%, var(--lg-paper-solid));
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):active {
+  background-color: color-mix(in srgb, var(--lg-sidebar-fill) 62%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 62%, var(--lg-paper-solid));
+  box-shadow: none;
+}
+
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 8%, var(--lg-paper-solid));
+  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 38%, var(--lg-paper-solid));
+  color: var(--text-normal);
+  box-shadow: 0 1px 1px color-mix(in srgb, #000 24%, transparent);
+}
+
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 12%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 48%, var(--lg-paper-solid));
+}
+
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):active {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 16%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 52%, var(--lg-paper-solid));
+  box-shadow: none;
+}
+
+body.theme-light button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):disabled,
+body.theme-dark button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):disabled {
+  background-color: color-mix(in srgb, var(--lg-text-on-glass) 5%, var(--lg-paper-solid));
+  border-color: color-mix(in srgb, var(--lg-text-on-glass) 28%, var(--lg-paper-solid));
+  color: var(--text-muted);
+  opacity: 0.72;
+  box-shadow: none;
+}
+
+textarea {
+  border-radius: var(--lg-radius-m);
+}
+
+.checkbox-container {
+  border-radius: var(--lg-radius-pill);
+}
+
+.checkbox-container.is-enabled {
+  background-color: var(--lg-accent);
+}
+
+.dropdown:active,
+.clickable-icon:active {
+  background-color: var(--lg-list-active-fill);
+}
+
+.clickable-icon:focus-visible,
+.nav-file-title:focus-visible,
+.nav-folder-title:focus-visible,
+.tree-item-self:focus-visible,
+.workspace-tab-header:focus-visible,
+button:focus-visible,
+.suggestion-item:focus-visible,
+.menu-item:focus-visible,
+.vertical-tab-nav-item:focus-visible,
+.markdown-rendered a:focus-visible,
+.checkbox-container:focus-visible,
+.task-list-item-checkbox:focus-visible,
+.dropdown:focus-visible,
+.table-row-btn:focus-visible,
+.table-col-btn:focus-visible,
+.table-row-drag-handle:focus-visible,
+.table-col-drag-handle:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset);
+  box-shadow: none;
+}
+
+.workspace-split.mod-root .workspace-tab-header:focus-visible {
+  outline: none;
+}
+
+.workspace-split.mod-root .workspace-tab-header:focus-visible .workspace-tab-header-inner {
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset-inset);
+}
+
+:is(button, input, textarea, select, .dropdown, .checkbox-container, .clickable-icon):disabled,
+:is(button, input, textarea, select, .dropdown, .checkbox-container, .clickable-icon)[aria-disabled="true"],
+:is(button, input, textarea, select, .dropdown, .checkbox-container, .clickable-icon).is-disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
+body :is(
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select,
+  .dropdown
+):focus-visible {
+  outline: none;
+  border-color: var(--lg-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--lg-accent) 68%, transparent);
+}
+

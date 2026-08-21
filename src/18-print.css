@@ -1,0 +1,75 @@
+/* --------------------------------------------------------------------------
+   16. Print
+   -------------------------------------------------------------------------- */
+
+@media print {
+  /*
+   * Obsidian already hides the interface and resets the note's text color to
+   * black, but it leaves the theme's own surfaces alone — and it prints
+   * backgrounds exactly, by way of `print-color-adjust: exact`. In dark mode
+   * that pairing puts black text on near-black paper. The printed page is
+   * therefore forced to a light palette whatever is on screen, since a PDF has
+   * no appearance to follow.
+   *
+   * Syntax color collapses to one ink rather than being restated in light
+   * values. Printed code is conventionally monochrome, it survives being
+   * photocopied, and it does not spend color on a page nobody can hover.
+   */
+  body {
+    --lg-paper-solid: #ffffff;
+    --lg-paper-border: rgba(0, 0, 0, 0.18);
+    --lg-doc-divider: rgba(0, 0, 0, 0.2);
+    --lg-mark-bg: #ffefa8;
+    --code-background: #f4f4f6;
+    --code-normal: #1c1c1e;
+    --lg-inline-code-bg: #f1f1f4;
+    --lg-inline-code-text: #1c1c1e;
+    --lg-inline-code-border: rgba(0, 0, 0, 0.2);
+    --lg-syn-keyword: #1c1c1e;
+    --lg-syn-tag: #1c1c1e;
+    --lg-syn-string: #1c1c1e;
+    --lg-syn-function: #1c1c1e;
+    --lg-syn-property: #1c1c1e;
+    --lg-syn-value: #1c1c1e;
+    --lg-syn-important: #1c1c1e;
+    --lg-syn-operator: #1c1c1e;
+    --lg-syn-punctuation: #45454a;
+    --lg-syn-comment: #5b6570;
+  }
+
+  /*
+   * Glass is a screen effect. On paper a blur costs render time and resolves to
+   * a muddy gray, and a drop shadow prints as a smudge along the edge.
+   */
+  .print,
+  .print .markdown-preview-view {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+
+  /*
+   * The reading measure exists to keep a line scannable on a wide monitor. A
+   * printed page is already narrower than that, so holding the measure would
+   * just indent the text and waste the sheet.
+   */
+  .print .markdown-preview-sizer {
+    max-width: none;
+    padding-inline: 0;
+    padding-bottom: 0;
+  }
+
+  .print .markdown-preview-view :is(h1, h2, h3, h4, h5, h6) {
+    break-after: avoid;
+  }
+
+  .print .markdown-preview-view :is(pre, blockquote, table, .callout, .markdown-embed) {
+    break-inside: avoid;
+  }
+
+  .print .markdown-preview-view :is(p, li) {
+    orphans: 2;
+    widows: 2;
+  }
+}

@@ -1,0 +1,342 @@
+/* --------------------------------------------------------------------------
+   0. Tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  --lumen-accent: #0a84ff;
+  --lumen-ambient-bleed: 30%;
+  --lumen-file-line-width: 40em;
+
+  --lg-accent: var(--lumen-accent);
+  --lg-accent-hover: color-mix(in srgb, var(--lg-accent) 78%, #000);
+  --lg-accent-1: color-mix(in srgb, var(--lg-accent) 68%, #fff);
+  --lg-accent-2: color-mix(in srgb, var(--lg-accent) 62%, #000);
+
+  /*
+   * One focus language for the whole theme. Every :focus-visible rule composes
+   * these, so `prefers-contrast: more` can widen the ring by overriding a
+   * token instead of fighting per-component selector specificity.
+   */
+  --lg-focus-color: color-mix(in srgb, var(--lg-accent) 85%, transparent);
+  --lg-focus-width: 2px;
+  --lg-focus-ring: var(--lg-focus-width) solid var(--lg-focus-color);
+  --lg-focus-offset: 2px;
+  /* Rows and cells whose parent clips overflow have to draw the ring inside. */
+  --lg-focus-offset-inset: -2px;
+
+  --lg-glass-blur: 24px;
+  --lg-glass-saturate: 112%;
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) var(--lumen-ambient-bleed), rgba(255, 255, 255, 0.22));
+  --lg-glass-border: rgba(255, 255, 255, 0.22);
+  --lg-glass-luma: rgba(255, 255, 255, 0.28);
+  --lg-glass-hover: rgba(0, 0, 0, 0.07);
+  --lg-glass-selected: rgba(0, 0, 0, 0.16);
+  --lg-sidebar-fill: #dfe9ef;
+  --lg-sidebar-material:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--lg-sidebar-fill) 88%, transparent) 0%,
+      color-mix(in srgb, var(--lg-sidebar-fill) 84%, transparent) 24%,
+      color-mix(in srgb, var(--lg-sidebar-fill) 88%, transparent) 100%
+    );
+  --lg-state-hover: rgba(0, 0, 0, 0.045);
+  --lg-list-active-fill: rgba(0, 0, 0, 0.06);
+  --lg-tab-active-fill: rgba(18, 24, 32, 0.1);
+  --lg-glass-solid: #e8eef2;
+  --lg-overlay-solid: #f7f7f8;
+  --lg-glass-highlight: radial-gradient(120% 70% at 28% 16%, rgba(255, 255, 255, 0.22), transparent 46%);
+  /*
+   * Shadows are stacked rather than single-blur. Real light casts a tight dark
+   * contact shadow where an object nearly touches the surface and a wide faint
+   * one from the room; one blur radius can only be one of those, so it either
+   * looks pasted down or lost in fog. Total darkness is held near the old
+   * single-stop value — the stack buys edge definition, not weight.
+   */
+  --lg-glass-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 14px rgba(0, 0, 0, 0.055);
+  --lg-overlay-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07),
+    0 20px 48px rgba(0, 0, 0, 0.1);
+  --lg-status-fill: rgba(255, 255, 255, 0.16);
+  --lg-status-luma: rgba(255, 255, 255, 0.14);
+  --lg-tooltip-bg: rgba(28, 28, 30, 0.88);
+  --lg-tooltip-text: #ffffff;
+  --lg-scrollbar-thumb: rgba(60, 60, 67, 0.28);
+  --lg-scrollbar-thumb-hover: rgba(60, 60, 67, 0.46);
+
+  --lg-paper-solid: #fbfbfd;
+  --lg-paper-border: rgba(0, 0, 0, 0.06);
+  --lg-paper-link: #0066cc;
+  --lg-paper-link-hover: #004f9e;
+
+  --lg-text-on-glass: #1c1c1e;
+  --lg-text-on-glass-2: rgba(28, 28, 30, 0.76);
+
+  --lg-wallpaper-fallback: #7fa4b8;
+  --lg-wallpaper:
+    radial-gradient(70% 55% at 14% 0%, #e8f2f8 0%, transparent 62%),
+    linear-gradient(168deg, #6a97b4 0%, #d4b888 100%);
+
+  --lg-space-1: 4px;
+  --lg-space-2: 8px;
+  --lg-space-3: 12px;
+  --lg-space-4: 16px;
+  --lg-space-5: 20px;
+  --lg-space-6: 24px;
+  --lg-space-8: 32px;
+  --lg-space-10: 40px;
+
+  /*
+   * Radius hierarchy: controls → surfaces → floating chrome → dialogs.
+   * Keep desktop shells restrained; reserve pill geometry for true capsules.
+   */
+  --lg-radius-xs: 3px;
+  --lg-radius-s: 6px;
+  --lg-radius-m: 10px;
+  --lg-radius-l: 14px;
+  --lg-radius-xl: 18px;
+  --lg-radius-pill: 999px;
+  /*
+   * Chrome separations are declared, not inferred from colliding margins.
+   * --lg-chrome-gap must stay above --lg-radius-m: where two rounded panels
+   * meet, the channel widens at the corners, so a seam narrower than the radius
+   * reads as pinched along the straight run. Panels sharing a seam each carry
+   * half of it; panels meeting the window edge carry --lg-chrome-frame.
+   *
+   * The halving stays at the use site rather than living in a derived token:
+   * these are declared on :root, so a derived value would be substituted here
+   * and inherited frozen, ignoring any later override of the gap further down
+   * the tree (which is exactly what .lumen-chrome-flush does).
+   */
+  --lg-chrome-frame: var(--lg-space-2);
+  --lg-chrome-gap: var(--lg-space-3);
+  --lg-item-gap: var(--lg-space-1);
+
+  --lg-control-size: 36px;
+  --lg-control-compact: 28px;
+  --lg-row-height: 36px;
+  --lg-status-height: 32px;
+
+  /*
+   * Three durations, scaled to travel distance: state changes on something
+   * already on screen, elements that move, and surfaces that enter or leave.
+   */
+  --lg-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lg-duration-fast: 120ms;
+  --lg-duration: 180ms;
+  --lg-press-scale: 0.97;
+
+  --lg-table-radius: var(--lg-radius-s);
+  --lg-table-font-size: 14px;
+  --lg-table-header-font-size: 14px;
+  --lg-table-line-height: 1.47;
+  --lg-table-cell-padding-y: 8px;
+  --lg-table-cell-padding-x: 11px;
+  --lg-table-edge-padding-extra: 3px;
+  --lg-table-focus-width: 1px;
+  --lg-table-scrollbar-size: 8px;
+
+  --lg-ok: #248a3d;
+  --lg-warn: #b25000;
+  --lg-danger: #d70015;
+  --lg-info: #0071a4;
+  --lg-cta: #0068d9;
+  --lg-cta-hover: #0058b8;
+  --lg-cta-active: #004b9f;
+  /*
+   * A quote rule is structure, so it has to read as drawn rather than as a
+   * rendering artifact. The ladder also has to stay legible at the second and
+   * third level: fading it to a quarter made nesting read as a broken line
+   * instead of a deeper one.
+   */
+  --lg-quote-line: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 18%, var(--text-muted)) 80%,
+    transparent
+  );
+  --lg-quote-line-nested: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 10%, var(--text-muted)) 56%,
+    transparent
+  );
+  --lg-quote-line-deep: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 6%, var(--text-muted)) 40%,
+    transparent
+  );
+
+  --font-interface-theme: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --font-text-theme: var(--font-interface-theme);
+  --font-monospace-theme: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.theme-light {
+  --lg-accent: var(--lumen-accent);
+  --lg-accent-hover: color-mix(in srgb, var(--lg-accent) 78%, #000);
+  --lg-accent-1: color-mix(in srgb, var(--lg-accent) 68%, #fff);
+  --lg-accent-2: color-mix(in srgb, var(--lg-accent) 62%, #000);
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) var(--lumen-ambient-bleed), rgba(255, 255, 255, 0.28));
+  --lg-glass-border: rgba(255, 255, 255, 0.22);
+  --lg-glass-luma: rgba(255, 255, 255, 0.32);
+  --lg-glass-hover: rgba(0, 0, 0, 0.07);
+  --lg-glass-selected: rgba(0, 0, 0, 0.16);
+  --lg-sidebar-fill: #dfe9ef;
+  --lg-state-hover: rgba(0, 0, 0, 0.045);
+  --lg-list-active-fill: rgba(0, 0, 0, 0.08);
+  --lg-tab-active-fill: rgba(18, 24, 32, 0.1);
+  --lg-glass-solid: #e8eef2;
+  --lg-overlay-solid: #f7f7f8;
+  --lg-overlay-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07),
+    0 20px 48px rgba(0, 0, 0, 0.1);
+  --lg-scrollbar-thumb: rgba(60, 60, 67, 0.28);
+  --lg-scrollbar-thumb-hover: rgba(60, 60, 67, 0.46);
+  --lg-status-fill: rgba(255, 255, 255, 0.16);
+  --lg-status-luma: rgba(255, 255, 255, 0.14);
+  --lg-paper-solid: #fbfbfd;
+  --lg-paper-border: rgba(0, 0, 0, 0.06);
+  --lg-paper-link: #0066cc;
+  --lg-paper-link-hover: #004f9e;
+  --lg-text-on-glass: #1c1c1e;
+  --lg-text-on-glass-2: rgba(28, 28, 30, 0.68);
+  --lg-wallpaper-fallback: #7fa4b8;
+  --lg-wallpaper:
+    radial-gradient(70% 55% at 14% 0%, #e8f2f8 0%, transparent 62%),
+    linear-gradient(168deg, #6a97b4 0%, #d4b888 100%);
+  --lg-ok: #248a3d;
+  --lg-warn: #b25000;
+  --lg-danger: #d70015;
+  --lg-info: #0071a4;
+  --lg-table-surface: var(--lg-paper-solid);
+  --lg-table-header-surface: color-mix(in srgb, var(--lg-table-surface) 97%, #3c3c43);
+  --lg-table-text: var(--text-normal);
+  --lg-table-outline: rgba(60, 60, 67, 0.2);
+  --lg-table-row-divider: rgba(60, 60, 67, 0.13);
+  --lg-table-col-divider: rgba(60, 60, 67, 0.095);
+  --lg-table-header-divider: rgba(60, 60, 67, 0.19);
+  --lg-table-row-hover: rgba(60, 60, 67, 0.034);
+  --lg-table-focus-surface: color-mix(in srgb, var(--lg-accent) 5%, var(--lg-table-surface));
+  --lg-table-focus-ring: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 26%, var(--text-muted)) 72%,
+    transparent
+  );
+  --lg-table-control-surface: #f8f8fa;
+  --lg-quote-line: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 16%, var(--text-muted)) 78%,
+    transparent
+  );
+  --lg-quote-line-nested: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 8%, var(--text-muted)) 54%,
+    transparent
+  );
+  --lg-quote-line-deep: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 4%, var(--text-muted)) 38%,
+    transparent
+  );
+}
+
+.theme-dark {
+  --lg-accent: var(--lumen-accent);
+  --lg-accent-hover: color-mix(in srgb, var(--lg-accent) 72%, #fff);
+  --lg-accent-1: color-mix(in srgb, var(--lg-accent) 55%, #fff);
+  --lg-accent-2: color-mix(in srgb, var(--lg-accent) 70%, #000);
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) var(--lumen-ambient-bleed), rgba(84, 84, 84, 0.22));
+  --lg-glass-border: rgba(255, 255, 255, 0.16);
+  --lg-glass-luma: rgba(255, 255, 255, 0.06);
+  --lg-glass-hover: rgba(255, 255, 255, 0.08);
+  --lg-glass-selected: rgba(255, 255, 255, 0.16);
+  --lg-sidebar-fill: #2b2742;
+  --lg-sidebar-material:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--lg-sidebar-fill) 88%, transparent) 0%,
+      color-mix(in srgb, var(--lg-sidebar-fill) 84%, transparent) 24%,
+      color-mix(in srgb, var(--lg-sidebar-fill) 88%, transparent) 100%
+    );
+  --lg-state-hover: rgba(255, 255, 255, 0.055);
+  --lg-list-active-fill: rgba(255, 255, 255, 0.12);
+  --lg-tab-active-fill: rgba(0, 0, 0, 0.28);
+  --lg-glass-solid: #1c1a2a;
+  --lg-overlay-solid: #2c2c2e;
+  --lg-overlay-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.26), 0 8px 22px rgba(0, 0, 0, 0.24),
+    0 24px 56px rgba(0, 0, 0, 0.3);
+  /*
+   * The light recipe is a strong top highlight plus a faint cast shadow. In
+   * dark that inverts: a soft edge highlight for the glass rim, and a much
+   * deeper cast shadow, because 7% black over a dark canvas renders as nothing.
+   */
+  --lg-glass-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.14), 0 1px 2px rgba(0, 0, 0, 0.24),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+  /*
+   * The light CTA is tuned to carry white text on a white page, which leaves
+   * it darker than it needs to be here. Raising it toward the accent lifts it
+   * off the dark canvas — 3.7:1 against glass, up from 3.2:1 — while the label
+   * still clears 4.5:1. There is no headroom above this: full accent would
+   * drop white text to 3.65:1.
+   *
+   * Hover and press keep darkening, as they do in light, so the interaction
+   * reads the same in both appearances.
+   */
+  --lg-cta: color-mix(in srgb, var(--lg-accent) 88%, #000);
+  --lg-cta-hover: color-mix(in srgb, var(--lg-accent) 80%, #000);
+  --lg-cta-active: color-mix(in srgb, var(--lg-accent) 72%, #000);
+  --lg-glass-highlight: radial-gradient(120% 70% at 28% 16%, rgba(255, 255, 255, 0.14), transparent 46%);
+  --lg-status-fill: rgba(28, 26, 42, 0.28);
+  --lg-status-luma: rgba(255, 255, 255, 0.04);
+  --lg-tooltip-bg: rgba(14, 13, 20, 0.92);
+  --lg-tooltip-text: #ffffff;
+  --lg-scrollbar-thumb: rgba(235, 235, 245, 0.28);
+  --lg-scrollbar-thumb-hover: rgba(235, 235, 245, 0.46);
+  --lg-paper-solid: #1c1c1e;
+  --lg-paper-border: rgba(255, 255, 255, 0.10);
+  --lg-paper-link: #2997ff;
+  --lg-paper-link-hover: #64b5ff;
+  --lg-text-on-glass: #f5f5f7;
+  --lg-text-on-glass-2: rgba(245, 245, 247, 0.72);
+  --lg-wallpaper-fallback: #121028;
+  --lg-wallpaper:
+    radial-gradient(70% 50% at 16% 0%, #6a4fa8 0%, transparent 58%),
+    linear-gradient(165deg, #2a184c 0%, #0c122e 100%);
+  --lg-ok: #30d158;
+  --lg-warn: #ff9f0a;
+  --lg-danger: #ff453a;
+  --lg-info: #64d2ff;
+  --lg-table-surface: var(--lg-paper-solid);
+  --lg-table-header-surface: color-mix(in srgb, var(--lg-table-surface) 96%, #f5f5f7);
+  --lg-table-text: var(--text-normal);
+  --lg-table-outline: rgba(235, 235, 245, 0.2);
+  --lg-table-row-divider: rgba(235, 235, 245, 0.135);
+  --lg-table-col-divider: rgba(235, 235, 245, 0.095);
+  --lg-table-header-divider: rgba(235, 235, 245, 0.19);
+  --lg-table-row-hover: rgba(235, 235, 245, 0.042);
+  --lg-table-focus-surface: color-mix(in srgb, var(--lg-accent) 6%, var(--lg-table-surface));
+  --lg-table-focus-ring: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 22%, var(--text-muted)) 76%,
+    transparent
+  );
+  --lg-table-control-surface: #222224;
+  --lg-quote-line: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 14%, var(--text-muted)) 84%,
+    transparent
+  );
+  --lg-quote-line-nested: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 7%, var(--text-muted)) 60%,
+    transparent
+  );
+  --lg-quote-line-deep: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--lg-accent) 3%, var(--text-muted)) 44%,
+    transparent
+  );
+}
+

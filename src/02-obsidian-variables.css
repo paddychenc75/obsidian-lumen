@@ -1,0 +1,340 @@
+/* --------------------------------------------------------------------------
+   1. Map to Obsidian variables
+   -------------------------------------------------------------------------- */
+
+.theme-light,
+.theme-dark {
+  --color-accent: var(--lg-accent);
+  --color-accent-1: var(--lg-accent-1);
+  --color-accent-2: var(--lg-accent-2);
+  --interactive-accent: var(--lg-accent);
+  --interactive-accent-hover: var(--lg-accent-hover);
+  --background-modifier-border-focus: var(--lg-accent);
+  --text-accent: var(--lg-paper-link);
+  --text-accent-hover: var(--lg-paper-link-hover);
+}
+
+.theme-light {
+  --background-primary: var(--lg-paper-solid);
+  --background-primary-alt: #f2f2f7;
+  --background-secondary: color-mix(in srgb, var(--lg-glass-solid) 78%, transparent);
+  --background-secondary-alt: #e8eef2;
+  --background-modifier-hover: var(--lg-glass-hover);
+  --background-modifier-active-hover: var(--lg-glass-selected);
+  --background-modifier-border: rgba(60, 60, 67, 0.18);
+  --background-modifier-border-hover: rgba(60, 60, 67, 0.3);
+  --background-modifier-form-field: rgba(255, 255, 255, 0.78);
+  --background-modifier-error: var(--lg-danger);
+  --background-modifier-success: var(--lg-ok);
+  --background-modifier-message: #ffffff;
+  --text-normal: #1d1d1f;
+  --text-muted: #515154;
+  --text-faint: #8e8e93;
+  --text-on-accent: #ffffff;
+  --text-error: var(--lg-danger);
+  --text-success: var(--lg-ok);
+  --text-selection: color-mix(in srgb, var(--lg-accent) 28%, transparent);
+  --text-highlight-bg: var(--lg-mark-bg);
+  --interactive-normal: #ffffff;
+  --interactive-hover: #f2f2f7;
+  --color-red: var(--lg-danger);
+  --color-orange: var(--lg-warn);
+  --color-yellow: #9a7b00;
+  --color-green: var(--lg-ok);
+  --color-cyan: var(--lg-info);
+  --color-blue: var(--lg-accent);
+  --color-purple: #5e5ce6;
+  --color-pink: #d62d6c;
+}
+
+.theme-dark {
+  --background-primary: var(--lg-paper-solid);
+  --background-primary-alt: #242426;
+  --background-secondary: color-mix(in srgb, var(--lg-glass-solid) 80%, transparent);
+  --background-secondary-alt: #242426;
+  --background-modifier-hover: var(--lg-glass-hover);
+  --background-modifier-active-hover: var(--lg-glass-selected);
+  --background-modifier-border: rgba(235, 235, 245, 0.16);
+  --background-modifier-border-hover: rgba(235, 235, 245, 0.26);
+  --background-modifier-form-field: rgba(255, 255, 255, 0.06);
+  --background-modifier-error: var(--lg-danger);
+  --background-modifier-success: var(--lg-ok);
+  --background-modifier-message: #1c1c1e;
+  --text-normal: #f5f5f7;
+  --text-muted: #aeaeb2;
+  --text-faint: #8e8e93;
+  --text-on-accent: #ffffff;
+  --text-error: var(--lg-danger);
+  --text-success: var(--lg-ok);
+  --text-selection: color-mix(in srgb, var(--lg-accent) 34%, transparent);
+  --text-highlight-bg: var(--lg-mark-bg);
+  --interactive-normal: #2c2a3a;
+  --interactive-hover: #3a374c;
+  --color-red: var(--lg-danger);
+  --color-orange: var(--lg-warn);
+  --color-yellow: #ffd60a;
+  --color-green: var(--lg-ok);
+  --color-cyan: var(--lg-info);
+  --color-blue: var(--lg-accent);
+  --color-purple: #bf5af2;
+  --color-pink: #ff375f;
+}
+
+body {
+  /*
+   * Obsidian reserves this track before laying out the side dock.  The
+   * ribbon itself is 48px wide, so the track also needs room for its inset
+   * margins; otherwise Obsidian shrinks the island back to 44px.
+   */
+  --ribbon-width: 52px;
+  --radius-s: var(--lg-radius-s);
+  --radius-m: var(--lg-radius-m);
+  --radius-l: var(--lg-radius-l);
+  --radius-xl: var(--lg-radius-xl);
+  --input-radius: var(--lg-radius-s);
+  --button-radius: var(--lg-radius-s);
+  --checkbox-radius: var(--lg-radius-s);
+  --toggle-radius: var(--lg-radius-pill);
+  --tab-radius: var(--lg-radius-m);
+  --tab-radius-active: var(--lg-radius-m);
+  --tab-curve: 0px;
+  --tab-outline-width: 0px;
+  --modal-radius: var(--lg-radius-l);
+  --clickable-icon-radius: var(--lg-radius-s);
+  --setting-items-radius: var(--lg-radius-m);
+  --setting-items-background: color-mix(in srgb, var(--lg-paper-solid) 97%, var(--lg-sidebar-fill));
+  --setting-items-border-color: var(--lg-paper-border);
+  --setting-items-border-width: 1px;
+  --setting-items-padding-x: var(--lg-space-4);
+  --setting-items-padding-y: var(--lg-space-4);
+  --prompt-width: 640px;
+  --prompt-max-width: calc(100vw - 48px);
+
+  --font-text-size: 17px;
+  /*
+   * Above the Latin norm because Han glyphs fill the em box: with no x-height to
+   * fall back on, the visible gap between lines is the whole of what leading
+   * buys, so a value that reads open in English reads cramped in Chinese.
+   */
+  --line-height-normal: 1.7;
+
+  /*
+   * Sized in em, not rem, so the whole scale tracks the body size the reader
+   * picks in Style Settings instead of staying pinned to the root.
+   *
+   * Steps compress as they descend (1.22 → 1.19 → 1.17 → 1.12), which is what
+   * keeps the top of the scale dramatic and the bottom of it usable. Size runs
+   * out before the scale does, so h5 and h6 switch channel: they go bolder than
+   * h4 while getting smaller, the same weight inversion macOS uses between
+   * Title 3 and Headline. h6 also drops to muted, reading as a label rather
+   * than a title.
+   */
+  --h1-size: 1.9em;
+  --h2-size: 1.55em;
+  --h3-size: 1.3em;
+  --h4-size: 1.12em;
+  --h5-size: 1em;
+  --h6-size: 0.875em;
+  --h1-weight: 700;
+  --h2-weight: 700;
+  --h3-weight: 600;
+  --h4-weight: 600;
+  --h5-weight: 700;
+  --h6-weight: 700;
+  --h1-line-height: 1.16;
+  --h2-line-height: 1.22;
+  --h3-line-height: 1.3;
+  --h4-line-height: 1.4;
+  --h5-line-height: 1.45;
+  --h6-line-height: 1.5;
+
+  /*
+   * Optical tracking: type set large needs to be pulled in, type set small
+   * needs to be opened up. Without this the scale reads as one font enlarged
+   * rather than as sizes designed for their own measure.
+   *
+   * These go through Obsidian's own --hN-letter-spacing and --h6-color rather
+   * than a .markdown-rendered rule, because the editor styles headings with a
+   * different set of selectors (.cm-header-N, .HyperMD-header-N) that read the
+   * same variables. Setting the property directly would leave Live Preview and
+   * source mode untracked while Reading View was tracked.
+   */
+  --lg-tracking-h1: -0.02em;
+  --lg-tracking-h2: -0.016em;
+  --lg-tracking-h3: -0.012em;
+  --lg-tracking-h4: -0.008em;
+  --lg-tracking-h5: -0.003em;
+  --lg-tracking-h6: 0.006em;
+  --h1-letter-spacing: var(--lg-tracking-h1);
+  --h2-letter-spacing: var(--lg-tracking-h2);
+  --h3-letter-spacing: var(--lg-tracking-h3);
+  --h4-letter-spacing: var(--lg-tracking-h4);
+  --h5-letter-spacing: var(--lg-tracking-h5);
+  --h6-letter-spacing: var(--lg-tracking-h6);
+  --h6-color: var(--text-muted);
+  /*
+   * Both measured in the reader's own body size rather than in px or rem, so the
+   * line keeps its character count and the paragraph keeps its gap when the font
+   * size changes. Custom properties substitute as tokens, so the em resolves at
+   * the sizer and the paragraph — not here on body, where it would freeze.
+   */
+  --p-spacing: 1em;
+  --file-line-width: var(--lumen-file-line-width, 40em);
+  --caret-color: var(--lg-accent);
+
+  --icon-color: var(--lg-text-on-glass);
+  --icon-color-hover: var(--lg-text-on-glass);
+  --icon-color-active: var(--lg-text-on-glass);
+  --icon-opacity: 1;
+  --icon-opacity-hover: 1;
+  --icon-opacity-active: 1;
+
+  --ribbon-background: transparent;
+  --ribbon-background-collapsed: transparent;
+  --titlebar-background: transparent;
+  --titlebar-background-focused: transparent;
+  --tab-container-background: transparent;
+  --tab-background-active: var(--lg-tab-active-fill);
+  --tab-text-color: var(--lg-text-on-glass-2);
+  --tab-text-color-active: var(--lg-text-on-glass);
+  --tab-outline-color: transparent;
+  --tab-divider-color: transparent;
+  --divider-color: transparent;
+  --divider-width: 0px;
+  --status-bar-background: transparent;
+  --status-bar-text-color: var(--lg-text-on-glass-2);
+  --status-bar-position: absolute;
+
+  --nav-item-color: var(--lg-text-on-glass-2);
+  --nav-item-color-hover: var(--lg-text-on-glass);
+  --nav-item-color-active: var(--lg-text-on-glass);
+  --nav-item-color-selected: var(--lg-text-on-glass);
+  --nav-item-background-hover: var(--lg-state-hover);
+  --nav-item-background-active: var(--lg-list-active-fill);
+  --nav-item-background-selected: var(--lg-list-active-fill);
+  --nav-item-weight: 400;
+  --nav-item-weight-hover: 400;
+  --nav-item-weight-active: 500;
+  --nav-item-padding: 3px 8px;
+  --nav-collapse-icon-color: var(--lg-text-on-glass-2);
+  --nav-indentation-guide-color: transparent;
+
+  --modal-background: var(--lg-glass-solid);
+  --modal-border-color: var(--lg-glass-border);
+  --prompt-border-color: var(--lg-glass-border);
+  --menu-background: var(--lg-glass-solid);
+  --menu-border-color: var(--lg-glass-border);
+  --tooltip-background: var(--lg-tooltip-bg);
+  --tooltip-color: var(--lg-tooltip-text);
+
+  --checkbox-color: var(--lg-accent);
+  --checkbox-marker-color: #ffffff;
+
+  --tag-color: var(--text-normal);
+  --tag-background: color-mix(in srgb, var(--lg-accent) 14%, var(--background-primary));
+  --tag-background-hover: color-mix(in srgb, var(--lg-accent) 22%, var(--background-primary));
+  --tag-border-width: 1px;
+  --tag-border-color: color-mix(in srgb, var(--lg-accent) 28%, transparent);
+  --tag-radius: var(--lg-radius-s);
+  --tag-weight: 500;
+
+  --link-color: var(--lg-paper-link);
+  --link-color-hover: var(--lg-paper-link-hover);
+  --link-decoration: none;
+  --link-decoration-hover: none;
+  --link-external-color: var(--lg-paper-link);
+  --link-external-color-hover: var(--lg-paper-link-hover);
+  --link-external-decoration: none;
+  --link-external-decoration-hover: none;
+  --link-unresolved-opacity: 0.72;
+  --link-unresolved-decoration-style: dotted;
+
+  --blockquote-border-thickness: 2px;
+  --blockquote-border-color: var(--lg-quote-line);
+  --blockquote-color: var(--text-muted);
+  --code-radius: var(--lg-radius-s);
+  --callout-radius: var(--lg-radius-s);
+  --callout-blend-mode: normal;
+  --callout-border-width: 0 0 0 2px;
+  --callout-padding: 8px 12px;
+  --canvas-background: var(--lg-paper-solid);
+  --pdf-background: var(--lg-paper-solid);
+  --graph-node: var(--lg-accent);
+  --graph-node-focused: var(--lg-accent-hover);
+}
+
+/*
+ * Properties. Obsidian ships this block fully transparent and borderless, which
+ * reads fine for three fields and turns into an undifferentiated wall at
+ * fifteen. Rows get a hairline separator so the block scans like a list, and the
+ * label column widens because the default 7.5em clips the longer keys.
+ */
+body {
+  --metadata-max-width: 100%;
+  --metadata-padding: 0;
+  --metadata-gap: 0;
+  --metadata-label-width: 8.5em;
+  --metadata-label-text-color: var(--text-muted);
+  --metadata-label-text-color-hover: var(--text-normal);
+  --metadata-input-text-color: var(--text-normal);
+  --metadata-divider-width: 1px;
+  --metadata-divider-color: var(--lg-doc-divider);
+  --metadata-divider-color-hover: transparent;
+  --metadata-divider-color-focus: transparent;
+  --metadata-property-radius: var(--lg-radius-xs);
+  --metadata-property-radius-hover: var(--lg-radius-xs);
+  --metadata-property-radius-focus: var(--lg-radius-xs);
+  --metadata-property-background-hover: var(--lg-state-hover);
+  --metadata-property-background-active: var(--lg-list-active-fill);
+  --metadata-property-box-shadow: none;
+  --metadata-property-box-shadow-hover: none;
+  --metadata-property-box-shadow-focus: 0 0 0 var(--lg-focus-width) var(--lg-focus-color);
+  --metadata-input-background-hover: transparent;
+  --metadata-input-background-active: transparent;
+}
+
+/*
+ * Search results default to an opaque `--background-primary` panel, which cuts a
+ * solid rectangle out of the translucent sidebar. Transparent lets the pane
+ * material show through and leaves the row states to carry the structure.
+ */
+body {
+  --search-result-background: transparent;
+  --search-input-radius: var(--lg-radius-s);
+  --search-icon-color: var(--text-muted);
+  --search-clear-button-color: var(--text-muted);
+}
+
+/*
+ * The accent rail Obsidian puts on embeds is the same device as a blockquote's,
+ * so a quoted embed grows two of them. The embed keeps its card and gives up the
+ * rail; the blockquote keeps the rail.
+ */
+body {
+  --embed-border-start: none;
+  --embed-block-shadow-hover: 0 0 0 1px var(--lg-paper-border);
+  --embed-actions-background: var(--lg-overlay-solid);
+  --embed-actions-shadow: var(--lg-overlay-shadow);
+  --embed-action-radius: var(--lg-radius-xs);
+}
+
+/*
+ * A drag ghost and a tooltip are the same object — a small label floating over
+ * the page — so they share a material instead of the ghost keeping its own
+ * hardcoded black.
+ */
+body {
+  --drag-ghost-background: var(--lg-tooltip-bg);
+  --drag-ghost-text-color: var(--lg-tooltip-text);
+  --drag-item-background: var(--lg-state-hover);
+  --drag-item-shadow: var(--lg-overlay-shadow);
+}
+
+body {
+  --slider-track-background: var(--background-modifier-border);
+  --slider-track-height: 4px;
+  --slider-thumb-border-width: 0;
+  --slider-thumb-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.1);
+  --slider-thumb-shadow-focus: var(--slider-thumb-shadow), 0 0 0 var(--lg-focus-width) var(--lg-focus-color);
+}
+

@@ -1,0 +1,278 @@
+/* --------------------------------------------------------------------------
+   13. Style Settings + a11y
+   -------------------------------------------------------------------------- */
+
+body.lumen-glass-thin.theme-light {
+  --lg-glass-blur: 16px;
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 18%, rgba(255, 255, 255, 0.2));
+}
+
+body.lumen-glass-thin.theme-dark {
+  --lg-glass-blur: 16px;
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 18%, rgba(84, 84, 84, 0.22));
+}
+
+body.lumen-glass-thick.theme-light {
+  --lg-glass-blur: 28px;
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 50%, rgba(255, 255, 255, 0.18));
+}
+
+body.lumen-glass-thick.theme-dark {
+  --lg-glass-blur: 28px;
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 50%, rgba(84, 84, 84, 0.18));
+}
+
+body.lumen-chrome-flush {
+  --lg-chrome-frame: 0px;
+  --lg-chrome-gap: 0px;
+}
+
+body.lumen-chrome-flush .workspace-ribbon.side-dock-ribbon.mod-left,
+body.lumen-chrome-flush .workspace-split.mod-left-split,
+body.lumen-chrome-flush .workspace-split.mod-right-split,
+body.lumen-chrome-flush .workspace-split.mod-root .workspace-tab-header-container,
+body.lumen-chrome-flush .status-bar {
+  margin: 0;
+  border-radius: 0;
+}
+
+body.lumen-hide-specular {
+  --lg-glass-highlight: none;
+}
+
+body.lumen-editor-contrast.theme-light,
+body.lumen-increase-contrast.theme-light {
+  --text-normal: #111113;
+  --text-muted: #2c2c31;
+  --lg-paper-solid: #ffffff;
+  --lg-table-outline: rgba(17, 17, 19, 0.44);
+  --lg-table-row-divider: rgba(17, 17, 19, 0.32);
+  --lg-table-col-divider: rgba(17, 17, 19, 0.24);
+  --lg-table-header-divider: rgba(17, 17, 19, 0.4);
+  --lg-table-row-hover: rgba(17, 17, 19, 0.08);
+}
+
+body.lumen-editor-contrast.theme-dark,
+body.lumen-increase-contrast.theme-dark {
+  --text-normal: #ffffff;
+  --text-muted: #d8d8e2;
+  --lg-paper-solid: #0e0d14;
+  --lg-table-outline: rgba(255, 255, 255, 0.46);
+  --lg-table-row-divider: rgba(255, 255, 255, 0.34);
+  --lg-table-col-divider: rgba(255, 255, 255, 0.26);
+  --lg-table-header-divider: rgba(255, 255, 255, 0.42);
+  --lg-table-row-hover: rgba(255, 255, 255, 0.1);
+}
+
+body.lumen-paper-neutral.theme-light {
+  --lg-paper-solid: #f6f6f8;
+}
+
+body.lumen-paper-neutral.theme-dark {
+  --lg-paper-solid: #16151c;
+}
+
+body.lumen-reduce-transparency.theme-light,
+body.lumen-reduce-transparency.theme-dark,
+body.lumen-increase-contrast.theme-light,
+body.lumen-increase-contrast.theme-dark {
+  --lg-glass-blur: 0px;
+  --lg-glass-fill: var(--lg-glass-solid);
+  --lg-glass-luma: transparent;
+}
+
+body.lumen-reduce-transparency .workspace-ribbon.side-dock-ribbon,
+body.lumen-reduce-transparency .workspace-split.mod-left-split,
+body.lumen-reduce-transparency .workspace-split.mod-right-split,
+body.lumen-reduce-transparency .workspace-split.mod-root .workspace-tab-header-container,
+body.lumen-reduce-transparency .status-bar,
+body.lumen-reduce-transparency .prompt,
+body.lumen-increase-contrast .workspace-ribbon.side-dock-ribbon,
+body.lumen-increase-contrast .workspace-split.mod-left-split,
+body.lumen-increase-contrast .workspace-split.mod-right-split,
+body.lumen-increase-contrast .workspace-split.mod-root .workspace-tab-header-container,
+body.lumen-increase-contrast .status-bar,
+body.lumen-increase-contrast .prompt {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body {
+    --lg-glass-blur: 0px;
+    --lg-glass-fill: var(--lg-glass-solid);
+    --lg-glass-luma: transparent;
+  }
+
+  .workspace-ribbon.side-dock-ribbon,
+  .workspace-split.mod-left-split,
+  .workspace-split.mod-right-split,
+  .workspace-split.mod-root .workspace-tab-header-container,
+  .status-bar,
+  .prompt,
+  .is-mobile .mobile-navbar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  body.theme-light {
+    --text-normal: #111113;
+    --text-muted: #2c2c31;
+    --lg-paper-solid: #ffffff;
+    --lg-glass-blur: 0px;
+    --lg-list-active-fill: rgba(0, 0, 0, 0.18);
+    --lg-state-hover: rgba(0, 0, 0, 0.12);
+    --lg-scrollbar-thumb: rgba(60, 60, 67, 0.65);
+    --lg-table-outline: rgba(17, 17, 19, 0.44);
+    --lg-table-row-divider: rgba(17, 17, 19, 0.32);
+    --lg-table-col-divider: rgba(17, 17, 19, 0.24);
+    --lg-table-header-divider: rgba(17, 17, 19, 0.4);
+    --lg-table-row-hover: rgba(17, 17, 19, 0.08);
+  }
+
+  body.theme-dark {
+    --text-normal: #ffffff;
+    --text-muted: #dddde6;
+    --lg-paper-solid: #0e0d14;
+    --lg-glass-blur: 0px;
+    --lg-list-active-fill: rgba(255, 255, 255, 0.22);
+    --lg-state-hover: rgba(255, 255, 255, 0.14);
+    --lg-scrollbar-thumb: rgba(235, 235, 245, 0.65);
+    --lg-table-outline: rgba(255, 255, 255, 0.46);
+    --lg-table-row-divider: rgba(255, 255, 255, 0.34);
+    --lg-table-col-divider: rgba(255, 255, 255, 0.26);
+    --lg-table-header-divider: rgba(255, 255, 255, 0.42);
+    --lg-table-row-hover: rgba(255, 255, 255, 0.1);
+  }
+
+  .markdown-source-view.mod-cm6 .cm-table-widget {
+    --table-border-color: var(--lg-table-row-divider);
+  }
+
+  /*
+   * Widening the ring through the token instead of a bare `:focus-visible`
+   * rule, which lost on specificity to every component's own focus selector.
+   */
+  body {
+    --lg-focus-width: 3px;
+    --lg-focus-color: var(--lg-accent);
+  }
+}
+
+@media (forced-colors: active) {
+  .markdown-preview-view .el-table,
+  .markdown-source-view.mod-cm6 .cm-table-widget .table-editor {
+    border-color: CanvasText;
+  }
+
+  .markdown-preview-view .el-table > table :is(th, td),
+  .markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th, td) {
+    border-bottom-color: CanvasText;
+    border-inline-end-color: CanvasText;
+  }
+
+  .markdown-source-view.mod-cm6
+    .cm-table-widget.has-focus
+    .table-editor
+    :is(th, td):focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+    background: Canvas;
+    box-shadow: none;
+  }
+
+  .markdown-source-view.mod-cm6 .cm-table-widget :is(
+    .table-row-btn,
+    .table-col-btn,
+    .table-row-drag-handle,
+    .table-col-drag-handle
+  ):focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+@media (pointer: coarse) {
+  body {
+    --lg-table-scrollbar-size: 12px;
+  }
+
+  body .markdown-source-view.mod-cm6 .cm-table-widget :is(.table-row-btn, .table-col-btn) {
+    opacity: 0.72;
+  }
+}
+
+@media (max-width: 700px) {
+  body:not(.is-mobile) {
+    /*
+     * Narrow windows give back the decorative frame but keep the seam, which
+     * still has to clear the panel radius to read as a channel.
+     */
+    --lg-chrome-frame: var(--lg-space-1);
+    --lg-control-size: 32px;
+    --lg-row-height: 32px;
+    --ribbon-width: 44px;
+  }
+
+  body:not(.is-mobile) .workspace-ribbon.side-dock-ribbon.mod-left {
+    width: 40px;
+  }
+
+  body:not(.is-mobile) .cm-sizer,
+  body:not(.is-mobile) .markdown-preview-sizer,
+  body.is-mobile .cm-sizer,
+  body.is-mobile .markdown-preview-sizer {
+    padding-inline: var(--lg-space-4);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .workspace-ribbon.side-dock-ribbon,
+  .workspace-split.mod-left-split,
+  .workspace-split.mod-right-split,
+  .workspace-split.mod-root .workspace-tab-header-container,
+  .status-bar,
+  .prompt,
+  .is-mobile .mobile-navbar {
+    background: var(--lg-glass-solid);
+  }
+}
+
+.workspace-tab-header,
+.nav-file-title,
+.nav-folder-title,
+.tree-item-self,
+.suggestion-item,
+.menu-item,
+.side-dock-ribbon-action,
+button.mod-cta {
+  transition: background-color var(--lg-duration) var(--lg-ease), color var(--lg-duration) var(--lg-ease), box-shadow var(--lg-duration) var(--lg-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * Zeroing the tokens covers every consumer, including ones added later.
+   * The press scale goes to 1 rather than merely losing its transition, since
+   * an instant jump in size is exactly the kind of movement being opted out of.
+   */
+  body {
+    --lg-duration-fast: 0ms;
+    --lg-duration: 0ms;
+    --lg-press-scale: 1;
+  }
+
+  .workspace-tab-header,
+  .nav-file-title,
+  .nav-folder-title,
+  .tree-item-self,
+  .suggestion-item,
+  .menu-item,
+  .side-dock-ribbon-action,
+  button.mod-cta,
+  .clickable-icon,
+  .workspace-tab-header-inner-close-button,
+  .markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th, td) {
+    transition: none;
+  }
+}

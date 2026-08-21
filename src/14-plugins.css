@@ -1,0 +1,17 @@
+/* --------------------------------------------------------------------------
+   12. Graph / plugins / mobile
+   -------------------------------------------------------------------------- */
+
+.graph-controls {
+  background: var(--lg-glass-solid);
+  border: 1px solid var(--lg-glass-border);
+  border-radius: var(--lg-radius-m);
+  color: var(--lg-text-on-glass);
+}
+
+.kanban-plugin__lane,
+.dataview.table-view-table {
+  background: var(--background-primary);
+  border-radius: var(--lg-radius-m);
+}
+

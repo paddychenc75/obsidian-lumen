@@ -1,0 +1,180 @@
+/* --------------------------------------------------------------------------
+   6. Tabs
+   -------------------------------------------------------------------------- */
+
+.workspace-split.mod-root .workspace-tab-header-container {
+  margin: var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2) calc(var(--lg-chrome-gap) / 2);
+  border-radius: var(--lg-radius-m);
+  display: flex;
+  align-items: center;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 var(--lg-space-1);
+  overflow: hidden;
+  background-color: var(--lg-glass-fill);
+  background-image: var(--lg-glass-highlight), linear-gradient(var(--lg-glass-luma), var(--lg-glass-luma));
+  border: 1px solid var(--lg-glass-border);
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.28),
+    0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+body.theme-light .workspace-split.mod-root .workspace-tab-header-container-inner,
+body.theme-dark .workspace-split.mod-root .workspace-tab-header-container-inner {
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  gap: var(--lg-space-1);
+}
+
+body.theme-light .workspace-split.mod-root .workspace-tab-header,
+body.theme-dark .workspace-split.mod-root .workspace-tab-header {
+  position: relative;
+  flex: 1 1 160px;
+  width: auto;
+  min-width: 120px;
+  max-width: 240px;
+  height: 38px;
+  min-height: 38px;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  display: flex;
+  align-items: center;
+}
+
+.workspace-split.mod-root .workspace-tab-header-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  min-height: 30px;
+  margin: 0;
+  padding-inline: var(--lg-space-2);
+  border: 0;
+  border-radius: var(--lg-radius-m);
+  background: transparent;
+  box-shadow: none;
+}
+
+.workspace-split.mod-root .workspace-tab-header-inner-title {
+  flex: 1 1 auto;
+  width: 100%;
+  padding-inline: var(--lg-space-6);
+  text-align: center;
+  color: color-mix(in srgb, var(--lg-text-on-glass) 68%, transparent);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.workspace-split.mod-root .workspace-tab-header:not(.is-active):hover {
+  background: transparent;
+}
+
+.workspace-split.mod-root
+  .workspace-tab-header:not(.is-active):hover
+  .workspace-tab-header-inner {
+  background: var(--lg-state-hover);
+}
+
+body.theme-light .workspace-split.mod-root .workspace-tab-header.is-active,
+body.theme-dark .workspace-split.mod-root .workspace-tab-header.is-active {
+  background: transparent;
+  color: var(--lg-text-on-glass);
+  font-weight: 500;
+  border-radius: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+
+body.theme-light .workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner,
+body.theme-dark .workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner {
+  background: var(--lg-tab-active-fill);
+  color: var(--lg-text-on-glass);
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+
+.workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--lg-text-on-glass);
+  font-weight: 500;
+}
+
+.workspace-tab-header::before,
+.workspace-tab-header::after,
+.workspace-tab-header-inner::before,
+.workspace-tab-header-inner::after {
+  display: none;
+  box-shadow: none;
+}
+
+body.theme-light .workspace-split.mod-root .workspace-tab-header-inner-close-button,
+body.theme-dark .workspace-split.mod-root .workspace-tab-header-inner-close-button {
+  position: absolute;
+  inset-inline-end: var(--lg-space-1);
+  top: 50%;
+  transform: translateY(-50%);
+  flex: 0 0 24px;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: var(--lg-radius-s);
+  opacity: 0;
+  transition:
+    opacity var(--lg-duration-fast) var(--lg-ease),
+    background-color var(--lg-duration-fast) var(--lg-ease);
+}
+
+.workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner-close-button {
+  opacity: 0.55;
+}
+
+.workspace-split.mod-root .workspace-tab-header:hover .workspace-tab-header-inner-close-button {
+  opacity: 0.7;
+}
+
+.workspace-split.mod-root .workspace-tab-header-inner-close-button:hover {
+  background-color: var(--lg-state-hover);
+  opacity: 1;
+}
+
+.workspace-split.mod-root .workspace-tab-header-inner-close-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.workspace-split.mod-root .workspace-tab-header-new-tab {
+  align-self: center;
+  margin-inline-start: var(--lg-space-1);
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+.workspace-split.mod-root .workspace-tab-header-new-tab .clickable-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--lg-radius-s);
+  color: var(--lg-text-on-glass);
+  opacity: 0.62;
+  background: transparent;
+}
+
+.workspace-split.mod-root .workspace-tab-header-new-tab .clickable-icon:hover {
+  background-color: var(--lg-state-hover);
+  opacity: 1;
+}
+
+.workspace-split.mod-root .workspace-tab-header-new-tab svg {
+  width: 14px;
+  height: 14px;
+}
+
