@@ -489,14 +489,18 @@ body {
 
   --link-color: var(--lg-paper-link);
   --link-color-hover: var(--lg-paper-link-hover);
-  --link-decoration: underline;
+  --link-decoration: none;
+  --link-decoration-hover: none;
   --link-external-color: var(--lg-paper-link);
   --link-external-color-hover: var(--lg-paper-link-hover);
+  --link-external-decoration: none;
+  --link-external-decoration-hover: none;
   --link-unresolved-opacity: 0.72;
   --link-unresolved-decoration-style: dotted;
 
-  --blockquote-border-thickness: 3px;
-  --blockquote-border-color: color-mix(in srgb, var(--lg-accent) 55%, transparent);
+  --blockquote-border-thickness: 2px;
+  --blockquote-border-color: color-mix(in srgb, var(--lg-accent) 70%, transparent);
+  --lg-blockquote-border-nested: color-mix(in srgb, var(--lg-accent) 40%, transparent);
   --blockquote-color: var(--text-muted);
   --code-radius: var(--lg-radius-m);
   --callout-radius: var(--lg-radius-m);
@@ -1247,11 +1251,14 @@ body.is-mobile .status-bar {
 .cm-link,
 .cm-url {
   color: var(--lg-paper-link);
-  box-shadow: inset 0 -1px 0 color-mix(in srgb, currentColor 45%, transparent);
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, currentcolor 45%, transparent);
 }
 
-.markdown-rendered :is(a.internal-link, a.external-link):hover {
-  box-shadow: inset 0 -1px 0 currentColor;
+.markdown-rendered :is(a.internal-link, a.external-link):hover,
+.cm-hmd-internal-link:hover,
+.cm-link:hover,
+.cm-url:hover {
+  box-shadow: inset 0 -1px 0 currentcolor;
 }
 
 .markdown-rendered mark,
@@ -1267,15 +1274,31 @@ body.is-mobile .status-bar {
 
 .markdown-rendered blockquote {
   background: transparent;
-  border-left-width: 2px;
-  border-radius: 0;
+  border-inline-start-width: 2px;
+  border-radius: 2px;
   margin-block: 16px;
-  padding: 2px 0 2px 12px;
+  padding: 2px 0;
+  padding-inline-start: 12px;
   color: var(--text-muted);
+}
+
+.markdown-rendered blockquote blockquote {
+  --blockquote-border-color: var(--lg-blockquote-border-nested);
+
+  margin-inline-start: 16px;
 }
 
 .markdown-rendered blockquote > :last-child {
   margin-bottom: 0;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,
+.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
+  border-radius: 2px;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
+  border-inline-start-color: var(--lg-blockquote-border-nested);
 }
 
 .markdown-rendered .callout,
@@ -1343,7 +1366,9 @@ body.is-mobile .status-bar {
 .theme-light {
   --code-background: #f2f2f7;
   --code-normal: #242426;
-  --lg-inline-code-bg: rgba(28, 28, 30, 0.065);
+  --lg-inline-code-bg: #edf1f5;
+  --lg-inline-code-border: rgb(56 64 74 / 55%);
+  --lg-inline-code-text: #20242a;
   --lg-mark-bg: color-mix(in srgb, var(--lg-accent) 18%, var(--lg-paper-solid));
   --lg-doc-divider: rgba(60, 60, 67, 0.14);
 }
@@ -1351,7 +1376,9 @@ body.is-mobile .status-bar {
 .theme-dark {
   --code-background: #242426;
   --code-normal: #e8e8ed;
-  --lg-inline-code-bg: rgba(255, 255, 255, 0.1);
+  --lg-inline-code-bg: #292b30;
+  --lg-inline-code-border: rgb(235 235 245 / 35%);
+  --lg-inline-code-text: #e8e8ed;
   --lg-mark-bg: color-mix(in srgb, var(--lg-accent) 24%, var(--lg-paper-solid));
   --lg-doc-divider: rgba(235, 235, 245, 0.18);
 }
@@ -1366,16 +1393,22 @@ body.is-mobile .status-bar {
   tab-size: 2;
 }
 
-.markdown-rendered code {
+.markdown-rendered :not(pre) > code,
+.cm-s-obsidian .cm-inline-code:not(.cm-formatting) {
   padding: 1px var(--lg-space-1);
   border: 0;
-  border-radius: var(--lg-radius-xs);
+  border-radius: 4px;
   background: var(--lg-inline-code-bg);
+  color: var(--lg-inline-code-text);
+  box-shadow: inset 0 0 0 1px var(--lg-inline-code-border);
   font-size: 0.9em;
-  line-height: inherit;
   vertical-align: 0.01em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
+}
+
+.markdown-rendered :not(pre) > code {
+  line-height: inherit;
 }
 
 body[class] .workspace-leaf-content .markdown-rendered pre > code {
