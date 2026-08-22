@@ -92,6 +92,15 @@ body {
   --radius-l: var(--lg-radius-l);
   --radius-xl: var(--lg-radius-xl);
   --input-radius: var(--lg-radius-s);
+  /*
+   * Obsidian sizes text fields at --input-height (30px) and hangs the
+   * magnifying glass with calc((var(--input-height) - var(--search-icon-size)) / 2).
+   * The form floor in 13-controls.css raises those fields to --lg-control-size,
+   * so leaving this at 30px parked the icon 3px above the text. The clear
+   * button already centres with top/bottom + margin; mapping the variable
+   * keeps both on the field's midline. Metadata and Bases re-scope it locally.
+   */
+  --input-height: var(--lg-control-size);
   --button-radius: var(--lg-radius-s);
   --checkbox-radius: var(--lg-radius-s);
   --toggle-radius: var(--lg-radius-pill);

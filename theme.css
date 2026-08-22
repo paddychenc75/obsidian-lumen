@@ -506,6 +506,8 @@ body {
   --radius-l: var(--lg-radius-l);
   --radius-xl: var(--lg-radius-xl);
   --input-radius: var(--lg-radius-s);
+
+  --input-height: var(--lg-control-size);
   --button-radius: var(--lg-radius-s);
   --checkbox-radius: var(--lg-radius-s);
   --toggle-radius: var(--lg-radius-pill);
@@ -2423,14 +2425,13 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   box-shadow: none;
 }
 
-.modal.mod-settings .setting-item,
+.modal.mod-settings .setting-item:not(.setting-item-heading),
 .setting-item {
   padding: var(--lg-space-4) 0;
   gap: var(--lg-space-2) var(--lg-space-4);
 }
 
-.modal.mod-settings .setting-item.setting-item-heading,
-.setting-item.setting-item-heading {
+.setting-item-heading {
   padding-block: 0;
 }
 

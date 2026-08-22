@@ -148,14 +148,19 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   box-shadow: none;
 }
 
-.modal.mod-settings .setting-item,
+.modal.mod-settings .setting-item:not(.setting-item-heading),
 .setting-item {
   padding: var(--lg-space-4) 0;
   gap: var(--lg-space-2) var(--lg-space-4);
 }
 
-.modal.mod-settings .setting-item.setting-item-heading,
-.setting-item.setting-item-heading {
+/*
+ * One class only. A four-class reset of padding-block flattened every
+ * heading to 0 and overrode plugins that draw a rule on the heading
+ * and reserve padding-top for the gap. Core headings have no border-top;
+ * they stay compact.
+ */
+.setting-item-heading {
   padding-block: 0;
 }
 

@@ -6,6 +6,11 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Stopped flattening every settings heading to `padding-block: 0` with a four-class selector. That reset sat above any plugin that draws a divider on the heading and reserves `padding-top` for the gap, so the rule sat on the title. The compact reset is now one class; plugins at two classes keep their spacing, and core headings still have no top border.
+- Centred the magnifying glass in Settings search fields against the text. The theme's form floor raises those inputs to `--lg-control-size` while Obsidian still positioned the icon from the default 30px `--input-height`, so the glass sat 3px high; `--input-height` now follows the same token. The clear button already centred itself and stays on that midline.
+
 ### Changed
 
 - Replaced the public preview with a dual-mode English hero (light and dark side by side). The community listing still reads `assets/screenshot.png` from the default branch.
