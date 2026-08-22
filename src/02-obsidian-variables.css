@@ -111,9 +111,9 @@ body {
   --modal-radius: var(--lg-radius-l);
   --clickable-icon-radius: var(--lg-radius-s);
   --setting-items-radius: var(--lg-radius-m);
-  --setting-items-background: color-mix(in srgb, var(--lg-paper-solid) 97%, var(--lg-sidebar-fill));
-  --setting-items-border-color: var(--lg-paper-border);
-  --setting-items-border-width: 1px;
+  --setting-items-background: transparent;
+  --setting-items-border-color: transparent;
+  --setting-items-border-width: 0px;
   --setting-items-padding-x: var(--lg-space-4);
   --setting-items-padding-y: var(--lg-space-4);
   --prompt-width: 640px;

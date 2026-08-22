@@ -5,9 +5,10 @@
  * component classes. The plugin owns behavior; Lumen only maps its surfaces,
  * type, controls and states onto the theme's glass/paper token system.
  *
- * Every selector below must stay behind [data-type="claudian-view"] so the
+ * Every selector below must stay behind [data-type="claudian-view"] (the
+ * chat pane) or .claudian-settings (the plugin's Settings tab). The
  * adaptation cannot match anything when the plugin is absent.
- * `npm run check` fails the build if a rule escapes that gate.
+ * `npm run check` fails the build if a rule escapes those gates.
  *
  * Surfaces are limited to three fills — canvas (recessed chrome), surface
  * (raised control) and fill (subtle tint) — because a sidebar this narrow
@@ -378,7 +379,7 @@
 .workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-row {
   justify-content: space-between;
   gap: var(--lg-space-2);
-  padding: 0 var(--lg-claudian-control-gutter) var(--lg-space-2);
+  padding: 0 0 var(--lg-space-2);
 }
 
 .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badges {
@@ -807,5 +808,128 @@ body .workspace-leaf-content[data-type="claudian-view"] .claudian-context-chip >
   .workspace-leaf-content[data-type="claudian-view"] * {
     scroll-behavior: auto;
   }
+}
+
+/*
+ * Settings lives in the Settings modal, not the chat view, so these rules
+ * cannot use [data-type="claudian-view"]. The form-floor in 13-controls.css
+ * paints every button as a 36px bordered tile; General / Collab / Providers
+ * are those tiles sitting in a 2px gutter, which reads as three flattened
+ * rectangles. Rebuild them as one capsule.
+ */
+/*
+ * Claudian wraps its whole Settings page in `.setting-item.claudian-settings`.
+ * That wrapper is a scope, not a card — no fill, no shadow, no extra
+ * pad. The page shell is flattened in 12-overlays (no `.setting-items`
+ * card, no paper stroke). Labels line up with the selected General
+ * segment, not the track's outer frame (track pad + 1px border). Top
+ * inset is the paper's own 32px — do not stack a second page pad.
+ */
+.modal.mod-settings .setting-item.claudian-settings {
+  --lg-claudian-tab-track-pad: 3px;
+  --lg-claudian-tab-track-inset: calc(var(--lg-claudian-tab-track-pad) + 1px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.claudian-settings .claudian-settings-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  box-sizing: border-box;
+  width: auto;
+  min-height: var(--lg-control-size);
+  padding: var(--lg-claudian-tab-track-pad);
+  margin: 0 var(--lg-space-4) var(--lg-space-4);
+  overflow: visible;
+  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 16%, transparent);
+  border-radius: var(--lg-radius-pill);
+  background: color-mix(in srgb, var(--lg-text-on-glass) 6%, var(--lg-paper-solid));
+}
+
+.modal.mod-settings .claudian-settings .setting-item:not(.setting-item-heading) {
+  padding-left: calc(var(--lg-space-4) + var(--lg-claudian-tab-track-inset));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/*
+ * setHeading() slices cannot be wrapped in one element without :has.
+ * Stitching a card from heading + row sides + the next heading's
+ * ::after left seams (Language as a stub, Display's shelf off the
+ * verticals). Drop the fake cards. A heading is a title plus a
+ * hairline on the same inset as the tab track.
+ */
+.modal.mod-settings .claudian-settings .setting-item-heading {
+  position: static;
+  margin: var(--lg-space-6) var(--lg-space-4) 0;
+  padding: var(--lg-space-3) var(--lg-claudian-tab-track-inset) var(--lg-space-2);
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 16%, transparent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.modal.mod-settings .claudian-settings .setting-item-heading:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.modal.mod-settings .claudian-settings .setting-item-heading::after {
+  content: none;
+}
+
+.theme-light .claudian-settings button.claudian-settings-tab,
+.theme-dark .claudian-settings button.claudian-settings-tab {
+  flex: 1 1 0;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--lg-control-size) - 4px);
+  margin: 0;
+  padding: 0 var(--lg-space-3);
+  border: 0;
+  border-radius: var(--lg-radius-pill);
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.theme-light .claudian-settings button.claudian-settings-tab:hover,
+.theme-dark .claudian-settings button.claudian-settings-tab:hover {
+  background: color-mix(in srgb, var(--lg-text-on-glass) 6%, transparent);
+  border: 0;
+  box-shadow: none;
+  color: var(--text-normal);
+}
+
+.theme-light .claudian-settings button.claudian-settings-tab:active,
+.theme-dark .claudian-settings button.claudian-settings-tab:active {
+  background: color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+  border: 0;
+  box-shadow: none;
+}
+
+.theme-light .claudian-settings button.claudian-settings-tab--active,
+.theme-dark .claudian-settings button.claudian-settings-tab--active,
+.theme-light .claudian-settings button.claudian-settings-tab--active:hover,
+.theme-dark .claudian-settings button.claudian-settings-tab--active:hover,
+.theme-light .claudian-settings button.claudian-settings-tab--active:active,
+.theme-dark .claudian-settings button.claudian-settings-tab--active:active {
+  background: var(--lg-paper-solid);
+  border: 0;
+  box-shadow: none;
+  color: var(--text-normal);
+  font-weight: 600;
 }
 

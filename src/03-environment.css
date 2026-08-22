@@ -22,6 +22,16 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window):not(.lumen-chrome-flus
   --lg-chrome-frame: var(--lg-space-1);
 }
 
+/*
+ * Settings (and other popout modals) keep a real titlebar. Core sizes that bar
+ * at 30px while the system still paints the window controls at a 32px offset.
+ * An 8px inset under that bar was the same squeeze as an 8px frame on the
+ * main window, so the cap applies here too. Note popouts are unchanged.
+ */
+body.mod-macos.is-hidden-frameless.is-popout-modal:not(.lumen-chrome-flush) {
+  --lg-chrome-frame: var(--lg-space-1);
+}
+
 body * {
   scrollbar-width: thin;
   scrollbar-color: var(--lg-scrollbar-thumb) transparent;

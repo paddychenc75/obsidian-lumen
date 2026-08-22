@@ -518,9 +518,9 @@ body {
   --modal-radius: var(--lg-radius-l);
   --clickable-icon-radius: var(--lg-radius-s);
   --setting-items-radius: var(--lg-radius-m);
-  --setting-items-background: color-mix(in srgb, var(--lg-paper-solid) 97%, var(--lg-sidebar-fill));
-  --setting-items-border-color: var(--lg-paper-border);
-  --setting-items-border-width: 1px;
+  --setting-items-background: transparent;
+  --setting-items-border-color: transparent;
+  --setting-items-border-width: 0px;
   --setting-items-padding-x: var(--lg-space-4);
   --setting-items-padding-y: var(--lg-space-4);
   --prompt-width: 640px;
@@ -708,6 +708,10 @@ body {
 }
 
 body.mod-macos.is-hidden-frameless:not(.is-popout-window):not(.lumen-chrome-flush) {
+  --lg-chrome-frame: var(--lg-space-1);
+}
+
+body.mod-macos.is-hidden-frameless.is-popout-modal:not(.lumen-chrome-flush) {
   --lg-chrome-frame: var(--lg-space-1);
 }
 
@@ -2324,14 +2328,33 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
   color: var(--lg-text-on-glass);
 }
 
-body.is-popout-window.is-popout-modal .titlebar {
+body.is-popout-window.is-popout-modal,
+body.is-popout-window.is-popout-modal .app-container {
   background-color: var(--lg-sidebar-fill);
   background-image: var(--lg-sidebar-material);
-  border-bottom: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+}
+
+body.is-popout-window.is-popout-modal .titlebar,
+body.is-popout-window.is-popout-modal .titlebar-inner {
+  inset-inline: 0;
+  width: 100%;
+  background-color: var(--lg-sidebar-fill);
+  background-image: var(--lg-sidebar-material);
+}
+
+body.is-popout-window.is-popout-modal .titlebar {
+  border-bottom-color: color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+}
+
+body.mod-macos.is-frameless.is-hidden-frameless.is-popout-window.is-popout-modal:not(.is-fullscreen) .titlebar {
+  padding-top: 0;
 }
 
 body.is-popout-window.is-popout-modal .modal.mod-settings {
-  padding: var(--lg-space-2);
+  padding: 0 var(--lg-chrome-frame) var(--lg-chrome-frame);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   background-color: var(--lg-sidebar-fill);
   background-image: var(--lg-sidebar-material);
 }
@@ -2353,7 +2376,7 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content-
 
 body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content {
   border-radius: var(--lg-radius-m);
-  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+  padding: var(--lg-space-8) var(--lg-space-6) var(--lg-space-8);
 }
 
 .modal.mod-settings .vertical-tab-content,
@@ -2361,17 +2384,18 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   background: var(--lg-paper-solid);
   border-radius: var(--lg-radius-m);
   color: var(--text-normal);
-  border: 1px solid var(--lg-paper-border);
-  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+  border: 0;
+  padding: var(--lg-space-8) var(--lg-space-6) var(--lg-space-8);
 }
 
 .modal.mod-settings .setting-group .setting-items {
-  background: var(--setting-items-background);
-  border-color: var(--setting-items-border-color);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .modal.mod-settings .setting-group .setting-item:not(.setting-item-heading) {
-  padding: var(--setting-items-padding-y) var(--setting-items-padding-x);
+  padding: var(--lg-space-4);
 }
 
 .modal.mod-settings .setting-group .setting-item:not(.setting-item-heading)::before {
@@ -2379,7 +2403,13 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
 }
 
 .modal.mod-settings.mod-sidebar-layout .vertical-tab-content {
-  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+  padding: var(--lg-space-8) var(--lg-space-6) var(--lg-space-8);
+}
+
+.modal.mod-settings .vertical-tab-header input[type="search"] {
+  border: 0;
+  box-shadow: none;
+  border-radius: var(--lg-radius-s);
 }
 
 .vertical-tab-header-group {
@@ -2391,6 +2421,11 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   gap: var(--lg-item-gap);
 }
 
+.modal.mod-settings .vertical-tab-header-group-items[data-section="community-plugins"],
+.vertical-tab-header-group-items[data-section="community-plugins"] {
+  gap: var(--lg-space-2);
+}
+
 .vertical-tab-nav-item {
   display: flex;
   align-items: center;
@@ -2400,6 +2435,13 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   border-radius: var(--lg-radius-s);
   color: var(--lg-text-on-glass-2);
   padding: var(--lg-space-1) var(--lg-space-2);
+}
+
+.modal.mod-settings .vertical-tab-header-group-items[data-section="community-plugins"] .vertical-tab-nav-item,
+.vertical-tab-header-group-items[data-section="community-plugins"] .vertical-tab-nav-item {
+  min-height: var(--lg-control-size);
+  padding-block: var(--lg-space-3);
+  padding-inline: var(--lg-space-2);
 }
 
 .vertical-tab-nav-item .vertical-tab-nav-item-icon {
@@ -2425,14 +2467,21 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   box-shadow: none;
 }
 
-.modal.mod-settings .setting-item:not(.setting-item-heading),
+.modal.mod-settings .setting-item:not(.setting-item-heading) {
+  padding: var(--lg-space-4);
+  align-items: center;
+}
+
 .setting-item {
-  padding: var(--lg-space-4) 0;
   gap: var(--lg-space-2) var(--lg-space-4);
 }
 
 .setting-item-heading {
   padding-block: 0;
+}
+
+.modal.mod-settings .setting-item-heading {
+  padding-inline: var(--lg-space-4);
 }
 
 .prompt {
@@ -3214,7 +3263,7 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-input-nav-row {
   justify-content: space-between;
   gap: var(--lg-space-2);
-  padding: 0 var(--lg-claudian-control-gutter) var(--lg-space-2);
+  padding: 0 0 var(--lg-space-2);
 }
 
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-tab-badges {
@@ -3636,6 +3685,107 @@ body:not(.lumen-claudian-plain) .is-disabled) {
   body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] * {
     scroll-behavior: auto;
   }
+}
+
+body:not(.lumen-claudian-plain) .modal.mod-settings .setting-item.claudian-settings {
+  --lg-claudian-tab-track-pad: 3px;
+  --lg-claudian-tab-track-inset: calc(var(--lg-claudian-tab-track-pad) + 1px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body:not(.lumen-claudian-plain) .claudian-settings .claudian-settings-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  box-sizing: border-box;
+  width: auto;
+  min-height: var(--lg-control-size);
+  padding: var(--lg-claudian-tab-track-pad);
+  margin: 0 var(--lg-space-4) var(--lg-space-4);
+  overflow: visible;
+  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 16%, transparent);
+  border-radius: var(--lg-radius-pill);
+  background: color-mix(in srgb, var(--lg-text-on-glass) 6%, var(--lg-paper-solid));
+}
+
+body:not(.lumen-claudian-plain) .modal.mod-settings .claudian-settings .setting-item:not(.setting-item-heading) {
+  padding-left: calc(var(--lg-space-4) + var(--lg-claudian-tab-track-inset));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body:not(.lumen-claudian-plain) .modal.mod-settings .claudian-settings .setting-item-heading {
+  position: static;
+  margin: var(--lg-space-6) var(--lg-space-4) 0;
+  padding: var(--lg-space-3) var(--lg-claudian-tab-track-inset) var(--lg-space-2);
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 16%, transparent);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body:not(.lumen-claudian-plain) .modal.mod-settings .claudian-settings .setting-item-heading:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+body:not(.lumen-claudian-plain) .modal.mod-settings .claudian-settings .setting-item-heading::after {
+  content: none;
+}
+
+body:not(.lumen-claudian-plain).theme-light .claudian-settings button.claudian-settings-tab,
+body:not(.lumen-claudian-plain).theme-dark .claudian-settings button.claudian-settings-tab {
+  flex: 1 1 0;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--lg-control-size) - 4px);
+  margin: 0;
+  padding: 0 var(--lg-space-3);
+  border: 0;
+  border-radius: var(--lg-radius-pill);
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  font-weight: 500;
+  line-height: 1;
+}
+
+body:not(.lumen-claudian-plain).theme-light .claudian-settings button.claudian-settings-tab:hover,
+body:not(.lumen-claudian-plain).theme-dark .claudian-settings button.claudian-settings-tab:hover {
+  background: color-mix(in srgb, var(--lg-text-on-glass) 6%, transparent);
+  border: 0;
+  box-shadow: none;
+  color: var(--text-normal);
+}
+
+body:not(.lumen-claudian-plain).theme-light .claudian-settings button.claudian-settings-tab:active,
+body:not(.lumen-claudian-plain).theme-dark .claudian-settings button.claudian-settings-tab:active {
+  background: color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+  border: 0;
+  box-shadow: none;
+}
+
+body:not(.lumen-claudian-plain).theme-light .claudian-settings button.claudian-settings-tab--active,
+body:not(.lumen-claudian-plain).theme-dark .claudian-settings button.claudian-settings-tab--active,
+body:not(.lumen-claudian-plain).theme-light .claudian-settings button.claudian-settings-tab--active:hover,
+body:not(.lumen-claudian-plain).theme-dark .claudian-settings button.claudian-settings-tab--active:hover,
+body:not(.lumen-claudian-plain).theme-light .claudian-settings button.claudian-settings-tab--active:active,
+body:not(.lumen-claudian-plain).theme-dark .claudian-settings button.claudian-settings-tab--active:active {
+  background: var(--lg-paper-solid);
+  border: 0;
+  box-shadow: none;
+  color: var(--text-normal);
+  font-weight: 600;
 }
 
 .is-mobile .workspace-drawer.mod-left,
