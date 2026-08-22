@@ -6,6 +6,10 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Replaced the public preview with a dual-mode English hero (light and dark side by side). The community listing still reads `assets/screenshot.png` from the default branch.
+
 ## [1.0.8] - 2026-08-22
 
 ### Added
