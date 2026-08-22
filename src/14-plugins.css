@@ -18,12 +18,17 @@
 /*
  * Lumen Stage (plugin id lumen-stage) owns pan, zoom and fullscreen.
  * The theme only skins the .lmm-* classes that plugin creates, so readers
- * without it keep the native figure above. The prefix is kept for the
- * existing skin; it is not the plugin id. The interactive host is the same
+ * without it keep the native figure above. The interactive host is the same
  * component as a code block: a silent 36px header band, then a flush canvas.
  * No grid paper, no floating glass toolbar.
+ *
+ * body + .mermaid.lmm-host beats the plugin's .mermaid.lmm-host fallback
+ * (0,2,1 > 0,2,0) without :has and without a view :is() wrapper. Children
+ * only need .lmm-host — that already outranks the plugin's single class.
+ * Live Preview padding is cleared by .lmm-embed, which the plugin toggles
+ * on the parent .cm-embed-block.
  */
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host {
+body .mermaid.lmm-host {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
@@ -37,7 +42,7 @@
   overflow: hidden;
 }
 
-.markdown-source-view.mod-cm6 .cm-embed-block:has(> .mermaid.lmm-host) {
+.markdown-source-view.mod-cm6 .cm-embed-block.lmm-embed {
   padding: 0;
   background: transparent;
   box-shadow: none;
@@ -47,7 +52,7 @@
   overflow: hidden;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-bar {
+.lmm-host .lmm-bar {
   min-height: 36px;
   padding: 6px var(--lg-space-2) 6px var(--lg-space-4);
   border: 0;
@@ -57,14 +62,14 @@
     inset 0 -1px 0 var(--lg-code-header-divider);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-kind {
+.lmm-host .lmm-kind {
   color: var(--text-muted);
   font-size: var(--font-ui-smaller);
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair {
+.lmm-host .lmm-flair {
   min-height: 24px;
   padding: 2px var(--lg-space-2);
   border-radius: var(--lg-radius-s);
@@ -80,25 +85,25 @@
     background-color var(--lg-duration-fast) var(--lg-ease);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:hover {
+.lmm-host .lmm-flair:hover {
   background: var(--lg-state-hover);
   color: var(--text-normal);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:focus-visible {
+.lmm-host .lmm-flair:focus-visible {
   outline: var(--lg-focus-ring);
   outline-offset: var(--lg-focus-offset-inset);
   box-shadow: none;
   color: var(--text-normal);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:disabled {
+.lmm-host .lmm-flair:disabled {
   background: transparent;
   color: var(--text-faint);
   opacity: 1;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-viewport {
+.lmm-host .lmm-viewport {
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -106,12 +111,12 @@
   box-shadow: none;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-viewport:focus-visible {
+.lmm-host .lmm-viewport:focus-visible {
   outline: var(--lg-focus-ring);
   outline-offset: var(--lg-focus-offset-inset);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-stage.is-animating {
+.lmm-host .lmm-stage.is-animating {
   transition: transform var(--lg-duration) var(--lg-ease);
 }
 
@@ -135,7 +140,7 @@
 }
 
 @media (max-width: 700px) {
-  .markdown-rendered .mermaid.lmm-host {
+  body .mermaid.lmm-host {
     width: 100%;
     max-width: 100%;
     margin-inline: 0;
@@ -149,7 +154,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host :is(.lmm-stage.is-animating, .lmm-flair) {
+  .lmm-host :is(.lmm-stage.is-animating, .lmm-flair) {
     animation: none;
     transition: none;
   }

@@ -6,6 +6,16 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.10] - 2026-08-22
+
+### Fixed
+
+- Replaced the Lumen Stage Live Preview parent selector that used `:has()`. The plugin already toggles `.lmm-embed` on `.cm-embed-block`; the theme now targets that class, so community CSS lint no longer warns and no `!important` is needed.
+
+### Changed
+
+- Tightened the Stage skin to `body .mermaid.lmm-host` and `.lmm-host …`. Those selectors still outrank the plugin fallback, cover Reading View, Live Preview and fullscreen, and drop the repeated `:is(.markdown-rendered, .lmm-fs)` wrapper.
+
 ## [1.0.9] - 2026-08-22
 
 ### Fixed
@@ -137,6 +147,10 @@ The project follows [Semantic Versioning](https://semver.org/).
 - Style Settings controls for wallpaper, glass weight, contrast, transparency, and accent color.
 - Automated repository validation and tag-based GitHub releases.
 
+[1.0.10]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.10
+[1.0.9]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.9
+[1.0.8]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.8
+[1.0.7]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.7
 [1.0.6]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.6
 [1.0.5]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.5
 [1.0.4]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.4

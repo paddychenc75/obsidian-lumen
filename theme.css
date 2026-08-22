@@ -2728,7 +2728,7 @@ body :is(
   border-radius: var(--lg-radius-m);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host {
+body .mermaid.lmm-host {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
@@ -2742,7 +2742,7 @@ body :is(
   overflow: hidden;
 }
 
-.markdown-source-view.mod-cm6 .cm-embed-block:has(> .mermaid.lmm-host) {
+.markdown-source-view.mod-cm6 .cm-embed-block.lmm-embed {
   padding: 0;
   background: transparent;
   box-shadow: none;
@@ -2752,7 +2752,7 @@ body :is(
   overflow: hidden;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-bar {
+.lmm-host .lmm-bar {
   min-height: 36px;
   padding: 6px var(--lg-space-2) 6px var(--lg-space-4);
   border: 0;
@@ -2762,14 +2762,14 @@ body :is(
     inset 0 -1px 0 var(--lg-code-header-divider);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-kind {
+.lmm-host .lmm-kind {
   color: var(--text-muted);
   font-size: var(--font-ui-smaller);
   font-weight: 500;
   letter-spacing: 0.01em;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair {
+.lmm-host .lmm-flair {
   min-height: 24px;
   padding: 2px var(--lg-space-2);
   border-radius: var(--lg-radius-s);
@@ -2785,25 +2785,25 @@ body :is(
     background-color var(--lg-duration-fast) var(--lg-ease);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:hover {
+.lmm-host .lmm-flair:hover {
   background: var(--lg-state-hover);
   color: var(--text-normal);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:focus-visible {
+.lmm-host .lmm-flair:focus-visible {
   outline: var(--lg-focus-ring);
   outline-offset: var(--lg-focus-offset-inset);
   box-shadow: none;
   color: var(--text-normal);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:disabled {
+.lmm-host .lmm-flair:disabled {
   background: transparent;
   color: var(--text-faint);
   opacity: 1;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-viewport {
+.lmm-host .lmm-viewport {
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -2811,12 +2811,12 @@ body :is(
   box-shadow: none;
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-viewport:focus-visible {
+.lmm-host .lmm-viewport:focus-visible {
   outline: var(--lg-focus-ring);
   outline-offset: var(--lg-focus-offset-inset);
 }
 
-:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-stage.is-animating {
+.lmm-host .lmm-stage.is-animating {
   transition: transform var(--lg-duration) var(--lg-ease);
 }
 
@@ -2840,7 +2840,7 @@ body :is(
 }
 
 @media (max-width: 700px) {
-  .markdown-rendered .mermaid.lmm-host {
+  body .mermaid.lmm-host {
     width: 100%;
     max-width: 100%;
     margin-inline: 0;
@@ -2854,7 +2854,7 @@ body :is(
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host :is(.lmm-stage.is-animating, .lmm-flair) {
+  .lmm-host :is(.lmm-stage.is-animating, .lmm-flair) {
     animation: none;
     transition: none;
   }
