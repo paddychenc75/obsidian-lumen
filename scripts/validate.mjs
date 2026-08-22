@@ -274,6 +274,23 @@ if (releaseTag && releaseTag !== manifest.version) {
 }
 
 const css = read("theme.css");
+const cssBytes = Buffer.byteLength(css);
+/*
+ * Official theme docs do not publish a numeric ceiling. The community
+ * directory RELEASES check warns "Theme CSS file is larger than recommended"
+ * (a warning, not a blocking error). 1.0.7 at 135632 bytes drew that
+ * warning, so the working budget is 128 KiB — the first power-of-two below
+ * the flagged file. A 100 KiB bar is unreachable here without dropping
+ * features: even a fully minified sheet still sits around 110 KB.
+ */
+const recommendedCssBytes = 128 * 1024;
+if (cssBytes > recommendedCssBytes) {
+  warn(
+    `theme.css is ${cssBytes} bytes (${(cssBytes / 1024).toFixed(1)} KiB); ` +
+      `keep it at or under ${recommendedCssBytes / 1024} KiB to stay below the size that 1.0.7 was flagged for`,
+  );
+}
+
 if (!css.includes("/* @settings")) {
   fail("theme.css is missing the Style Settings metadata block");
 }
@@ -286,6 +303,11 @@ checkTokenGraph(css);
 checkRadiusScale(css);
 
 const cssWithoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+if (/(?:^|[\s{;])(?:break-inside|break-after|break-before)\s*:/.test(cssWithoutComments)) {
+  fail(
+    "theme.css uses CSS Fragmentation break-* properties; community lint maps them to multicolumn. Use page-break-* for print.",
+  );
+}
 if (/@import\s+(?:url\()?["']?https?:/i.test(cssWithoutComments)) {
   fail("theme.css must not import remote stylesheets");
 }
@@ -314,5 +336,5 @@ if (errors.length > 0) {
 
 console.log(
   `Validated ${expectedThemeName} ${manifest.version}: ${requiredFiles.length} required files, ` +
-    `${importantCount} !important declarations, no remote theme assets.`,
+    `${cssBytes} bytes, ${importantCount} !important declarations, no remote theme assets.`,
 );

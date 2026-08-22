@@ -304,6 +304,17 @@
 .theme-light {
   --code-background: #f2f2f7;
   --code-normal: #242426;
+  --lg-code-border: rgba(60, 60, 67, 0.2);
+  --lg-code-header: color-mix(in srgb, var(--code-normal) 3%, var(--code-background));
+  --lg-code-header-divider: rgba(60, 60, 67, 0.12);
+  --lg-code-highlight: rgba(255, 255, 255, 0.72);
+  --lg-diagram-surface: color-mix(in srgb, var(--lg-accent) 2%, var(--lg-paper-solid));
+  --lg-diagram-border: color-mix(in srgb, var(--text-normal) 14%, transparent);
+  --lg-diagram-node: color-mix(in srgb, var(--lg-accent) 8%, var(--lg-paper-solid));
+  --lg-diagram-node-border: color-mix(in srgb, var(--lg-accent) 44%, var(--text-muted));
+  --lg-diagram-edge: color-mix(in srgb, var(--text-normal) 62%, transparent);
+  --lg-diagram-label-bg: color-mix(in srgb, var(--lg-paper-solid) 94%, transparent);
+  --lg-diagram-highlight: rgba(255, 255, 255, 0.8);
   --lg-syn-keyword: #9b2393;
   --lg-syn-tag: #b02867;
   --lg-syn-string: #b3261e;
@@ -324,6 +335,17 @@
 .theme-dark {
   --code-background: #242426;
   --code-normal: #e8e8ed;
+  --lg-code-border: rgba(235, 235, 245, 0.18);
+  --lg-code-header: color-mix(in srgb, var(--code-normal) 4%, var(--code-background));
+  --lg-code-header-divider: rgba(235, 235, 245, 0.1);
+  --lg-code-highlight: rgba(255, 255, 255, 0.06);
+  --lg-diagram-surface: color-mix(in srgb, var(--lg-accent) 4%, var(--lg-paper-solid));
+  --lg-diagram-border: color-mix(in srgb, var(--text-normal) 18%, transparent);
+  --lg-diagram-node: color-mix(in srgb, var(--lg-accent) 14%, var(--code-background));
+  --lg-diagram-node-border: color-mix(in srgb, var(--lg-accent) 62%, var(--text-muted));
+  --lg-diagram-edge: color-mix(in srgb, var(--text-normal) 68%, transparent);
+  --lg-diagram-label-bg: color-mix(in srgb, var(--lg-paper-solid) 94%, transparent);
+  --lg-diagram-highlight: rgba(255, 255, 255, 0.05);
   --lg-syn-keyword: #e88ce0;
   --lg-syn-tag: #f2879f;
   --lg-syn-string: #f0907f;
@@ -342,6 +364,7 @@
 }
 
 body {
+  --font-mermaid: var(--font-interface-theme);
   --code-keyword: var(--lg-syn-keyword);
   --code-tag: var(--lg-syn-tag);
   --code-string: var(--lg-syn-string);
@@ -364,11 +387,13 @@ body {
 }
 
 .markdown-rendered pre {
-  border-radius: var(--code-radius);
+  border-radius: var(--lg-radius-m);
   overflow: hidden;
   margin-block: var(--lg-space-6);
   padding: 0;
-  border: 1px solid var(--background-modifier-border);
+  border: 1px solid var(--lg-code-border);
+  background: var(--code-background);
+  box-shadow: inset 0 1px 0 var(--lg-code-highlight);
   line-height: 1.55;
   tab-size: 2;
 }
@@ -393,9 +418,212 @@ body {
 
 body[class] .workspace-leaf-content .markdown-rendered pre > code {
   display: block;
-  padding: var(--lg-space-3) var(--lg-space-4);
+  padding: var(--lg-space-4);
   background: transparent;
   font-size: 0.875em;
+  line-height: 1.55;
   overflow-x: auto;
+}
+
+/*
+ * Live Preview renders a fenced block as one CodeMirror line per source line,
+ * rather than as one <pre>. The fence line therefore becomes the component's
+ * header, and each line has to carry its own side rails. Inset strokes preserve
+ * line metrics, stay continuous across wrapped visual lines and avoid the
+ * half-pixel seams produced by stacking actual borders.
+ */
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock {
+  padding-inline: var(--lg-space-4);
+  background: var(--code-background);
+  font-size: 0.875em;
+  line-height: 1.55;
+  box-shadow:
+    inset 1px 0 0 var(--lg-code-border),
+    inset -1px 0 0 var(--lg-code-border);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock-begin {
+  min-height: 36px;
+  padding-block: 6px;
+  border-radius: var(--lg-radius-m) var(--lg-radius-m) 0 0;
+  background: var(--lg-code-header);
+  box-shadow:
+    inset 1px 0 0 var(--lg-code-border),
+    inset -1px 0 0 var(--lg-code-border),
+    inset 0 1px 0 var(--lg-code-border),
+    inset 0 -1px 0 var(--lg-code-header-divider),
+    inset 0 2px 0 var(--lg-code-highlight);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-codeblock-begin
+  + .HyperMD-codeblock:not(.HyperMD-codeblock-end) {
+  padding-block-start: var(--lg-space-4);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock-end {
+  min-height: var(--lg-space-3);
+  border-radius: 0 0 var(--lg-radius-m) var(--lg-radius-m);
+  box-shadow:
+    inset 1px 0 0 var(--lg-code-border),
+    inset -1px 0 0 var(--lg-code-border),
+    inset 0 -1px 0 var(--lg-code-border);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair {
+  inset: 6px var(--lg-space-2) auto auto;
+  min-height: 24px;
+  padding: 2px var(--lg-space-2);
+  border-radius: var(--lg-radius-s);
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 20px;
+  transition:
+    color var(--lg-duration-fast) var(--lg-ease),
+    background-color var(--lg-duration-fast) var(--lg-ease);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair:hover {
+  background: var(--lg-state-hover);
+  color: var(--text-normal);
+}
+
+/*
+ * A diagram is a figure, not another paragraph. It may use the quiet space on
+ * either side of the prose measure, up to 48rem, while text keeps its 40em line
+ * length. This is a controlled breakout: the diagram grows by at most 4rem on
+ * each side and collapses back to the prose column in a narrow window.
+ */
+.markdown-rendered .mermaid {
+  box-sizing: border-box;
+  width: min(48rem, calc(100% + 8rem));
+  max-width: calc(100% + 8rem);
+  margin: var(--lg-space-8) 50%;
+  padding: var(--lg-space-6);
+  transform: translateX(-50%);
+  border: 1px solid var(--lg-diagram-border);
+  border-radius: var(--lg-radius-m);
+  background: var(--lg-diagram-surface);
+  box-shadow: inset 0 1px 0 var(--lg-diagram-highlight);
+  overflow: auto;
+  color: var(--text-normal);
+}
+
+.markdown-rendered .mermaid svg {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+/*
+ * Mermaid injects one generated ID selector per SVG and bakes a light palette
+ * into it; Obsidian then inverts the whole SVG in dark mode. That preserves
+ * neither semantic colours nor text contrast. The unused ID inside :is() raises
+ * specificity above Mermaid's generated ID without !important, while the class
+ * arm is the one that actually matches. Inline classDef/style declarations still
+ * outrank these rules, so author-specified diagram semantics remain intact.
+ */
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid) svg {
+  filter: none;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  .node
+  :is(rect, circle, ellipse, polygon, path),
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(rect.actor, rect.note, rect.labelBox, rect.activation0, rect.activation1, rect.activation2) {
+  fill: var(--lg-diagram-node);
+  stroke: var(--lg-diagram-node-border);
+  stroke-width: 1.25px;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(rect.label-container, rect.actor, rect.note, rect.labelBox) {
+  rx: var(--lg-radius-s);
+  ry: var(--lg-radius-s);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(
+    .nodeLabel,
+    .nodeLabel p,
+    .label text,
+    .label span,
+    .cluster-label text,
+    .cluster-label span,
+    text.actor,
+    .actor > tspan,
+    .messageText,
+    .loopText,
+    .noteText,
+    .stateLabel,
+    .classTitle,
+    .entityLabel
+  ) {
+  fill: var(--text-normal);
+  color: var(--text-normal);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(
+    .flowchart-link,
+    .actor-line,
+    .messageLine0,
+    .messageLine1,
+    .loopLine,
+    .transition,
+    .relation,
+    .relationshipLine
+  ) {
+  stroke: var(--lg-diagram-edge);
+  stroke-width: 1.5px;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(.arrowMarkerPath, marker path) {
+  fill: var(--lg-diagram-edge);
+  stroke: var(--lg-diagram-edge);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(.edgeLabel, .edgeLabel p, .labelBkg) {
+  background: var(--lg-diagram-label-bg);
+  color: var(--text-muted);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid) .edgeLabel rect {
+  fill: var(--lg-diagram-label-bg);
+  opacity: 1;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid) .cluster rect {
+  fill: color-mix(in srgb, var(--lg-diagram-node) 42%, transparent);
+  stroke: var(--lg-diagram-border);
+  rx: var(--lg-radius-m);
+  ry: var(--lg-radius-m);
+}
+
+@media (max-width: 700px) {
+  .markdown-rendered .mermaid {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    padding: var(--lg-space-4);
+    transform: none;
+  }
+
+  /*
+   * Scaling a 736px graph into a phone column makes its 16px labels roughly 7px.
+   * Keep one nested horizontal scroller instead; the note itself never scrolls
+   * sideways, and the diagram keeps readable text.
+   */
+  .markdown-rendered .mermaid svg {
+    min-width: 32rem;
+    max-width: none;
+  }
 }
 

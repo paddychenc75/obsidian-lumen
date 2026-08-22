@@ -130,10 +130,6 @@ settings:
 
 */
 
-/* --------------------------------------------------------------------------
-   0. Tokens
-   -------------------------------------------------------------------------- */
-
 :root {
   --lumen-accent: #0a84ff;
   --lumen-ambient-bleed: 30%;
@@ -144,16 +140,11 @@ settings:
   --lg-accent-1: color-mix(in srgb, var(--lg-accent) 68%, #fff);
   --lg-accent-2: color-mix(in srgb, var(--lg-accent) 62%, #000);
 
-  /*
-   * One focus language for the whole theme. Every :focus-visible rule composes
-   * these, so `prefers-contrast: more` can widen the ring by overriding a
-   * token instead of fighting per-component selector specificity.
-   */
   --lg-focus-color: color-mix(in srgb, var(--lg-accent) 85%, transparent);
   --lg-focus-width: 2px;
   --lg-focus-ring: var(--lg-focus-width) solid var(--lg-focus-color);
   --lg-focus-offset: 2px;
-  /* Rows and cells whose parent clips overflow have to draw the ring inside. */
+
   --lg-focus-offset-inset: -2px;
 
   --lg-glass-blur: 24px;
@@ -177,13 +168,7 @@ settings:
   --lg-glass-solid: #e8eef2;
   --lg-overlay-solid: #f7f7f8;
   --lg-glass-highlight: radial-gradient(120% 70% at 28% 16%, rgba(255, 255, 255, 0.22), transparent 46%);
-  /*
-   * Shadows are stacked rather than single-blur. Real light casts a tight dark
-   * contact shadow where an object nearly touches the surface and a wide faint
-   * one from the room; one blur radius can only be one of those, so it either
-   * looks pasted down or lost in fog. Total darkness is held near the old
-   * single-stop value — the stack buys edge definition, not weight.
-   */
+
   --lg-glass-shadow:
     inset 0 0.5px 0 rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.04),
     0 4px 14px rgba(0, 0, 0, 0.055);
@@ -219,28 +204,13 @@ settings:
   --lg-space-8: 32px;
   --lg-space-10: 40px;
 
-  /*
-   * Radius hierarchy: controls → surfaces → floating chrome → dialogs.
-   * Keep desktop shells restrained; reserve pill geometry for true capsules.
-   */
   --lg-radius-xs: 3px;
   --lg-radius-s: 6px;
   --lg-radius-m: 10px;
   --lg-radius-l: 14px;
   --lg-radius-xl: 18px;
   --lg-radius-pill: 999px;
-  /*
-   * Chrome separations are declared, not inferred from colliding margins.
-   * --lg-chrome-gap must stay above --lg-radius-m: where two rounded panels
-   * meet, the channel widens at the corners, so a seam narrower than the radius
-   * reads as pinched along the straight run. Panels sharing a seam each carry
-   * half of it; panels meeting the window edge carry --lg-chrome-frame.
-   *
-   * The halving stays at the use site rather than living in a derived token:
-   * these are declared on :root, so a derived value would be substituted here
-   * and inherited frozen, ignoring any later override of the gap further down
-   * the tree (which is exactly what .lumen-chrome-flush does).
-   */
+
   --lg-chrome-frame: var(--lg-space-2);
   --lg-chrome-gap: var(--lg-space-3);
   --lg-item-gap: var(--lg-space-1);
@@ -250,10 +220,6 @@ settings:
   --lg-row-height: 36px;
   --lg-status-height: 32px;
 
-  /*
-   * Three durations, scaled to travel distance: state changes on something
-   * already on screen, elements that move, and surfaces that enter or leave.
-   */
   --lg-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --lg-duration-fast: 120ms;
   --lg-duration: 180ms;
@@ -276,12 +242,7 @@ settings:
   --lg-cta: #0068d9;
   --lg-cta-hover: #0058b8;
   --lg-cta-active: #004b9f;
-  /*
-   * A quote rule is structure, so it has to read as drawn rather than as a
-   * rendering artifact. The ladder also has to stay legible at the second and
-   * third level: fading it to a quarter made nesting read as a broken line
-   * instead of a deeper one.
-   */
+
   --lg-quote-line: color-mix(
     in srgb,
     color-mix(in srgb, var(--lg-accent) 18%, var(--text-muted)) 80%,
@@ -398,24 +359,11 @@ settings:
   --lg-overlay-shadow:
     0 1px 3px rgba(0, 0, 0, 0.26), 0 8px 22px rgba(0, 0, 0, 0.24),
     0 24px 56px rgba(0, 0, 0, 0.3);
-  /*
-   * The light recipe is a strong top highlight plus a faint cast shadow. In
-   * dark that inverts: a soft edge highlight for the glass rim, and a much
-   * deeper cast shadow, because 7% black over a dark canvas renders as nothing.
-   */
+
   --lg-glass-shadow:
     inset 0 0.5px 0 rgba(255, 255, 255, 0.14), 0 1px 2px rgba(0, 0, 0, 0.24),
     0 4px 16px rgba(0, 0, 0, 0.3);
-  /*
-   * The light CTA is tuned to carry white text on a white page, which leaves
-   * it darker than it needs to be here. Raising it toward the accent lifts it
-   * off the dark canvas — 3.7:1 against glass, up from 3.2:1 — while the label
-   * still clears 4.5:1. There is no headroom above this: full accent would
-   * drop white text to 3.65:1.
-   *
-   * Hover and press keep darkening, as they do in light, so the interaction
-   * reads the same in both appearances.
-   */
+
   --lg-cta: color-mix(in srgb, var(--lg-accent) 88%, #000);
   --lg-cta-hover: color-mix(in srgb, var(--lg-accent) 80%, #000);
   --lg-cta-active: color-mix(in srgb, var(--lg-accent) 72%, #000);
@@ -471,10 +419,6 @@ settings:
     transparent
   );
 }
-
-/* --------------------------------------------------------------------------
-   1. Map to Obsidian variables
-   -------------------------------------------------------------------------- */
 
 .theme-light,
 .theme-dark {
@@ -555,11 +499,7 @@ settings:
 }
 
 body {
-  /*
-   * Obsidian reserves this track before laying out the side dock.  The
-   * ribbon itself is 48px wide, so the track also needs room for its inset
-   * margins; otherwise Obsidian shrinks the island back to 44px.
-   */
+
   --ribbon-width: 52px;
   --radius-s: var(--lg-radius-s);
   --radius-m: var(--lg-radius-m);
@@ -585,24 +525,9 @@ body {
   --prompt-max-width: calc(100vw - 48px);
 
   --font-text-size: 17px;
-  /*
-   * Above the Latin norm because Han glyphs fill the em box: with no x-height to
-   * fall back on, the visible gap between lines is the whole of what leading
-   * buys, so a value that reads open in English reads cramped in Chinese.
-   */
+
   --line-height-normal: 1.7;
 
-  /*
-   * Sized in em, not rem, so the whole scale tracks the body size the reader
-   * picks in Style Settings instead of staying pinned to the root.
-   *
-   * Steps compress as they descend (1.22 → 1.19 → 1.17 → 1.12), which is what
-   * keeps the top of the scale dramatic and the bottom of it usable. Size runs
-   * out before the scale does, so h5 and h6 switch channel: they go bolder than
-   * h4 while getting smaller, the same weight inversion macOS uses between
-   * Title 3 and Headline. h6 also drops to muted, reading as a label rather
-   * than a title.
-   */
   --h1-size: 1.9em;
   --h2-size: 1.55em;
   --h3-size: 1.3em;
@@ -622,17 +547,6 @@ body {
   --h5-line-height: 1.45;
   --h6-line-height: 1.5;
 
-  /*
-   * Optical tracking: type set large needs to be pulled in, type set small
-   * needs to be opened up. Without this the scale reads as one font enlarged
-   * rather than as sizes designed for their own measure.
-   *
-   * These go through Obsidian's own --hN-letter-spacing and --h6-color rather
-   * than a .markdown-rendered rule, because the editor styles headings with a
-   * different set of selectors (.cm-header-N, .HyperMD-header-N) that read the
-   * same variables. Setting the property directly would leave Live Preview and
-   * source mode untracked while Reading View was tracked.
-   */
   --lg-tracking-h1: -0.02em;
   --lg-tracking-h2: -0.016em;
   --lg-tracking-h3: -0.012em;
@@ -646,12 +560,7 @@ body {
   --h5-letter-spacing: var(--lg-tracking-h5);
   --h6-letter-spacing: var(--lg-tracking-h6);
   --h6-color: var(--text-muted);
-  /*
-   * Both measured in the reader's own body size rather than in px or rem, so the
-   * line keeps its character count and the paragraph keeps its gap when the font
-   * size changes. Custom properties substitute as tokens, so the em resolves at
-   * the sizer and the paragraph — not here on body, where it would freeze.
-   */
+
   --p-spacing: 1em;
   --file-line-width: var(--lumen-file-line-width, 40em);
   --caret-color: var(--lg-accent);
@@ -737,12 +646,6 @@ body {
   --graph-node-focused: var(--lg-accent-hover);
 }
 
-/*
- * Properties. Obsidian ships this block fully transparent and borderless, which
- * reads fine for three fields and turns into an undifferentiated wall at
- * fifteen. Rows get a hairline separator so the block scans like a list, and the
- * label column widens because the default 7.5em clips the longer keys.
- */
 body {
   --metadata-max-width: 100%;
   --metadata-padding: 0;
@@ -767,11 +670,6 @@ body {
   --metadata-input-background-active: transparent;
 }
 
-/*
- * Search results default to an opaque `--background-primary` panel, which cuts a
- * solid rectangle out of the translucent sidebar. Transparent lets the pane
- * material show through and leaves the row states to carry the structure.
- */
 body {
   --search-result-background: transparent;
   --search-input-radius: var(--lg-radius-s);
@@ -779,11 +677,6 @@ body {
   --search-clear-button-color: var(--text-muted);
 }
 
-/*
- * The accent rail Obsidian puts on embeds is the same device as a blockquote's,
- * so a quoted embed grows two of them. The embed keeps its card and gives up the
- * rail; the blockquote keeps the rail.
- */
 body {
   --embed-border-start: none;
   --embed-block-shadow-hover: 0 0 0 1px var(--lg-paper-border);
@@ -792,11 +685,6 @@ body {
   --embed-action-radius: var(--lg-radius-xs);
 }
 
-/*
- * A drag ghost and a tooltip are the same object — a small label floating over
- * the page — so they share a material instead of the ghost keeping its own
- * hardcoded black.
- */
 body {
   --drag-ghost-background: var(--lg-tooltip-bg);
   --drag-ghost-text-color: var(--lg-tooltip-text);
@@ -812,26 +700,11 @@ body {
   --slider-thumb-shadow-focus: var(--slider-thumb-shadow), 0 0 0 var(--lg-focus-width) var(--lg-focus-color);
 }
 
-/* --------------------------------------------------------------------------
-   2. Environment (no fixed attachment, two layers max)
-   -------------------------------------------------------------------------- */
-
 body {
   background-color: var(--lg-wallpaper-fallback);
   -webkit-font-smoothing: antialiased;
 }
 
-/*
- * macOS draws its window controls over our panels at a fixed inset — measured at
- * x 14..74, y 12..25 — and will not move them for us. A frame wider than that
- * inset leaves the panel edge only a few pixels from buttons it cannot avoid, so
- * cap the frame here instead of shaving the top edge alone and going asymmetric.
- * The seam between panels is unaffected.
- *
- * The flush opt-out is excluded by selector rather than left to the cascade:
- * this selector outweighs `body.lumen-chrome-flush`, so without it the platform
- * cap would quietly hold a 4px frame against a reader who asked for none.
- */
 body.mod-macos.is-hidden-frameless:not(.is-popout-window):not(.lumen-chrome-flush) {
   --lg-chrome-frame: var(--lg-space-1);
 }
@@ -880,10 +753,6 @@ body *::-webkit-scrollbar-thumb:hover {
   background-color: transparent;
 }
 
-/* --------------------------------------------------------------------------
-   3. Glass chrome — one blur layer, no nested filters
-   -------------------------------------------------------------------------- */
-
 .workspace-ribbon.side-dock-ribbon,
 .workspace-split.mod-left-split,
 .workspace-split.mod-right-split,
@@ -929,13 +798,9 @@ body.theme-dark .workspace-split.mod-right-split {
   -webkit-backdrop-filter: none;
 }
 
-/* --------------------------------------------------------------------------
-   4. Ribbon
-   -------------------------------------------------------------------------- */
-
 .workspace-ribbon.side-dock-ribbon.mod-left {
   width: 48px;
-  /* Flush to the left split on its inner edge, so no seam there. */
+
   margin: var(--lg-chrome-frame) 0 var(--lg-chrome-frame) var(--lg-chrome-frame);
   border-inline-end: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 9%, transparent);
   border-radius: var(--lg-radius-m) 0 0 var(--lg-radius-m);
@@ -944,12 +809,6 @@ body.theme-dark .workspace-split.mod-right-split {
   position: relative;
 }
 
-/*
- * The window controls end at x 74, past this rail's inner edge, so the divider
- * would run between the yellow and green buttons and split a cluster the OS
- * draws as one. Drop the divider across the control band and let the rail and
- * the sidebar read as a single surface up there; resume it below.
- */
 body.mod-macos.is-hidden-frameless:not(.is-popout-window)
   .workspace-ribbon.side-dock-ribbon.mod-left {
   padding-top: 36px;
@@ -1000,20 +859,13 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
   background: transparent;
 }
 
-/* --------------------------------------------------------------------------
-   5. Sidebars + file tree
-   -------------------------------------------------------------------------- */
-
 .workspace-split.mod-left-split,
 .workspace-split.mod-right-split {
   height: calc(100% - var(--lg-chrome-frame) - var(--lg-chrome-frame));
-  /* Left split: flush to the ribbon, so only the inner edge carries a seam. */
+
   margin: var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2) var(--lg-chrome-frame) 0;
   border-radius: var(--lg-radius-m);
-  /*
-   * The split's resize handle lives on its outer edge. Clipping the split
-   * hides that handle and leaves a misleading dead strip between panes.
-   */
+
   overflow: visible;
 }
 
@@ -1161,12 +1013,6 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   color: var(--lg-text-on-glass);
 }
 
-/*
- * 16px puts the row's highlight 12px from the panel edge, which is where the tag
- * and link panes already start theirs — core pulls these rows 4px back out with
- * an inline margin, so the panel has to give the 4px back. Getting this wrong is
- * visible: the highlight slides sideways when you switch tabs in the same panel.
- */
 .workspace-leaf-content[data-type="outline"] .view-content,
 .workspace-leaf-content[data-type="all-properties"] .view-content {
   padding-inline: var(--lg-space-4);
@@ -1177,24 +1023,6 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   padding-block: var(--lg-space-2) var(--lg-space-8);
 }
 
-/*
- * Sidebar rows hang their leading icon 20px to the left of the row's text box, so
- * that a row with a disclosure arrow and a row without one still put their labels
- * in the same column. The tag pane proves the hang is load-bearing: at equal
- * depth, a collapsible row and a plain one start their label at the same x. So the
- * hang stays, and it is given somewhere to hang into instead.
- *
- * Core reserves 24px of leading padding for exactly that in --nav-item-padding,
- * then hands these views 8px, which leaves the icon hanging into the panel's own
- * edge margin — measured 4px from the panel edge in the properties list, about 0
- * in the link panes, i.e. outside the row's own hover shape. Nothing in a sidebar
- * row should sit outside its highlight.
- *
- * 24px is not a new number: it is what core reserves and what the tag pane keeps,
- * so the icon lands 16px from the panel edge as it already does there. The file
- * explorer is excluded — its rows are .tree-item-self too, but their metrics are
- * set above.
- */
 .workspace-leaf-content[data-type="tag"] .tree-item-self,
 .workspace-leaf-content[data-type="backlink"] .tree-item-self,
 .workspace-leaf-content[data-type="outgoing-link"] .tree-item-self,
@@ -1202,18 +1030,6 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   padding-inline-start: var(--lg-space-6);
 }
 
-/*
- * The outline and properties panes cannot be reached that way: core writes their
- * indentation as an inline `padding-inline-start: 12px !important`, which no style
- * sheet can outbid. So the same 16px landing point is reached from the other side
- * — the icon is absolutely positioned, offset from the row's content edge by its
- * own margin, so shortening the hang to 8px moves it without touching the rest.
- *
- * Because the icon is out of flow, the label does not follow it, and shortening
- * the hang alone would run the icon straight over the first characters (measured
- * 8px of overlap). The label is moved the same 12px separately, which lands it at
- * 36px like every other pane, and keeps the 4px between icon and text.
- */
 .workspace-leaf-content[data-type="all-properties"] .tree-item-icon,
 .workspace-leaf-content[data-type="outline"] .tree-item-icon {
   margin-inline-start: calc(-1 * var(--lg-space-2));
@@ -1224,21 +1040,10 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   padding-inline-start: var(--lg-space-3);
 }
 
-/*
- * The trailing count sits at the row's own padding edge, so it needs 4px rather
- * than 8px to land 20px from the panel edge — level with the icon on the other
- * side, and level with the counts in the tag and link panes.
- */
 .workspace-leaf-content[data-type="all-properties"] .tree-item-self {
   padding-inline-end: var(--lg-space-1);
 }
 
-/*
- * Search results are a two-level list — a file, then the lines that matched
- * inside it. Obsidian gives both levels the same visual weight, so a result with
- * six matches reads as seven equal rows. The file line keeps the list language
- * used by the file tree; the matches recede and indent under it.
- */
 .search-result-file-title {
   border-radius: var(--lg-radius-xs);
   color: var(--lg-text-on-glass);
@@ -1259,10 +1064,6 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   background-color: var(--lg-state-hover);
 }
 
-/*
- * The matched run is the only reason the row is on screen, so it gets the same
- * highlight the reader already knows from `==marked==` text in a note.
- */
 .search-result-file-matched-text {
   border-radius: var(--lg-radius-xs);
   padding: 0 2px;
@@ -1275,10 +1076,6 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   color: var(--lg-text-on-glass-2);
   font-size: var(--font-ui-smaller);
 }
-
-/* --------------------------------------------------------------------------
-   6. Tabs
-   -------------------------------------------------------------------------- */
 
 .workspace-split.mod-root .workspace-tab-header-container {
   margin: var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2) calc(var(--lg-chrome-gap) / 2);
@@ -1456,15 +1253,6 @@ body.theme-dark .workspace-split.mod-root .workspace-tab-header-inner-close-butt
   height: 14px;
 }
 
-/* --------------------------------------------------------------------------
-   7. Status bar — compact island anchored to the editor
-   -------------------------------------------------------------------------- */
-
-/*
- * The sidebars have user-resizable inline widths and Obsidian exposes no
- * stable CSS variable for them. CSS anchors let the compact status island
- * follow the real root split without drawing an empty full-width rail.
- */
 .workspace-split.mod-root {
   anchor-name: --lumen-editor-column;
   padding-bottom: 0;
@@ -1513,10 +1301,6 @@ body.is-mobile .status-bar {
 .status-bar-item {
   color: inherit;
 }
-
-/* --------------------------------------------------------------------------
-   8. Paper
-   -------------------------------------------------------------------------- */
 
 .workspace-split.mod-root,
 .workspace-split.mod-root .workspace-tabs {
@@ -1577,38 +1361,16 @@ body.is-mobile .status-bar {
   padding-bottom: calc(var(--lg-status-height) + var(--lg-space-4));
 }
 
-/*
- * `balance` is for headings, where every line is worth evening out. Body copy
- * uses `pretty`, which only fixes the end of the paragraph — it clears single
- * word last lines without re-flowing the whole block on each keystroke.
- */
 .markdown-rendered p,
 .markdown-rendered li {
   text-wrap: pretty;
 }
 
-/*
- * Print sets a thin space where a Han character meets Latin or a digit. The
- * browser leaves this off by default, so `强缓存由Cache-Control控制` renders with
- * the two scripts jammed together.
- *
- * This is additive rather than corrective: measured on Chromium 142, a boundary
- * that already has a typed space gets nothing extra, so a vault whose house
- * style is to type the space sees no change and one that forgot it gets the
- * space anyway. Applied to both views so the line does not reflow when the
- * reader switches between editing and reading.
- */
 .markdown-rendered,
 .markdown-source-view.mod-cm6 .cm-content {
   text-autospace: normal;
 }
 
-/*
- * The properties block is interface furniture that happens to sit inside the
- * reading surface. A closing rule keeps it from bleeding into the first
- * paragraph, which is what makes a fifteen field frontmatter read as a header
- * rather than as the start of the note.
- */
 .metadata-container {
   margin-block-end: var(--lg-space-6);
   padding-block-end: var(--lg-space-2);
@@ -1620,13 +1382,6 @@ body.is-mobile .status-bar {
   font-size: var(--font-ui-smaller);
 }
 
-/*
- * The key cell aligns its children to the top so a wrapped value keeps its label
- * on the first line. That makes the icon's own height, not the row's, decide where
- * it lands — and Obsidian sizes it for its own 28px field, while our form floor
- * gives the field --lg-control-size. Left alone the icon sat half the difference
- * above the label on every row: measured 4px on all ten. It follows the field.
- */
 .metadata-property-icon {
   height: var(--lg-control-size);
 }
@@ -1640,10 +1395,6 @@ body.is-mobile .status-bar {
 .metadata-container .metadata-add-button.clickable-icon:focus-visible {
   color: var(--text-muted);
 }
-
-/* --------------------------------------------------------------------------
-   9. Markdown
-   -------------------------------------------------------------------------- */
 
 .markdown-rendered,
 .markdown-source-view.mod-cm6 .cm-content {
@@ -1673,10 +1424,6 @@ body.is-mobile .status-bar {
   line-height: var(--line-height-normal);
 }
 
-/*
- * Colour is deliberately left to Obsidian's --hN-color so the h6 override
- * survives; a `color` here would win on source order and re-normalise it.
- */
 .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
   font-family: var(--font-text-theme);
   font-synthesis-weight: none;
@@ -1758,11 +1505,6 @@ body.is-mobile .status-bar {
   margin-block: var(--lg-space-1);
 }
 
-/*
- * The marker is scaffolding, not content. At full text weight a dense outline
- * reads as two columns competing for the eye; muted, the items stay countable
- * and the prose keeps the foreground.
- */
 .markdown-rendered li::marker {
   color: var(--text-faint);
 }
@@ -1771,12 +1513,6 @@ body.is-mobile .status-bar {
   margin-block: var(--lg-space-1) var(--lg-space-2);
 }
 
-/*
- * The underline is an inset shadow rather than text-decoration so it can sit
- * clear of descenders. That needs `clone`: on the default `slice`, a link that
- * wraps draws the rule as one box across both fragments, leaving the first
- * line unmarked.
- */
 .markdown-rendered a.internal-link,
 .markdown-rendered a.external-link,
 .cm-hmd-internal-link,
@@ -1806,12 +1542,6 @@ body.is-mobile .status-bar {
   box-decoration-break: clone;
 }
 
-/*
- * 3px rather than 2px: at hairline width the rule competed with the text's own
- * stems and read as an artifact of rendering. The extra pixel is what makes it
- * read as drawn, and it lets the nesting ladder step down in colour without any
- * level becoming a smudge.
- */
 .markdown-rendered blockquote {
   background: transparent;
   border-inline-start-color: var(--lg-quote-line);
@@ -1857,15 +1587,6 @@ body.is-mobile .status-bar {
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote-3 .cm-blockquote-border::before {
   border-inline-start-color: var(--lg-quote-line-deep);
 }
-
-/*
- * The rule is square at both ends. Live preview draws it per line, so a cap can
- * only be put on the first or last line currently in the DOM — and CodeMirror
- * only keeps the viewport in the DOM, so a rounded cap would appear wherever the
- * quote happens to be cut off by scrolling, and travel as the reader scrolls. A
- * 3px stroke gains almost nothing from a 1.5px radius anyway, and square keeps
- * live preview identical to reading view.
- */
 
 .markdown-rendered .callout,
 .callout {
@@ -1929,24 +1650,20 @@ body.is-mobile .status-bar {
   margin-block: var(--lg-space-8) var(--lg-space-4);
 }
 
-/*
- * Syntax colors are chosen against the code surface instead of being inherited
- * from the interface palette, which is tuned for chrome and collapses on a near
- * white block: Obsidian's default maps functions to yellow, which lands at
- * 1.9:1 here, and all nine of its tokens miss 4.5:1 in light mode. Every value
- * below is measured against its own `--code-background`.
- *
- * Six hues carry meaning. Comments, operators and punctuation deliberately
- * share one neutral family — they are structure rather than content, and giving
- * each its own hue is what makes a code block look like plaid. Comments take
- * italic instead, so they stay separable while staying quiet.
- *
- * One mapping covers both renderers: these variables feed Prism's `.token-*` in
- * reading view and CodeMirror's `.cm-*` in the editor.
- */
 .theme-light {
   --code-background: #f2f2f7;
   --code-normal: #242426;
+  --lg-code-border: rgba(60, 60, 67, 0.2);
+  --lg-code-header: color-mix(in srgb, var(--code-normal) 3%, var(--code-background));
+  --lg-code-header-divider: rgba(60, 60, 67, 0.12);
+  --lg-code-highlight: rgba(255, 255, 255, 0.72);
+  --lg-diagram-surface: color-mix(in srgb, var(--lg-accent) 2%, var(--lg-paper-solid));
+  --lg-diagram-border: color-mix(in srgb, var(--text-normal) 14%, transparent);
+  --lg-diagram-node: color-mix(in srgb, var(--lg-accent) 8%, var(--lg-paper-solid));
+  --lg-diagram-node-border: color-mix(in srgb, var(--lg-accent) 44%, var(--text-muted));
+  --lg-diagram-edge: color-mix(in srgb, var(--text-normal) 62%, transparent);
+  --lg-diagram-label-bg: color-mix(in srgb, var(--lg-paper-solid) 94%, transparent);
+  --lg-diagram-highlight: rgba(255, 255, 255, 0.8);
   --lg-syn-keyword: #9b2393;
   --lg-syn-tag: #b02867;
   --lg-syn-string: #b3261e;
@@ -1967,6 +1684,17 @@ body.is-mobile .status-bar {
 .theme-dark {
   --code-background: #242426;
   --code-normal: #e8e8ed;
+  --lg-code-border: rgba(235, 235, 245, 0.18);
+  --lg-code-header: color-mix(in srgb, var(--code-normal) 4%, var(--code-background));
+  --lg-code-header-divider: rgba(235, 235, 245, 0.1);
+  --lg-code-highlight: rgba(255, 255, 255, 0.06);
+  --lg-diagram-surface: color-mix(in srgb, var(--lg-accent) 4%, var(--lg-paper-solid));
+  --lg-diagram-border: color-mix(in srgb, var(--text-normal) 18%, transparent);
+  --lg-diagram-node: color-mix(in srgb, var(--lg-accent) 14%, var(--code-background));
+  --lg-diagram-node-border: color-mix(in srgb, var(--lg-accent) 62%, var(--text-muted));
+  --lg-diagram-edge: color-mix(in srgb, var(--text-normal) 68%, transparent);
+  --lg-diagram-label-bg: color-mix(in srgb, var(--lg-paper-solid) 94%, transparent);
+  --lg-diagram-highlight: rgba(255, 255, 255, 0.05);
   --lg-syn-keyword: #e88ce0;
   --lg-syn-tag: #f2879f;
   --lg-syn-string: #f0907f;
@@ -1985,6 +1713,7 @@ body.is-mobile .status-bar {
 }
 
 body {
+  --font-mermaid: var(--font-interface-theme);
   --code-keyword: var(--lg-syn-keyword);
   --code-tag: var(--lg-syn-tag);
   --code-string: var(--lg-syn-string);
@@ -1997,21 +1726,19 @@ body {
   --code-punctuation: var(--lg-syn-punctuation);
 }
 
-/*
- * Scoped to code so that `%%…%%` markdown comments, which share `.cm-comment`,
- * are left upright.
- */
 .markdown-rendered .token.comment,
 .cm-s-obsidian .HyperMD-codeblock .cm-comment {
   font-style: italic;
 }
 
 .markdown-rendered pre {
-  border-radius: var(--code-radius);
+  border-radius: var(--lg-radius-m);
   overflow: hidden;
   margin-block: var(--lg-space-6);
   padding: 0;
-  border: 1px solid var(--background-modifier-border);
+  border: 1px solid var(--lg-code-border);
+  background: var(--code-background);
+  box-shadow: inset 0 1px 0 var(--lg-code-highlight);
   line-height: 1.55;
   tab-size: 2;
 }
@@ -2036,10 +1763,187 @@ body {
 
 body[class] .workspace-leaf-content .markdown-rendered pre > code {
   display: block;
-  padding: var(--lg-space-3) var(--lg-space-4);
+  padding: var(--lg-space-4);
   background: transparent;
   font-size: 0.875em;
+  line-height: 1.55;
   overflow-x: auto;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock {
+  padding-inline: var(--lg-space-4);
+  background: var(--code-background);
+  font-size: 0.875em;
+  line-height: 1.55;
+  box-shadow:
+    inset 1px 0 0 var(--lg-code-border),
+    inset -1px 0 0 var(--lg-code-border);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock-begin {
+  min-height: 36px;
+  padding-block: 6px;
+  border-radius: var(--lg-radius-m) var(--lg-radius-m) 0 0;
+  background: var(--lg-code-header);
+  box-shadow:
+    inset 1px 0 0 var(--lg-code-border),
+    inset -1px 0 0 var(--lg-code-border),
+    inset 0 1px 0 var(--lg-code-border),
+    inset 0 -1px 0 var(--lg-code-header-divider),
+    inset 0 2px 0 var(--lg-code-highlight);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-codeblock-begin
+  + .HyperMD-codeblock:not(.HyperMD-codeblock-end) {
+  padding-block-start: var(--lg-space-4);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock-end {
+  min-height: var(--lg-space-3);
+  border-radius: 0 0 var(--lg-radius-m) var(--lg-radius-m);
+  box-shadow:
+    inset 1px 0 0 var(--lg-code-border),
+    inset -1px 0 0 var(--lg-code-border),
+    inset 0 -1px 0 var(--lg-code-border);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair {
+  inset: 6px var(--lg-space-2) auto auto;
+  min-height: 24px;
+  padding: 2px var(--lg-space-2);
+  border-radius: var(--lg-radius-s);
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 20px;
+  transition:
+    color var(--lg-duration-fast) var(--lg-ease),
+    background-color var(--lg-duration-fast) var(--lg-ease);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair:hover {
+  background: var(--lg-state-hover);
+  color: var(--text-normal);
+}
+
+.markdown-rendered .mermaid {
+  box-sizing: border-box;
+  width: min(48rem, calc(100% + 8rem));
+  max-width: calc(100% + 8rem);
+  margin: var(--lg-space-8) 50%;
+  padding: var(--lg-space-6);
+  transform: translateX(-50%);
+  border: 1px solid var(--lg-diagram-border);
+  border-radius: var(--lg-radius-m);
+  background: var(--lg-diagram-surface);
+  box-shadow: inset 0 1px 0 var(--lg-diagram-highlight);
+  overflow: auto;
+  color: var(--text-normal);
+}
+
+.markdown-rendered .mermaid svg {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid) svg {
+  filter: none;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  .node
+  :is(rect, circle, ellipse, polygon, path),
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(rect.actor, rect.note, rect.labelBox, rect.activation0, rect.activation1, rect.activation2) {
+  fill: var(--lg-diagram-node);
+  stroke: var(--lg-diagram-node-border);
+  stroke-width: 1.25px;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(rect.label-container, rect.actor, rect.note, rect.labelBox) {
+  rx: var(--lg-radius-s);
+  ry: var(--lg-radius-s);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(
+    .nodeLabel,
+    .nodeLabel p,
+    .label text,
+    .label span,
+    .cluster-label text,
+    .cluster-label span,
+    text.actor,
+    .actor > tspan,
+    .messageText,
+    .loopText,
+    .noteText,
+    .stateLabel,
+    .classTitle,
+    .entityLabel
+  ) {
+  fill: var(--text-normal);
+  color: var(--text-normal);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(
+    .flowchart-link,
+    .actor-line,
+    .messageLine0,
+    .messageLine1,
+    .loopLine,
+    .transition,
+    .relation,
+    .relationshipLine
+  ) {
+  stroke: var(--lg-diagram-edge);
+  stroke-width: 1.5px;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(.arrowMarkerPath, marker path) {
+  fill: var(--lg-diagram-edge);
+  stroke: var(--lg-diagram-edge);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid)
+  :is(.edgeLabel, .edgeLabel p, .labelBkg) {
+  background: var(--lg-diagram-label-bg);
+  color: var(--text-muted);
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid) .edgeLabel rect {
+  fill: var(--lg-diagram-label-bg);
+  opacity: 1;
+}
+
+.markdown-rendered :is(#lumen-mermaid-theme, .mermaid) .cluster rect {
+  fill: color-mix(in srgb, var(--lg-diagram-node) 42%, transparent);
+  stroke: var(--lg-diagram-border);
+  rx: var(--lg-radius-m);
+  ry: var(--lg-radius-m);
+}
+
+@media (max-width: 700px) {
+  .markdown-rendered .mermaid {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    padding: var(--lg-space-4);
+    transform: none;
+  }
+
+  .markdown-rendered .mermaid svg {
+    min-width: 32rem;
+    max-width: none;
+  }
 }
 
 .markdown-preview-view .el-table {
@@ -2132,11 +2036,6 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
   border-bottom: 0;
 }
 
-/*
- * Live Preview shares the same paper, header, grid and spacing tokens as
- * Reading View. Each cell paints only its trailing and bottom edges so
- * adjacent cells share one 1px boundary without doubled seams.
- */
 .markdown-source-view.mod-cm6 .cm-table-widget {
   --table-header-background: var(--lg-table-header-surface);
   --table-header-background-hover: var(--lg-table-header-surface);
@@ -2244,12 +2143,6 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
   box-shadow: inset 0 0 0 var(--lg-table-focus-width) var(--lg-table-focus-ring);
 }
 
-/*
- * An active cell mounts a nested CM6 editor. Core sets its editor/scroller to
- * overflow:auto even when the overflow delta is zero; the global scrollbar
- * theme then paints a minimum-size thumb as an isolated gray block. The cell
- * itself grows with content, so these nested scrollers need no scrollbars.
- */
 .markdown-source-view.mod-cm6 .cm-table-widget .table-cell-wrapper :is(.cm-editor, .cm-scroller) {
   overflow: visible;
   scrollbar-width: none;
@@ -2389,10 +2282,6 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
   padding: var(--lg-space-2) var(--lg-space-3);
 }
 
-/* --------------------------------------------------------------------------
-   10. Overlays — palette keeps glass; modal/menu stay solid
-   -------------------------------------------------------------------------- */
-
 .modal-bg,
 .prompt-overlay {
   background: rgba(0, 0, 0, 0.46);
@@ -2433,11 +2322,6 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
   color: var(--lg-text-on-glass);
 }
 
-/*
- * Obsidian 1.13 can open Settings in its own native window.  In that mode
- * the modal fills the viewport, so the generic dialog radius/padding is
- * intentionally replaced by an inset glass frame and one continuous paper.
- */
 body.is-popout-window.is-popout-modal .titlebar {
   background-color: var(--lg-sidebar-fill);
   background-image: var(--lg-sidebar-material);
@@ -2642,11 +2526,6 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   line-height: 1.4;
 }
 
-/*
- * The in-note find bar is opaque `--background-primary` by default, which butts
- * a hard rectangle against the top of the page. It behaves like a floating
- * panel, so it gets the overlay material and a shadow to sit above the text.
- */
 .document-search-container {
   border: 1px solid var(--lg-paper-border);
   border-radius: var(--lg-radius-s);
@@ -2660,10 +2539,6 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   font-variant-numeric: tabular-nums;
 }
 
-/*
- * Every match takes the reader's own highlight color; the one the cursor is on
- * takes the accent, so paging through results is legible without a count.
- */
 .obsidian-search-match-highlight {
   border-radius: var(--lg-radius-xs);
   background-color: var(--lg-mark-bg);
@@ -2674,15 +2549,6 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   background-color: color-mix(in srgb, var(--lg-accent) 42%, transparent);
 }
 
-/* --------------------------------------------------------------------------
-   11. Controls
-   -------------------------------------------------------------------------- */
-
-/*
- * Covers the controls Obsidian hands straight to the platform — native
- * checkboxes, radios and range inputs inside Settings and inside plugin panes —
- * which would otherwise render in the OS accent and read as somebody else's blue.
- */
 body {
   accent-color: var(--lg-accent);
 }
@@ -2702,11 +2568,6 @@ button.mod-cta:active {
   background-color: var(--lg-cta-active);
 }
 
-/*
- * A colour change alone reads as a state, not as a press. The compression is
- * what makes a control feel physical, and it is the one cue that survives on
- * a touch screen where the cursor never hovers.
- */
 button.mod-cta,
 .clickable-icon,
 .side-dock-ribbon-action {
@@ -2853,10 +2714,6 @@ body :is(
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--lg-accent) 68%, transparent);
 }
 
-/* --------------------------------------------------------------------------
-   12. Graph / plugins / mobile
-   -------------------------------------------------------------------------- */
-
 .graph-controls {
   background: var(--lg-glass-solid);
   border: 1px solid var(--lg-glass-border);
@@ -2870,21 +2727,138 @@ body :is(
   border-radius: var(--lg-radius-m);
 }
 
-/*
- * Claudian — targets plugin 2.2.3
- *
- * Keep the integration scoped to Claudian's registered view and stable
- * component classes. The plugin owns behavior; Lumen only maps its surfaces,
- * type, controls and states onto the theme's glass/paper token system.
- *
- * Every selector below must stay behind [data-type="claudian-view"] so the
- * adaptation cannot match anything when the plugin is absent.
- * `npm run check` fails the build if a rule escapes that gate.
- *
- * Surfaces are limited to three fills — canvas (recessed chrome), surface
- * (raised control) and fill (subtle tint) — because a sidebar this narrow
- * cannot carry more without reading as noise.
- */
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: var(--lg-space-8) 0;
+  padding: 0;
+  transform: none;
+  border: 1px solid var(--lg-diagram-border);
+  border-radius: var(--lg-radius-m);
+  background: var(--lg-diagram-surface);
+  box-shadow: inset 0 1px 0 var(--lg-diagram-highlight);
+  overflow: hidden;
+}
+
+.markdown-source-view.mod-cm6 .cm-embed-block:has(> .mermaid.lmm-host) {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.markdown-source-view.mod-cm6 .cm-embed-block > .mermaid.lmm-host {
+  overflow: hidden;
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-bar {
+  min-height: 36px;
+  padding: 6px var(--lg-space-2) 6px var(--lg-space-4);
+  border: 0;
+  background: var(--lg-code-header);
+  box-shadow:
+    inset 0 1px 0 var(--lg-diagram-highlight),
+    inset 0 -1px 0 var(--lg-code-header-divider);
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-kind {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair {
+  min-height: 24px;
+  padding: 2px var(--lg-space-2);
+  border-radius: var(--lg-radius-s);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+  transition:
+    color var(--lg-duration-fast) var(--lg-ease),
+    background-color var(--lg-duration-fast) var(--lg-ease);
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:hover {
+  background: var(--lg-state-hover);
+  color: var(--text-normal);
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:focus-visible {
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset-inset);
+  box-shadow: none;
+  color: var(--text-normal);
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-flair:disabled {
+  background: transparent;
+  color: var(--text-faint);
+  opacity: 1;
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-viewport {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-viewport:focus-visible {
+  outline: var(--lg-focus-ring);
+  outline-offset: var(--lg-focus-offset-inset);
+}
+
+:is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host .lmm-stage.is-animating {
+  transition: transform var(--lg-duration) var(--lg-ease);
+}
+
+.lmm-fs {
+  padding: var(--lg-space-8);
+  background: rgba(0, 0, 0, 0.46);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.lmm-fs .lmm-fs-doc {
+  width: min(72rem, 100%);
+  height: min(100%, calc(100vh - 2 * var(--lg-space-8)));
+}
+
+.lmm-fs .mermaid.lmm-host {
+  margin: 0;
+  box-shadow:
+    inset 0 1px 0 var(--lg-diagram-highlight),
+    var(--lg-overlay-shadow);
+}
+
+@media (max-width: 700px) {
+  .markdown-rendered .mermaid.lmm-host {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    padding: 0;
+    transform: none;
+  }
+
+  .lmm-fs {
+    padding: var(--lg-space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.markdown-rendered, .lmm-fs) .mermaid.lmm-host :is(.lmm-stage.is-animating, .lmm-flair) {
+    animation: none;
+    transition: none;
+  }
+}
+
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .view-content.claudian-container {
   --lg-claudian-pane: transparent;
   --lg-claudian-canvas: color-mix(in srgb, var(--lg-paper-solid) 18%, var(--lg-sidebar-fill));
@@ -2894,13 +2868,9 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
   --lg-claudian-border-hover: var(--background-modifier-border-hover);
   --lg-claudian-error-surface: color-mix(in srgb, var(--lg-danger) 10%, transparent);
   --lg-claudian-control-gutter: clamp(10px, 3.6%, 12px);
-  /* Offset from the interface size so it still tracks the reader's setting. */
+
   --lg-claudian-prose-size: calc(var(--font-ui-small) + 1.5px);
-  /*
-   * A switch reads as on or off before it reads as tasteful, so the checked
-   * track keeps full accent saturation and the unchecked track sits light
-   * enough to clear 3:1 against it — the same relationship macOS uses.
-   */
+
   --lg-claudian-toggle-track-on: var(--lg-accent);
   --lg-claudian-toggle-border: color-mix(in srgb, var(--lg-text-on-glass) 18%, transparent);
   --lg-claudian-toggle-border-on: color-mix(in srgb, var(--lg-accent) 84%, #000);
@@ -2966,9 +2936,6 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
   background: transparent;
 }
 
-/*
- * With the assistant rail gone, the gap between turns is what separates them.
- */
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-messages {
   gap: var(--lg-space-6);
   padding: var(--lg-space-3) var(--lg-space-2) var(--lg-space-6);
@@ -3014,12 +2981,6 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
   background: var(--lg-claudian-fill);
 }
 
-/*
- * One turn is a filled card, the other is plain prose. Giving the assistant a
- * left rule instead would collide twice: it mixes a second shape metaphor into
- * the same transcript, and it reuses the exact device blockquotes already own,
- * so a quoted passage inside a reply became a rule nested in a rule.
- */
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message {
   min-width: 0;
   max-width: min(92%, 42rem);
@@ -3037,7 +2998,7 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-assistant {
   width: auto;
   max-width: 100%;
-  /* Offsets the user card's 1px border so both turns share one text edge. */
+
   padding-inline: calc(var(--lg-space-3) + 1px);
   border: 0;
   border-radius: 0;
@@ -3052,10 +3013,6 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
   max-width: 100%;
 }
 
-/*
- * This is a transcript people read at length, not a row of UI labels, so it
- * gets a reading size of its own rather than the interface small size.
- */
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-message-content {
   color: var(--text-normal);
   font-size: var(--lg-claudian-prose-size);
@@ -3266,7 +3223,7 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
   gap: 2px;
   padding: 2px;
   border: 1px solid var(--background-modifier-border);
-  /* Concentric with the 6px badges it wraps, plus the 2px gutter. */
+
   border-radius: calc(var(--lg-radius-s) + 2px);
   background: color-mix(in srgb, var(--lg-tab-active-fill) 58%, transparent);
 }
@@ -3546,11 +3503,6 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
   box-shadow: none;
 }
 
-/*
- * The thumb is only 14px across, so a 1px border would read as a grey ring
- * around it. Definition comes from the drop shadow and a half-pixel hairline,
- * the way a macOS switch knob is drawn.
- */
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch::after {
   box-sizing: border-box;
   width: 14px;
@@ -3585,10 +3537,6 @@ body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view
     0 0 0 2px color-mix(in srgb, var(--lg-text-on-glass) 4%, transparent);
 }
 
-/*
- * The unchecked hover rule would otherwise win on source order and put a grey
- * ring back around a checked switch.
- */
 body:not(.lumen-claudian-plain) .workspace-leaf-content[data-type="claudian-view"] .claudian-toggle-switch.active:hover {
   border-color: var(--lg-claudian-toggle-border-on);
   background: var(--lg-accent-hover);
@@ -3739,10 +3687,6 @@ body.is-mobile.is-floating-nav .mobile-navbar.mod-raised {
   }
 }
 
-/* --------------------------------------------------------------------------
-   13. Style Settings + a11y
-   -------------------------------------------------------------------------- */
-
 body.lumen-glass-thin.theme-light {
   --lg-glass-blur: 16px;
   --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 18%, rgba(255, 255, 255, 0.2));
@@ -3892,10 +3836,6 @@ body.lumen-increase-contrast .prompt {
     --table-border-color: var(--lg-table-row-divider);
   }
 
-  /*
-   * Widening the ring through the token instead of a bare `:focus-visible`
-   * rule, which lost on specificity to every component's own focus selector.
-   */
   body {
     --lg-focus-width: 3px;
     --lg-focus-color: var(--lg-accent);
@@ -3946,10 +3886,7 @@ body.lumen-increase-contrast .prompt {
 
 @media (max-width: 700px) {
   body:not(.is-mobile) {
-    /*
-     * Narrow windows give back the decorative frame but keep the seam, which
-     * still has to clear the panel radius to read as a channel.
-     */
+
     --lg-chrome-frame: var(--lg-space-1);
     --lg-control-size: 32px;
     --lg-row-height: 32px;
@@ -3992,11 +3929,7 @@ button.mod-cta {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /*
-   * Zeroing the tokens covers every consumer, including ones added later.
-   * The press scale goes to 1 rather than merely losing its transition, since
-   * an instant jump in size is exactly the kind of movement being opted out of.
-   */
+
   body {
     --lg-duration-fast: 0ms;
     --lg-duration: 0ms;
@@ -4017,23 +3950,9 @@ button.mod-cta {
     transition: none;
   }
 }
-/* --------------------------------------------------------------------------
-   16. Print
-   -------------------------------------------------------------------------- */
 
 @media print {
-  /*
-   * Obsidian already hides the interface and resets the note's text color to
-   * black, but it leaves the theme's own surfaces alone — and it prints
-   * backgrounds exactly, by way of `print-color-adjust: exact`. In dark mode
-   * that pairing puts black text on near-black paper. The printed page is
-   * therefore forced to a light palette whatever is on screen, since a PDF has
-   * no appearance to follow.
-   *
-   * Syntax color collapses to one ink rather than being restated in light
-   * values. Printed code is conventionally monochrome, it survives being
-   * photocopied, and it does not spend color on a page nobody can hover.
-   */
+
   body {
     --lg-paper-solid: #ffffff;
     --lg-paper-border: rgba(0, 0, 0, 0.18);
@@ -4044,6 +3963,13 @@ button.mod-cta {
     --lg-inline-code-bg: #f1f1f4;
     --lg-inline-code-text: #1c1c1e;
     --lg-inline-code-border: rgba(0, 0, 0, 0.2);
+    --lg-diagram-surface: #ffffff;
+    --lg-diagram-border: rgba(0, 0, 0, 0.2);
+    --lg-diagram-node: #f1f5fa;
+    --lg-diagram-node-border: #526d8a;
+    --lg-diagram-edge: rgba(0, 0, 0, 0.68);
+    --lg-diagram-label-bg: #ffffff;
+    --lg-diagram-highlight: transparent;
     --lg-syn-keyword: #1c1c1e;
     --lg-syn-tag: #1c1c1e;
     --lg-syn-string: #1c1c1e;
@@ -4056,10 +3982,6 @@ button.mod-cta {
     --lg-syn-comment: #5b6570;
   }
 
-  /*
-   * Glass is a screen effect. On paper a blur costs render time and resolves to
-   * a muddy gray, and a drop shadow prints as a smudge along the edge.
-   */
   .print,
   .print .markdown-preview-view {
     background: #ffffff;
@@ -4068,11 +3990,6 @@ button.mod-cta {
     box-shadow: none;
   }
 
-  /*
-   * The reading measure exists to keep a line scannable on a wide monitor. A
-   * printed page is already narrower than that, so holding the measure would
-   * just indent the text and waste the sheet.
-   */
   .print .markdown-preview-sizer {
     max-width: none;
     padding-inline: 0;
@@ -4080,11 +3997,19 @@ button.mod-cta {
   }
 
   .print .markdown-preview-view :is(h1, h2, h3, h4, h5, h6) {
-    break-after: avoid;
+    page-break-after: avoid;
   }
 
-  .print .markdown-preview-view :is(pre, blockquote, table, .callout, .markdown-embed) {
-    break-inside: avoid;
+  .print .markdown-preview-view :is(pre, blockquote, table, .callout, .markdown-embed, .mermaid) {
+    page-break-inside: avoid;
+  }
+
+  .print .markdown-preview-view .mermaid {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    transform: none;
+    box-shadow: none;
   }
 
   .print .markdown-preview-view :is(p, li) {

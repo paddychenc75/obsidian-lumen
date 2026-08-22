@@ -4,6 +4,24 @@ All notable changes to Lumen Glass are documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+## [1.0.8] - 2026-08-22
+
+### Added
+
+- Optional scoped skin for the independent Lumen Stage plugin (`lumen-stage`). The interactive host reuses the code-block header band and language flair; the canvas fills the prose column with no grid and no floating toolbar. Readers without the plugin keep the static Mermaid figure. The plugin works on any theme; this stylesheet only skins `.lmm-*`.
+
+### Changed
+
+- Rebuilt code blocks as one component in both renderers. Live Preview now uses its fence line as a quiet 36px header, separates the first code line from that header with a 16px content inset, gives the language/copy affordance a stable 24px target, carries continuous inset rails across CodeMirror's per-line DOM, and closes with a deliberate footer. Reading View gets the same 10px radius, 16px inset, 1.55 leading and one-pixel structural border. Light and dark appearances use separate surface, divider and highlight tokens; syntax colors are unchanged.
+- Turned Mermaid output into a readable figure rather than an unstyled SVG. Diagrams may borrow up to 4rem from each prose gutter, sit on a bordered semantic canvas, use the interface font, and share accessible node, edge and label tokens across flowchart, sequence, state, class and ER diagrams. Dark mode no longer inverts the light Mermaid SVG — it receives a native dark palette instead. Author `classDef` and inline styles still win. Narrow windows keep diagram text readable in a nested horizontal scroller, while print collapses the figure back to page width and a light palette.
+- Stopped shipping author comments in `theme.css`. Design notes stay in `src/`; the published file keeps the Style Settings block and a generated-file banner so the community RELEASES size warning has less to weigh.
+
+### Fixed
+
+- Replaced print `break-after` / `break-inside` with `page-break-after` / `page-break-inside`. The community CSS lint maps the unified fragmentation properties to "multicolumn" and still reviews against Obsidian 1.11.4, even though `minAppVersion` is 1.13.0.
+
 ## [1.0.7] - 2026-08-21
 
 ### Added

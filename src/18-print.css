@@ -25,6 +25,13 @@
     --lg-inline-code-bg: #f1f1f4;
     --lg-inline-code-text: #1c1c1e;
     --lg-inline-code-border: rgba(0, 0, 0, 0.2);
+    --lg-diagram-surface: #ffffff;
+    --lg-diagram-border: rgba(0, 0, 0, 0.2);
+    --lg-diagram-node: #f1f5fa;
+    --lg-diagram-node-border: #526d8a;
+    --lg-diagram-edge: rgba(0, 0, 0, 0.68);
+    --lg-diagram-label-bg: #ffffff;
+    --lg-diagram-highlight: transparent;
     --lg-syn-keyword: #1c1c1e;
     --lg-syn-tag: #1c1c1e;
     --lg-syn-string: #1c1c1e;
@@ -60,12 +67,27 @@
     padding-bottom: 0;
   }
 
+  /*
+   * Print pagination only. The unified `break-*` properties are the CSS
+   * Fragmentation aliases that doiuse files under "multicolumn"; the community
+   * review still lints against Obsidian 1.11.4 and flags them even though
+   * minAppVersion is 1.13.0. `page-break-*` is the CSS 2.1 print form and
+   * keeps headings and blocks together on a sheet.
+   */
   .print .markdown-preview-view :is(h1, h2, h3, h4, h5, h6) {
-    break-after: avoid;
+    page-break-after: avoid;
   }
 
-  .print .markdown-preview-view :is(pre, blockquote, table, .callout, .markdown-embed) {
-    break-inside: avoid;
+  .print .markdown-preview-view :is(pre, blockquote, table, .callout, .markdown-embed, .mermaid) {
+    page-break-inside: avoid;
+  }
+
+  .print .markdown-preview-view .mermaid {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    transform: none;
+    box-shadow: none;
   }
 
   .print .markdown-preview-view :is(p, li) {

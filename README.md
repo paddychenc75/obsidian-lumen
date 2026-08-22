@@ -12,6 +12,7 @@ A light and dark theme for [Obsidian](https://obsidian.md/) with translucent nav
 - Support for Live Preview, Properties, pop-out windows, and mobile layouts
 - System accessibility preferences for reduced transparency, increased contrast, and reduced motion
 - Optional customization through the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin
+- Optional Lumen Stage plugin for pan, zoom, and fullscreen diagrams. Any theme can use it; this theme only skins its `.lmm-*` classes
 - No remote fonts, images, or other runtime network requests
 
 ## Requirements
