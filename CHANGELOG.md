@@ -6,6 +6,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.9] - 2026-08-22
+
 ### Fixed
 
 - Stopped flattening every settings heading to `padding-block: 0` with a four-class selector. That reset sat above any plugin that draws a divider on the heading and reserves `padding-top` for the gap, so the rule sat on the title. The compact reset is now one class; plugins at two classes keep their spacing, and core headings still have no top border.
