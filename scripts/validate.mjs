@@ -86,7 +86,7 @@ const scopedPluginViews = [
   {
     label: "Claudian",
     token: "claudian",
-    scope: '[data-type="claudian-view"]',
+    scopes: ['[data-type="claudian-view"]', ".claudian-settings"],
     gate: "body:not(.lumen-claudian-plain)",
   },
 ];
@@ -100,12 +100,12 @@ function checkPluginScoping(css) {
     const selector = match[2].replace(/\s+/g, " ").trim();
     if (!selector) continue;
 
-    for (const { label, token, scope, gate } of scopedPluginViews) {
+    for (const { label, token, scopes, gate } of scopedPluginViews) {
       if (!selector.toLowerCase().includes(token)) continue;
       seen.set(token, seen.get(token) + 1);
 
-      if (!selector.includes(scope)) {
-        fail(`${label} rule is not scoped to ${scope}: ${selector.slice(0, 120)}`);
+      if (!scopes.some((scope) => selector.includes(scope))) {
+        fail(`${label} rule is not scoped to ${scopes.join(" or ")}: ${selector.slice(0, 120)}`);
       }
 
       /*

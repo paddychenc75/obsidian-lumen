@@ -6,6 +6,21 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.11] - 2026-08-22
+
+### Fixed
+
+- Flattened the Settings right pane: no page-wide enclosing card and no 1.13 `.setting-items` nest. Inset stays on the rows (16px) and the paper (24px). Dropdowns, textareas and toggles keep their own control borders.
+- Restored the 16px horizontal inset on Settings cards so toggles and plugin rows no longer sit flush to the pane edge.
+- Dropped the Settings search field's right border so it no longer doubles the pane divider.
+- Squared the Settings popout at the titlebar so the top-right corner no longer shows a dark notch. macOS popout modals also keep the 4px frame cap, so the window-control band is not squeezed.
+- Lined Claudian's Settings tabs (General / Collab / Providers) into one 36px capsule and aligned labels with the General segment. Headings are titles with a hairline, not stitched card slices.
+- Lined Claudian's conversation toolbar with the composer so the nav row and input share one width.
+
+### Changed
+
+- Opened the Community plugins list: 8px row gap and 12px block padding on those names. Options and core plugin rows stay compact.
+
 ## [1.0.10] - 2026-08-22
 
 ### Fixed

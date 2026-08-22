@@ -46,15 +46,45 @@
  * Obsidian 1.13 can open Settings in its own native window.  In that mode
  * the modal fills the viewport, so the generic dialog radius/padding is
  * intentionally replaced by an inset glass frame and one continuous paper.
+ *
+ * Keep the titlebar's own height. Core already draws a 1px rule; restating
+ * border-bottom as a new 1px on a border-box 30px bar ate the space the
+ * system window controls sit in (measured 14×12 CSS, ratio 1.17). Colour
+ * the existing hairline instead. Padding-top: 2px is core's non-maximized
+ * titlebar inset — drop it on macOS so the 30px bar stays 30px of paint.
  */
-body.is-popout-window.is-popout-modal .titlebar {
+body.is-popout-window.is-popout-modal,
+body.is-popout-window.is-popout-modal .app-container {
   background-color: var(--lg-sidebar-fill);
   background-image: var(--lg-sidebar-material);
-  border-bottom: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
 }
 
+body.is-popout-window.is-popout-modal .titlebar,
+body.is-popout-window.is-popout-modal .titlebar-inner {
+  inset-inline: 0;
+  width: 100%;
+  background-color: var(--lg-sidebar-fill);
+  background-image: var(--lg-sidebar-material);
+}
+
+body.is-popout-window.is-popout-modal .titlebar {
+  border-bottom-color: color-mix(in srgb, var(--lg-text-on-glass) 8%, transparent);
+}
+
+body.mod-macos.is-frameless.is-hidden-frameless.is-popout-window.is-popout-modal:not(.is-fullscreen) .titlebar {
+  padding-top: 0;
+}
+
+/*
+ * No padding on the top edge: body already reserved --titlebar-height for the
+ * native controls. Sides and bottom use --lg-chrome-frame, which macOS popout
+ * modals cap at 4px the same way the main window does.
+ */
 body.is-popout-window.is-popout-modal .modal.mod-settings {
-  padding: var(--lg-space-2);
+  padding: 0 var(--lg-chrome-frame) var(--lg-chrome-frame);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   background-color: var(--lg-sidebar-fill);
   background-image: var(--lg-sidebar-material);
 }
@@ -76,7 +106,7 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content-
 
 body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content {
   border-radius: var(--lg-radius-m);
-  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+  padding: var(--lg-space-8) var(--lg-space-6) var(--lg-space-8);
 }
 
 .modal.mod-settings .vertical-tab-content,
@@ -84,17 +114,31 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   background: var(--lg-paper-solid);
   border-radius: var(--lg-radius-m);
   color: var(--text-normal);
-  border: 1px solid var(--lg-paper-border);
-  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+  border: 0;
+  padding: var(--lg-space-8) var(--lg-space-6) var(--lg-space-8);
 }
 
+/*
+ * 1.13 wraps every Settings page in `.setting-group > .setting-items`
+ * and paints a second card (fill + 1px + 10px radius) on the paper.
+ * That shell stacked with the paper stroke and every control's own
+ * border. Drop the enclosing card; inset stays on the rows. The only
+ * structural line is the paper sitting on the glass nav.
+ */
 .modal.mod-settings .setting-group .setting-items {
-  background: var(--setting-items-background);
-  border-color: var(--setting-items-border-color);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
+/*
+ * 1.13 paints each Settings row as its own card. The `.setting-group`
+ * wrapper still exists but its computed padding is 0, so a `16px 0`
+ * item rule puts labels on the card's left edge. Keep the 16px card
+ * inset on grouped rows too.
+ */
 .modal.mod-settings .setting-group .setting-item:not(.setting-item-heading) {
-  padding: var(--setting-items-padding-y) var(--setting-items-padding-x);
+  padding: var(--lg-space-4);
 }
 
 .modal.mod-settings .setting-group .setting-item:not(.setting-item-heading)::before {
@@ -102,7 +146,19 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
 }
 
 .modal.mod-settings.mod-sidebar-layout .vertical-tab-content {
-  padding: var(--lg-space-6) var(--lg-space-6) var(--lg-space-8);
+  padding: var(--lg-space-8) var(--lg-space-6) var(--lg-space-8);
+}
+
+/*
+ * Settings search lives on glass, 12px from the paper. The form floor
+ * paints every search field with a 1px border; that right edge used to
+ * double the paper's left hairline. Drop the field border. The pane
+ * edge against the nav is the only column rule.
+ */
+.modal.mod-settings .vertical-tab-header input[type="search"] {
+  border: 0;
+  box-shadow: none;
+  border-radius: var(--lg-radius-s);
 }
 
 .vertical-tab-header-group {
@@ -114,6 +170,16 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   gap: var(--lg-item-gap);
 }
 
+/*
+ * Community plugin rows have no leading icon (core hides it). At the same
+ * 4px gap as Options they read as a solid block of names. Loosen only this
+ * section so About / Appearance / Editor keep their compact list.
+ */
+.modal.mod-settings .vertical-tab-header-group-items[data-section="community-plugins"],
+.vertical-tab-header-group-items[data-section="community-plugins"] {
+  gap: var(--lg-space-2);
+}
+
 .vertical-tab-nav-item {
   display: flex;
   align-items: center;
@@ -123,6 +189,13 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   border-radius: var(--lg-radius-s);
   color: var(--lg-text-on-glass-2);
   padding: var(--lg-space-1) var(--lg-space-2);
+}
+
+.modal.mod-settings .vertical-tab-header-group-items[data-section="community-plugins"] .vertical-tab-nav-item,
+.vertical-tab-header-group-items[data-section="community-plugins"] .vertical-tab-nav-item {
+  min-height: var(--lg-control-size);
+  padding-block: var(--lg-space-3);
+  padding-inline: var(--lg-space-2);
 }
 
 .vertical-tab-nav-item .vertical-tab-nav-item-icon {
@@ -148,9 +221,21 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   box-shadow: none;
 }
 
-.modal.mod-settings .setting-item:not(.setting-item-heading),
+/*
+ * Core paints every Settings row as a card: 16px on all four sides
+ * (app.css `.setting-item { padding: var(--size-4-4) }`). A later
+ * `padding: 16px 0` here stripped the inline inset, so toggles sat on
+ * the card's right rule and labels on the left — the flush look on
+ * Advanced Tables, Claudian, and any plugin that does not wrap rows
+ * in `.setting-group`. Restore the card inset only inside Settings;
+ * other modals already keep `16px 0` via core's `:not(.mod-settings)`.
+ */
+.modal.mod-settings .setting-item:not(.setting-item-heading) {
+  padding: var(--lg-space-4);
+  align-items: center;
+}
+
 .setting-item {
-  padding: var(--lg-space-4) 0;
   gap: var(--lg-space-2) var(--lg-space-4);
 }
 
@@ -158,10 +243,15 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
  * One class only. A four-class reset of padding-block flattened every
  * heading to 0 and overrode plugins that draw a rule on the heading
  * and reserve padding-top for the gap. Core headings have no border-top;
- * they stay compact.
+ * they stay compact. Inline 16px keeps the title on the same column as
+ * the card labels under it.
  */
 .setting-item-heading {
   padding-block: 0;
+}
+
+.modal.mod-settings .setting-item-heading {
+  padding-inline: var(--lg-space-4);
 }
 
 .prompt {
