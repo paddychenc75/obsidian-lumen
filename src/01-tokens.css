@@ -55,9 +55,14 @@
   --lg-glass-shadow:
     inset 0 0.5px 0 rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.04),
     0 4px 14px rgba(0, 0, 0, 0.055);
+  /*
+   * Overlay lift tracks default `--shadow-l` (30px / ~10%), not a 48px fog.
+   * The old third stop (0 20px 48px / 10%) sat under Settings and menus and
+   * muddied the page behind them. Keep a tight contact + a short ambient.
+   */
   --lg-overlay-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07),
-    0 20px 48px rgba(0, 0, 0, 0.1);
+    0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.08);
   --lg-status-fill: rgba(255, 255, 255, 0.16);
   --lg-status-luma: rgba(255, 255, 255, 0.14);
   --lg-tooltip-bg: rgba(28, 28, 30, 0.88);
@@ -99,10 +104,13 @@
   --lg-radius-pill: 999px;
   /*
    * Chrome separations are declared, not inferred from colliding margins.
-   * --lg-chrome-gap must stay above --lg-radius-m: where two rounded panels
-   * meet, the channel widens at the corners, so a seam narrower than the radius
-   * reads as pinched along the straight run. Panels sharing a seam each carry
-   * half of it; panels meeting the window edge carry --lg-chrome-frame.
+   * Panels sharing a seam each carry half of --lg-chrome-gap; panels meeting
+   * the window edge carry --lg-chrome-frame.
+   *
+   * 8px (--lg-space-2) is the structural seam: enough that 10px corners do not
+   * kiss, short enough that the note does not read as a third object on the
+   * desk. 12px (--lg-space-3) cleared --lg-radius-m with room to spare and
+   * made the wallpaper channel the main event. Flush is `.lumen-chrome-flush`.
    *
    * The halving stays at the use site rather than living in a derived token:
    * these are declared on :root, so a derived value would be substituted here
@@ -110,7 +118,7 @@
    * the tree (which is exactly what .lumen-chrome-flush does).
    */
   --lg-chrome-frame: var(--lg-space-2);
-  --lg-chrome-gap: var(--lg-space-3);
+  --lg-chrome-gap: var(--lg-space-2);
   --lg-item-gap: var(--lg-space-1);
 
   --lg-control-size: 36px;
@@ -188,8 +196,8 @@
   --lg-glass-solid: #e8eef2;
   --lg-overlay-solid: #f7f7f8;
   --lg-overlay-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07),
-    0 20px 48px rgba(0, 0, 0, 0.1);
+    0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.08);
   --lg-scrollbar-thumb: rgba(60, 60, 67, 0.28);
   --lg-scrollbar-thumb-hover: rgba(60, 60, 67, 0.46);
   --lg-status-fill: rgba(255, 255, 255, 0.16);
@@ -264,8 +272,8 @@
   --lg-glass-solid: #1c1a2a;
   --lg-overlay-solid: #2c2c2e;
   --lg-overlay-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.26), 0 8px 22px rgba(0, 0, 0, 0.24),
-    0 24px 56px rgba(0, 0, 0, 0.3);
+    0 1px 2px rgba(0, 0, 0, 0.28), 0 6px 16px rgba(0, 0, 0, 0.22),
+    0 16px 36px rgba(0, 0, 0, 0.24);
   /*
    * The light recipe is a strong top highlight plus a faint cast shadow. In
    * dark that inverts: a soft edge highlight for the glass rim, and a much

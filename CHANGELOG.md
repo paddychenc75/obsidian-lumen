@@ -6,6 +6,16 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.12] - 2026-09-01
+
+### Changed
+
+- Shortened `--lg-overlay-shadow` so Settings and menus no longer sit on a 48px fog. Light overlays keep a tight contact plus a short ambient stack instead of the old third stop (`0 20px 48px / 10%`).
+- Mapped `--shadow-l` on `body.theme-light` / `body.theme-dark` to the overlay token so dimmed in-app modals follow that stack instead of core's 30px / 10% recipe.
+- Painted Settings popouts with a solid fill. The 88% sidebar material is a translucent Electron mask, and macOS inflates the native window shadow from that alpha; the default theme uses an opaque white modal and `box-shadow: none`.
+- Restored a 1px hairline on the Settings content paper so light-mode edges read against the sidebar fill without bringing back the nested `.setting-items` card.
+- Tightened workspace seams from 12px to 8px (`--lg-chrome-gap` now `--lg-space-2`). Measured on a light three-pane vault: left and right gutters and the tab-to-paper channel were all 12px against default-theme 0px, so the note read as a floating slab. 8px keeps a structural seam without going flush. The tab island drop shadow is shortened to a 2px contact so the narrower channel is not restyled as lift. The note surface still has no cast shadow.
+
 ## [1.0.11] - 2026-08-22
 
 ### Fixed
@@ -162,6 +172,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 - Style Settings controls for wallpaper, glass weight, contrast, transparency, and accent color.
 - Automated repository validation and tag-based GitHub releases.
 
+[1.0.12]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.12
+[1.0.11]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.11
 [1.0.10]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.10
 [1.0.9]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.9
 [1.0.8]: https://github.com/paddychenc75/obsidian-lumen/releases/tag/1.0.8

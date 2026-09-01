@@ -53,10 +53,18 @@
  * the existing hairline instead. Padding-top: 2px is core's non-maximized
  * titlebar inset — drop it on macOS so the 30px bar stays 30px of paint.
  */
+/*
+ * Popout Settings is a translucent Electron window. macOS derives the
+ * native drop shadow from the window alpha mask. `--lg-sidebar-material`
+ * is an 88% fill — that soft mask inflates the OS shadow into a dark fog
+ * under the window (measured vs default theme: default paints an opaque
+ * white modal and `box-shadow: none`; Lumen was painting the 88% gradient
+ * across body, titlebar, and modal). Solid fill only; no material image.
+ */
 body.is-popout-window.is-popout-modal,
 body.is-popout-window.is-popout-modal .app-container {
   background-color: var(--lg-sidebar-fill);
-  background-image: var(--lg-sidebar-material);
+  background-image: none;
 }
 
 body.is-popout-window.is-popout-modal .titlebar,
@@ -64,7 +72,7 @@ body.is-popout-window.is-popout-modal .titlebar-inner {
   inset-inline: 0;
   width: 100%;
   background-color: var(--lg-sidebar-fill);
-  background-image: var(--lg-sidebar-material);
+  background-image: none;
 }
 
 body.is-popout-window.is-popout-modal .titlebar {
@@ -86,7 +94,7 @@ body.is-popout-window.is-popout-modal .modal.mod-settings {
   border-radius: 0;
   box-shadow: none;
   background-color: var(--lg-sidebar-fill);
-  background-image: var(--lg-sidebar-material);
+  background-image: none;
 }
 
 body.is-popout-window.is-popout-modal .modal.mod-settings .modal-content.vertical-tabs-container {
@@ -114,7 +122,7 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
   background: var(--lg-paper-solid);
   border-radius: var(--lg-radius-m);
   color: var(--text-normal);
-  border: 0;
+  border: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 12%, transparent);
   padding: var(--lg-space-8) var(--lg-space-6) var(--lg-space-8);
 }
 
@@ -122,8 +130,9 @@ body.is-popout-window.is-popout-modal .modal.mod-settings .vertical-tab-content 
  * 1.13 wraps every Settings page in `.setting-group > .setting-items`
  * and paints a second card (fill + 1px + 10px radius) on the paper.
  * That shell stacked with the paper stroke and every control's own
- * border. Drop the enclosing card; inset stays on the rows. The only
- * structural line is the paper sitting on the glass nav.
+ * border. Drop the enclosing card; inset stays on the rows. The paper
+ * keeps a 1px hairline so light-mode left/right/bottom edges read
+ * against the sidebar fill without a second card.
  */
 .modal.mod-settings .setting-group .setting-items {
   background: transparent;

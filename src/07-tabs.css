@@ -16,7 +16,13 @@
   border: 1px solid var(--lg-glass-border);
   box-shadow:
     inset 0 0.5px 0 rgba(255, 255, 255, 0.28),
-    0 1px 4px rgba(0, 0, 0, 0.08);
+    0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+body.theme-dark .workspace-split.mod-root .workspace-tab-header-container {
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.14),
+    0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 body.theme-light .workspace-split.mod-root .workspace-tab-header-container-inner,
