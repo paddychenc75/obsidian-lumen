@@ -14,6 +14,16 @@
   --text-accent-hover: var(--lg-paper-link-hover);
 }
 
+/*
+ * Core sets `--shadow-l` on `.theme-light` / `.theme-dark`. Matching that
+ * selector (plus `body` for order) keeps dimmed in-app modals on the overlay
+ * token instead of the stock 30px/10% stack.
+ */
+body.theme-light,
+body.theme-dark {
+  --shadow-l: var(--lg-overlay-shadow);
+}
+
 .theme-light {
   --background-primary: var(--lg-paper-solid);
   --background-primary-alt: #f2f2f7;
