@@ -62,10 +62,9 @@ body.mod-macos.is-hidden-frameless:not(.is-popout-window)
 .workspace-ribbon .clickable-icon.is-active,
 .side-dock-ribbon-action.is-active {
   background-color: var(--lg-list-active-fill);
-  box-shadow: none;
+  box-shadow: var(--lg-selected-shadow);
 }
 
 .sidebar-toggle-button {
   background: transparent;
 }
-

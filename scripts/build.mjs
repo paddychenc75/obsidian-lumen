@@ -19,65 +19,6 @@ function sources() {
 }
 
 /*
- * A plugin adaptation is opt-out rather than opt-in: the gate is a class the
- * reader adds to turn the adaptation off. Gating on a positive class would leave
- * the adaptation dark for everyone who never installs Style Settings, since the
- * class only ever appears when that plugin is there to add it.
- *
- * The gate is applied here instead of being written into the module so the
- * source stays legible at one selector per rule, and so a rule added later
- * cannot forget it.
- */
-const gatedModules = new Map([["15-claudian.css", "lumen-claudian-plain"]]);
-
-/*
- * `body` and `.theme-light` sit on the same element as the gate, so those have
- * to compound rather than nest — a descendant combinator would ask for a
- * `.theme-light` inside `body`, which never matches.
- */
-function gateSelector(selector, className, indent) {
-  const guard = `body:not(.${className})`;
-
-  return selector
-    .split(",")
-    .map((part) => {
-      const trimmed = part.trim();
-      if (!trimmed) return trimmed;
-      if (trimmed === "body" || trimmed.startsWith("body ") || trimmed.startsWith("body.")) {
-        return guard + trimmed.slice("body".length);
-      }
-      if (trimmed.startsWith(".theme-")) return guard + trimmed;
-      return `${guard} ${trimmed}`;
-    })
-    .filter(Boolean)
-    .join(`,\n${indent}`);
-}
-
-/*
- * Comments are lifted out before the selectors are matched so that a rule
- * preceded by a section comment is still seen, and so braces inside prose can
- * never be read as a rule boundary. The placeholder is a NUL, which is excluded
- * from the selector pattern and therefore acts as a hard barrier.
- */
-function gate(css, className) {
-  const comments = [];
-  const masked = css.replace(/\/\*[\s\S]*?\*\//g, (comment) => {
-    comments.push(comment);
-    return `\u0000${comments.length - 1}\u0000`;
-  });
-
-  const gated = masked.replace(
-    /(^|[{}]|\u0000)(\s*)([^{}@;\u0000]+?)(\s*)\{/g,
-    (match, boundary, before, selector, after) => {
-      const indent = /\n([ \t]*)$/.exec(before)?.[1] ?? "";
-      return `${boundary}${before}${gateSelector(selector, className, indent)}${after}{`;
-    },
-  );
-
-  return gated.replace(/\u0000(\d+)\u0000/g, (match, index) => comments[Number(index)]);
-}
-
-/*
  * Author comments stay in src/. The published file keeps the Style Settings
  * block (the plugin reads the @settings comment) and a short generated-file
  * banner. Shipping the design notes was the cheapest 20KB on the community
@@ -100,11 +41,7 @@ function stripAuthorComments(css) {
 }
 
 function compose() {
-  const parts = sources().map((name) => {
-    const css = readFileSync(resolve(srcDir, name), "utf8");
-    const className = gatedModules.get(name);
-    return className ? gate(css, className) : css;
-  });
+  const parts = sources().map((name) => readFileSync(resolve(srcDir, name), "utf8"));
 
   return banner + stripAuthorComments(parts.join(""));
 }

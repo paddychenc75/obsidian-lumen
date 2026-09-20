@@ -1,508 +1,150 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lumen Glass · 设计稿</title>
-  <link rel="icon" href="assets/mark.svg" type="image/svg+xml" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lumen Glass Preview</title>
   <style>
-    :root {
-      --accent: #0a84ff;
-      --paper-link: #0058b0;
-      --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", system-ui, sans-serif;
-      --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
-      --page: #0b0e18;
-      --ink-page: #f5f5f7;
-      --muted-page: rgba(235, 235, 245, 0.56);
-      --glass-blur: 45px;
-      --glass-fill: rgba(84, 84, 84, 0.12);
-      --glass-border: rgba(255, 255, 255, 0.22);
-      --glass-luma: rgba(255, 255, 255, 0.42);
-      --glass-selected: rgba(0, 0, 0, 0.16);
-      --glass-highlight: radial-gradient(120% 80% at 28% 18%, rgba(255, 255, 255, 0.30), transparent 42%);
-      --glass-shadow:
-        inset 0 0.5px 0 rgba(255, 255, 255, 0.45),
-        0 6px 18px rgba(0, 0, 0, 0.08);
-      --paper: #f4f4f6;
-      --paper-border: rgba(0, 0, 0, 0.06);
-      --ink: #1c1c1e;
-      --muted: rgba(60, 60, 67, 0.68);
-      --on-glass: #1c1c1e;
-      --on-glass-2: rgba(60, 60, 67, 0.72);
-      --env-solid: #8aa9bb;
-      --env:
-        radial-gradient(900px 560px at 12% 0%, #dceaf2 0%, transparent 58%),
-        radial-gradient(700px 480px at 92% 100%, #d7b48a 0%, transparent 50%),
-        linear-gradient(168deg, #6f9bb8 0%, #a9bba8 48%, #d8c49a 100%);
-    }
-
-    .is-dark {
-      --glass-fill: rgba(84, 84, 84, 0.16);
-      --glass-border: rgba(255, 255, 255, 0.16);
-      --glass-luma: rgba(10, 8, 22, 0.22);
-      --glass-selected: rgba(0, 0, 0, 0.26);
-      --glass-highlight: radial-gradient(120% 80% at 28% 18%, rgba(255, 255, 255, 0.18), transparent 42%);
-      --paper: #1c1a28;
-      --paper-border: rgba(255, 255, 255, 0.10);
-      --ink: #f5f5f7;
-      --muted: rgba(235, 235, 245, 0.60);
-      --on-glass: #ffffff;
-      --on-glass-2: rgba(255, 255, 255, 0.74);
-      --env-solid: #121028;
-      --env:
-        radial-gradient(90% 70% at 16% 0%, #6a4fa8 0%, transparent 56%),
-        radial-gradient(80% 60% at 92% 88%, #1c4a86 0%, transparent 52%),
-        linear-gradient(165deg, #2a184c 0%, #171e52 42%, #0c122e 78%, #1a1038 100%);
-    }
-
     * { box-sizing: border-box; }
-    html, body { margin: 0; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
     body {
-      font-family: var(--font);
-      background: var(--page);
-      color: var(--ink-page);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", system-ui, sans-serif;
+      color: #262628;
+      background:
+        radial-gradient(55% 75% at 38% 25%, rgba(255,255,255,.92), transparent 72%),
+        radial-gradient(56% 78% at 74% 70%, rgba(99,89,186,.28), transparent 68%),
+        linear-gradient(105deg, #f4f4f2 0 48%, #19172b 58%, #0d1020 100%);
       -webkit-font-smoothing: antialiased;
     }
-
-    .top {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand img { width: 36px; height: 36px; border-radius: 10px; }
-    .brand b { display: block; font-size: 16px; font-weight: 590; letter-spacing: 0.06em; }
-    .brand small { display: block; letter-spacing: 0.28em; font-size: 10px; color: var(--muted-page); }
-    .slogan { margin: 0; color: var(--muted-page); font-size: 14px; }
-
-    nav.toc { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px 40px 0; }
-    nav.toc a {
-      color: var(--ink-page); text-decoration: none; font-size: 13px; font-weight: 510;
-      padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.10);
-    }
-
-    .screen { padding: 36px 40px 12px; overflow-x: auto; }
-    .screen h2 { margin: 0 0 6px; font-size: 22px; font-weight: 590; }
-    .screen p.note { margin: 0 0 18px; color: var(--muted-page); font-size: 14px; max-width: 640px; line-height: 1.6; }
-
-    .glass {
-      background: var(--glass-highlight), linear-gradient(var(--glass-luma), var(--glass-luma)), var(--glass-fill);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-      box-shadow: var(--glass-shadow);
-    }
-
-    .frame {
-      position: relative;
-      width: min(100%, 1180px);
-      min-width: 1080px;
-      height: 640px;
-      border-radius: 20px;
-      overflow: hidden;
-      background-color: var(--env-solid);
-      background-image: var(--env);
-      background-size: cover;
-      padding: 10px;
-      display: grid;
-      grid-template-columns: 52px 228px minmax(0, 1fr);
-      grid-template-rows: 1fr;
-      gap: 10px;
-    }
-
-    .ribbon {
-      border-radius: 999px;
-      display: flex; flex-direction: column; align-items: center;
-      padding: 12px 0; gap: 6px;
-    }
-    .ribbon button {
-      width: 36px; height: 36px; border: 0; padding: 0; border-radius: 999px;
-      background: transparent; color: var(--on-glass); display: grid; place-items: center;
-    }
-    .ribbon button.on { color: var(--on-glass); }
-    .ribbon svg { width: 17px; height: 17px; }
-
-    .side {
-      border-radius: 26px;
-      padding: 12px 10px;
-      color: var(--on-glass);
-      min-width: 0;
-    }
-    .side .cap { font-size: 11px; letter-spacing: 0.06em; color: var(--on-glass-2); padding: 6px 12px 8px; font-weight: 510; }
-    .row {
-      display: flex; align-items: center; gap: 8px;
-      min-height: 36px; padding: 0 12px; border-radius: 46px;
-      font-size: 14px; line-height: 22px; font-weight: 510; color: var(--on-glass);
-    }
-    .row svg { width: 14px; height: 14px; opacity: 0.8; flex: none; }
-    .row.on,
-    .tab.on,
-    .ribbon button.on,
-    .phone .island button.on {
-      background: var(--glass-selected);
-      font-weight: 600;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
-    }
-    .row.sub { padding-left: 28px; color: var(--on-glass-2); font-weight: 400; }
-
-    .main { min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-    .tabs {
-      height: 44px; border-radius: 999px; display: flex; align-items: center;
-      gap: 4px; padding: 4px 6px 4px 8px; flex: none;
-    }
-    .tab {
-      height: 32px; padding: 0 12px; border-radius: 46px;
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--on-glass-2); font-size: 13px; font-weight: 510;
-    }
-    .tab.on { color: var(--on-glass); }
-    .tab .dot { width: 6px; height: 6px; border-radius: 99px; background: var(--accent); }
-    .tabs .grow { flex: 1; }
-
-    .paper {
-      flex: 1; min-height: 0;
-      background: var(--paper);
-      border: 1px solid var(--paper-border);
-      border-radius: 14px;
-      color: var(--ink);
-      display: flex; flex-direction: column;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-    }
-    .vhead {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 16px; border-bottom: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
-      font-size: 13px; font-weight: 590;
-    }
-    .vhead span { opacity: 0.45; font-weight: 400; }
-    .body {
-      padding: 22px 32px 28px; overflow: hidden; max-width: 46rem;
-    }
-    .body h3 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.025em; font-weight: 700; }
-    .body p { margin: 0 0 12px; font-size: 16px; line-height: 1.7; }
-    .body .muted { color: var(--muted); }
-    .body a { color: var(--paper-link); text-underline-offset: 3px; }
-    .is-dark .body a { color: #70b8ff; }
-    .body mark { background: rgba(255, 214, 10, 0.42); box-shadow: inset 3px 0 0 #e5b800; padding: 0 3px; border-radius: 2px; }
-    .tag {
-      display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 13px; font-weight: 500;
-      background: color-mix(in srgb, var(--accent) 14%, var(--paper));
-      border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-    }
-    .callout {
-      display: flex; gap: 10px; padding: 12px 14px; border-radius: 14px; margin: 14px 0;
-      background: color-mix(in srgb, var(--accent) 8%, var(--paper));
-      border-left: 3px solid var(--accent);
-      font-size: 14px; line-height: 1.55;
-    }
-    .tasks { margin: 0 0 14px; padding: 0; list-style: none; }
-    .tasks li { display: flex; gap: 8px; align-items: center; margin: 0 0 6px; font-size: 15px; }
-    .box { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid color-mix(in srgb, var(--ink) 28%, transparent); flex: none; }
-    .box.on { background: var(--accent); border-color: var(--accent); }
-    pre {
-      margin: 0; padding: 12px 14px; border-radius: 14px; font-family: var(--mono); font-size: 12.5px; line-height: 1.55;
-      background: color-mix(in srgb, var(--ink) 6%, var(--paper));
-    }
-
-    .status {
-      align-self: stretch;
-      width: 100%;
-      height: 28px; padding: 0 14px; border-radius: 999px;
-      display: flex; align-items: center; justify-content: flex-end; gap: 10px;
-      color: var(--on-glass-2); font-size: 12px; font-weight: 510;
-    }
-
-    .dim,
-    .palette,
-    .settings {
-      grid-column: 1 / -1;
-      grid-row: 1 / -1;
-    }
-    .dim {
-      position: absolute; inset: 0;
-      background: rgba(8, 8, 18, 0.16);
-      z-index: 4;
-    }
-    .palette {
-      --palette-r: 22px;
-      --palette-pad: 6px;
-      --palette-item-r: 16px;
-      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      width: min(480px, calc(100% - 80px));
-      height: fit-content;
-      border-radius: var(--palette-r);
-      padding: var(--palette-pad);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      color: var(--on-glass);
-      z-index: 6;
-    }
-    .palette .search {
-      display: flex; align-items: center; gap: 8px;
-      height: 40px; padding: 0 12px;
-      border-radius: var(--palette-item-r);
-      background: rgba(255, 255, 255, 0.06);
-      margin-bottom: 4px;
-    }
-    .palette .search svg { width: 16px; height: 16px; opacity: 0.75; flex: none; }
-    .palette .search b { font-weight: 510; font-size: 14px; }
-    .hit {
+    .hero { width: 1280px; height: 720px; padding: 40px 72px 48px; }
+    h1 { margin: 0; font-size: 38px; line-height: 1.08; letter-spacing: -.035em; }
+    .lede { margin: 8px 0 26px; color: #727277; font-size: 16px; }
+    .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .mode-label {
       display: flex; justify-content: space-between; align-items: center;
-      min-height: 36px; padding: 0 12px;
-      border-radius: var(--palette-item-r);
-      font-size: 14px; line-height: 22px;
+      margin: 0 6px 10px; font-size: 11px; font-weight: 650; letter-spacing: .22em;
+      color: #64646a;
     }
-    .hit.on {
-      background: var(--glass-selected);
-      font-weight: 600;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+    .mode:last-child .mode-label { color: rgba(255,255,255,.66); }
+    .mode-label span:last-child { letter-spacing: .08em; font-weight: 550; opacity: .72; }
+    .window {
+      --paper: #fff; --ink: #262628; --muted: #747479; --line: rgba(28,28,30,.085);
+      --side: rgba(244,245,245,.92); --selected: rgba(28,28,30,.06); --link: #075fb8;
+      position: relative; display: grid; grid-template-columns: 42px 128px 1fr;
+      width: 100%; height: 494px; overflow: hidden; border-radius: 15px;
+      background: #e9e9e7; border: 1px solid rgba(28,28,30,.11);
+      box-shadow: 0 14px 36px rgba(28,28,30,.13);
     }
-    .hit kbd { font: 510 12px var(--font); color: var(--on-glass-2); }
-
-    .settings {
-      position: absolute; inset: 36px 72px;
-      border-radius: 28px; display: grid; grid-template-columns: 200px 1fr; overflow: hidden; z-index: 5;
+    .window.dark {
+      --paper: #1c1c1e; --ink: #f5f5f7; --muted: #aaaab0; --line: rgba(235,235,245,.13);
+      --side: rgba(40,36,58,.48); --selected: rgba(255,255,255,.11); --link: #70b8ff;
+      background:
+        radial-gradient(72% 70% at 12% 0%, #5d477f 0%, transparent 62%),
+        linear-gradient(155deg, #2b2348, #111426 78%);
+      border-color: rgba(255,255,255,.18);
+      box-shadow: 0 18px 42px rgba(0,0,0,.34);
     }
-    .set-nav { padding: 16px 12px; color: var(--on-glass); }
-    .set-nav h4 { margin: 0 8px 12px; font-size: 16px; }
-    .set-paper {
-      margin: 12px; border-radius: 14px; background: var(--paper); color: var(--ink);
-      padding: 22px 24px; border: 1px solid var(--paper-border);
+    .ribbon, .sidebar, .tabs, .status {
+      background: var(--side);
+      border: 1px solid rgba(255,255,255,.58);
+      backdrop-filter: blur(18px) saturate(125%);
+      -webkit-backdrop-filter: blur(18px) saturate(125%);
     }
-    .set-paper h3 { margin: 0 0 16px; font-size: 18px; }
-    .field { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); font-size: 14px; }
-    .toggle { width: 42px; height: 26px; border-radius: 999px; background: var(--accent); position: relative; }
-    .toggle i { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 99px; background: #fff; }
-    .btn {
-      height: 36px; padding: 0 16px; border-radius: 999px; border: 0;
-      background: var(--accent); color: #fff; font: 510 14px var(--font);
+    .dark .ribbon, .dark .sidebar, .dark .tabs, .dark .status {
+      background:
+        radial-gradient(90% 65% at 14% 0%, rgba(255,255,255,.17), transparent 55%),
+        rgba(28,26,42,.42);
+      border-color: rgba(255,255,255,.16);
+      box-shadow: inset 0 .5px 0 rgba(255,255,255,.13), 0 5px 14px rgba(0,0,0,.18);
     }
-
-    .phone-wrap { display: flex; justify-content: center; }
-    .phone.frame {
-      width: 390px; min-width: 390px; height: 720px; border-radius: 36px;
-      padding: 12px 10px 18px;
-      display: flex; flex-direction: column; gap: 8px;
-      grid-template-columns: none;
-    }
-    .phone .island {
-      height: 56px; border-radius: 999px; display: flex; justify-content: space-around; align-items: center;
-      color: var(--on-glass);
-    }
-    .phone .island button {
-      width: 44px; height: 44px; border: 0; background: transparent; color: inherit; border-radius: 999px;
-      display: grid; place-items: center;
-    }
-    .phone .island button.on { background: var(--glass-selected); }
-    .phone .paper { padding: 0; }
-    .phone .body { padding: 18px 18px 24px; }
-
-    .tokens { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
-    .token { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px; }
-    .swatch { height: 32px; border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.14); }
-    .token b { font-size: 13px; font-weight: 510; }
-    .token code { display: block; font: 12px var(--mono); color: var(--muted-page); }
-
-    footer { padding: 28px 40px 48px; color: var(--muted-page); font-size: 12px; }
-
-    @media (max-width: 900px) {
-      .top, .screen, nav.toc, footer { padding-left: 16px; padding-right: 16px; }
-      .phone { min-width: 0; width: 100%; max-width: 390px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; }
-    }
+    .ribbon { margin: 6px 0 6px 6px; border-radius: 999px 0 0 999px; padding-top: 38px; }
+    .rail-icon { width: 28px; height: 28px; margin: 6px auto; display: grid; place-items: center; border-radius: 7px; color: var(--ink); }
+    .rail-icon.active { background: var(--selected); }
+    .rail-icon svg { width: 15px; height: 15px; }
+    .sidebar { margin: 6px 6px 6px 0; padding: 52px 9px 12px; border-radius: 0 10px 10px 0; color: var(--ink); }
+    .tree { height: 27px; display: flex; align-items: center; padding: 0 9px; border-radius: 6px; font-size: 11px; color: var(--muted); }
+    .tree.folder { color: var(--ink); font-weight: 580; }
+    .tree.active { background: var(--selected); color: var(--ink); }
+    .main { min-width: 0; display: grid; grid-template-rows: 42px 1fr; gap: 6px; padding: 6px 6px 6px 0; }
+    .tabs { border-radius: 10px; display: flex; align-items: center; gap: 4px; padding: 4px; }
+    .tab { height: 30px; min-width: 112px; padding: 0 12px; display: flex; align-items: center; border-radius: 10px; color: var(--muted); font-size: 11px; }
+    .tab.active { background: rgba(255,255,255,.86); color: var(--ink); box-shadow: inset 0 0 0 1px rgba(28,28,30,.035); }
+    .dark .tab.active { background: rgba(0,0,0,.27); box-shadow: inset 0 1px 2px rgba(0,0,0,.34), inset 0 -.5px 0 rgba(255,255,255,.1); }
+    .paper { position: relative; min-width: 0; overflow: hidden; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); color: var(--ink); }
+    .viewbar { height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+    .doc { width: 78%; margin: 0 auto; padding: 30px 0 42px; }
+    .doc h2 { margin: 0 0 12px; font-size: 24px; line-height: 1.22; letter-spacing: -.02em; }
+    .doc p { margin: 0 0 12px; font-size: 12px; line-height: 1.7; }
+    .quote { position: relative; margin: 18px 0 24px; padding: 3px 0 3px 14px; }
+    .quote::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; border-radius: 999px; background: var(--ink); }
+    .doc h3 { margin: 24px 0 10px; font-size: 16px; line-height: 1.28; }
+    .doc code { padding: 2px 5px; border-radius: 3px; background: color-mix(in srgb, var(--ink) 5%, var(--paper)); box-shadow: inset 0 0 0 1px var(--line); font: 11px "SF Mono", ui-monospace, monospace; }
+    table { width: 100%; margin-top: 14px; border-spacing: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; font-size: 10px; }
+    th, td { padding: 7px 9px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; }
+    th { background: color-mix(in srgb, var(--ink) 2%, var(--paper)); font-weight: 650; }
+    tr:last-child td { border-bottom: 0; } th:last-child, td:last-child { border-right: 0; }
+    .status { position: absolute; right: 12px; bottom: 10px; height: 25px; padding: 0 10px; display: flex; align-items: center; border-radius: 999px; color: var(--muted); font-size: 9px; }
+    .badge { position: absolute; right: 12px; top: 12px; padding: 5px 8px; border-radius: 999px; color: var(--muted); background: color-mix(in srgb, var(--ink) 4%, transparent); font-size: 9px; }
+    .footer { display: flex; align-items: center; justify-content: space-between; margin-top: 22px; color: rgba(255,255,255,.64); font-size: 11px; letter-spacing: .06em; }
+    .footer b { color: rgba(255,255,255,.88); font-weight: 600; }
   </style>
 </head>
 <body>
-  <header class="top">
-    <div class="brand">
-      <img src="assets/icon.jpg" width="36" height="36" alt="Lumen Glass mark" />
-      <div>
-        <b>Lumen Glass</b>
-        <small>LUMEN</small>
-      </div>
-    </div>
-    <p class="slogan">手触琉璃，心落纸上。设计稿 · 打磨后再实现。</p>
-  </header>
-
-  <nav class="toc">
-    <a href="#s-light">01 浅色工作区</a>
-    <a href="#s-dark">02 命令面板</a>
-    <a href="#s-settings">03 设置</a>
-    <a href="#s-mobile">04 移动端</a>
-    <a href="#s-tokens">05 色板</a>
-  </nav>
-
-  <section class="screen" id="s-light">
-    <h2>01 浅色工作区</h2>
-    <p class="note">环境是冷雾山色。铬是玻璃，笔记是纸。当前文件、当前标签都是内嵌胶囊，不是描边。</p>
-    <div class="frame" data-screen="light">
-      <aside class="ribbon glass" aria-label="功能区">
-        <button class="on" type="button" aria-label="文件"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7l2 2h7v12H4z"/></svg></button>
-        <button type="button" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-3.2-3.2"/></svg></button>
-        <button type="button" aria-label="书签"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16l-5-3-5 3z"/></svg></button>
-        <button type="button" aria-label="图谱"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="16" cy="17" r="2.2"/><path d="M8 12h6M17 9l-1 6"/></svg></button>
-      </aside>
-      <nav class="side glass">
-        <div class="cap">库</div>
-        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 8l3 3-3 3"/></svg>日记</div>
-        <div class="row on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 8l3 3-3 3"/></svg>Lumen Glass</div>
-        <div class="row sub">品牌</div>
-        <div class="row sub">材质</div>
-        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 8l3 3-3 3"/></svg>项目</div>
-        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 8l3 3-3 3"/></svg>档案</div>
-      </nav>
-      <div class="main">
-        <div class="tabs glass">
-          <span class="tab on">Lumen Glass</span>
-          <span class="tab">日记 <i class="dot" title="未保存"></i></span>
-          <span class="tab">阅读清单</span>
-          <span class="grow"></span>
-        </div>
-        <article class="paper">
-          <div class="vhead">Lumen Glass.md <span>Vault / Lumen Glass</span></div>
-          <div class="body">
-            <h3>手触琉璃，心落纸上</h3>
-            <p>玻璃只负责操作，纸面只负责书写。换墙纸，玻璃会变；换墙纸，<mark>字还在</mark>。</p>
-            <p class="muted">这是纸，不是玻璃。长文对比度按纸面计算，不按风景计算。</p>
-            <p><a href="#">内部链接</a> · <a href="#">外部链接</a> · <span class="tag">#lumen</span></p>
-            <div class="callout">选中是体积：一颗更深的内嵌胶囊，像被按进液面。</div>
-            <ul class="tasks">
-              <li><i class="box on"></i> 环境、纸、玻璃分层</li>
-              <li><i class="box"></i> 命令面板居中，不再进 grid</li>
-            </ul>
-            <pre>--lg-glass-blur: 45px;
---lg-paper: #F4F4F6;</pre>
+  <main class="hero">
+    <h1>Lumen Glass</h1>
+    <p class="lede">Paper clarity. Liquid depth.</p>
+    <div class="modes">
+      <section class="mode">
+        <div class="mode-label"><span>LIGHT</span><span>PAPER NEUTRAL</span></div>
+        <div class="window">
+          <aside class="ribbon">
+            <div class="rail-icon active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h7l2 2h7v12H4z"/></svg></div>
+            <div class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></div>
+          </aside>
+          <nav class="sidebar">
+            <div class="tree folder">Workspace</div><div class="tree">Daily notes</div><div class="tree folder">Knowledge</div><div class="tree active">Lumen Glass</div><div class="tree">Typography</div><div class="tree">Materials</div>
+          </nav>
+          <div class="main">
+            <div class="tabs"><div class="tab active">Lumen Glass</div><div class="tab">Reading notes</div></div>
+            <article class="paper">
+              <div class="viewbar"><span>wiki / design / lumen</span><span>•••</span></div>
+              <div class="doc">
+                <h2>Clarity belongs to the page.</h2>
+                <p>Navigation stays quiet so writing can remain the foreground.</p>
+                <div class="quote"><p>Glass supports the work. It never competes with it.</p></div>
+                <h3>Editorial rhythm</h3>
+                <p>Neutral surfaces, readable measure, and <code>consistent spacing</code>.</p>
+                <table><thead><tr><th>Surface</th><th>Purpose</th></tr></thead><tbody><tr><td>Paper</td><td>Reading and writing</td></tr><tr><td>Glass</td><td>Navigation and controls</td></tr></tbody></table>
+              </div>
+              <div class="status">18 backlinks · 428 words</div>
+            </article>
           </div>
-        </article>
-        <div class="status glass">Lumen Glass · 阅读 · 128 词</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="screen is-dark" id="s-dark">
-    <h2>02 深色 + 命令面板</h2>
-    <p class="note">紫蓝丝绸环境。面板是横向玻璃卡，浮在正中。当前命令是内嵌胶囊，背后工作区被压暗但仍可认。</p>
-    <div class="frame is-dark" data-screen="dark">
-      <aside class="ribbon glass" aria-label="功能区">
-        <button class="on" type="button" aria-label="文件"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7l2 2h7v12H4z"/></svg></button>
-        <button type="button" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-3.2-3.2"/></svg></button>
-        <button type="button" aria-label="书签"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v16l-5-3-5 3z"/></svg></button>
-        <button type="button" aria-label="图谱"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="6" cy="12" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="16" cy="17" r="2.2"/><path d="M8 12h6M17 9l-1 6"/></svg></button>
-      </aside>
-      <nav class="side glass">
-        <div class="cap">库</div>
-        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 8l3 3-3 3"/></svg>日记</div>
-        <div class="row on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 8l3 3-3 3"/></svg>Lumen Glass</div>
-        <div class="row sub">品牌</div>
-        <div class="row sub">材质</div>
-        <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 8l3 3-3 3"/></svg>项目</div>
-      </nav>
-      <div class="main">
-        <div class="tabs glass">
-          <span class="tab on">Lumen Glass</span>
-          <span class="tab">日记</span>
-          <span class="tab">阅读清单</span>
         </div>
-        <article class="paper">
-          <div class="vhead">Lumen Glass.md <span>Vault / Lumen Glass</span></div>
-          <div class="body">
-            <h3>玻璃浮着，纸留下。</h3>
-            <p>The glass floats. The paper stays.</p>
-            <p class="muted">紫蓝丝绸只给玻璃染色。纸是墨紫实底，不是第三块玻璃。</p>
+      </section>
+      <section class="mode">
+        <div class="mode-label"><span>DARK</span><span>LIQUID READY</span></div>
+        <div class="window dark">
+          <aside class="ribbon"><div class="rail-icon active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h7l2 2h7v12H4z"/></svg></div><div class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></div></aside>
+          <nav class="sidebar"><div class="tree folder">Workspace</div><div class="tree">Daily notes</div><div class="tree folder">Knowledge</div><div class="tree active">Lumen Glass</div><div class="tree">Typography</div><div class="tree">Materials</div></nav>
+          <div class="main">
+            <div class="tabs"><div class="tab active">Lumen Glass</div><div class="tab">Reading notes</div></div>
+            <article class="paper">
+              <div class="viewbar"><span>wiki / design / lumen</span><span>•••</span></div>
+              <div class="doc">
+                <h2>Depth belongs to controls.</h2>
+                <p>Colourless optics preserve hierarchy while the paper stays solid.</p>
+                <div class="quote"><p>Liquid Glass is optional. Content remains stable.</p></div>
+                <h3>Material layers</h3>
+                <p>One blur layer, restrained highlights, and <code>accessible fallbacks</code>.</p>
+                <table><thead><tr><th>Mode</th><th>Character</th></tr></thead><tbody><tr><td>Regular</td><td>Thicker and grounded</td></tr><tr><td>Clear</td><td>Lighter and brighter</td></tr></tbody></table>
+              </div>
+              <div class="badge">LIQUID</div><div class="status">18 backlinks · 428 words</div>
+            </article>
           </div>
-        </article>
-        <div class="status glass">Lumen Glass · 128 words</div>
-      </div>
-      <div class="dim" aria-hidden="true"></div>
-      <div class="palette glass" role="dialog" aria-label="命令面板">
-        <div class="search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="6"/><path d="M20 20l-3.2-3.2"/></svg>
-          <b>Open Lumen Glass</b>
         </div>
-        <div class="hit on">Open Lumen Glass.md <kbd>↵</kbd></div>
-        <div class="hit">新建笔记 <kbd>⌘N</kbd></div>
-        <div class="hit">切换外观</div>
-      </div>
+      </section>
     </div>
-  </section>
-
-  <section class="screen is-dark" id="s-settings">
-    <h2>03 设置</h2>
-    <p class="note">外壳是玻璃。表单坐在纸上。主按钮是实心系统蓝，不是玻璃。</p>
-    <div class="frame is-dark" data-screen="settings" style="min-height:520px;height:520px">
-      <aside class="ribbon glass" aria-hidden="true">
-        <button class="on" type="button" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 5h7l2 2h7v12H4z"/></svg></button>
-        <button type="button" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="6"/><path d="M20 20l-3.2-3.2"/></svg></button>
-      </aside>
-      <nav class="side glass" aria-hidden="true">
-        <div class="cap">库</div>
-        <div class="row on">Lumen Glass</div>
-        <div class="row">项目</div>
-      </nav>
-      <div class="main">
-        <div class="tabs glass"><span class="tab on">Lumen Glass</span></div>
-        <article class="paper"><div class="body"><h3>纸面仍在</h3><p class="muted">设置打开时，笔记被压在后面。</p></div></article>
-      </div>
-      <div class="dim"></div>
-      <div class="settings glass">
-        <div class="set-nav">
-          <h4>设置</h4>
-          <div class="row on">外观</div>
-          <div class="row">编辑器</div>
-          <div class="row">快捷键</div>
-        </div>
-        <div class="set-paper">
-          <h3>Lumen Glass</h3>
-          <div class="field">玻璃重量<span>标准 Regular</span></div>
-          <div class="field">降低透明度<i class="toggle"><i></i></i></div>
-          <div class="field">增强对比<i class="toggle" style="background:rgba(120,120,128,.32)"><i style="right:auto;left:3px"></i></i></div>
-          <div class="field"><span></span><button class="btn" type="button">完成</button></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="screen" id="s-mobile">
-    <h2>04 移动端</h2>
-    <p class="note">纸在中间。底栏是玻璃岛，当前项是岛内胶囊。热区 44px，避开 Home Indicator。</p>
-    <div class="phone-wrap">
-      <div class="phone frame" data-screen="mobile" style="display:flex;grid-template-columns:none;height:720px">
-        <div class="tabs glass">
-          <span class="tab on">Lumen Glass</span>
-          <span class="tab">日记</span>
-        </div>
-        <article class="paper">
-          <div class="vhead">Lumen Glass.md</div>
-          <div class="body">
-            <h3>手触琉璃</h3>
-            <p>小屏默认更实的填充。可读优先于通透。</p>
-            <p class="muted">正文不小于 16px。抽屉打开时纸面被压暗。</p>
-          </div>
-        </article>
-        <div class="island glass">
-          <button class="on" type="button" aria-label="笔记"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M5 5h14v14H5z"/></svg></button>
-          <button type="button" aria-label="搜索"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="6"/><path d="M20 20l-3.2-3.2"/></svg></button>
-          <button type="button" aria-label="新建"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 6v12M6 12h12"/></svg></button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="screen" id="s-tokens">
-    <h2>05 色板</h2>
-    <p class="note">强调色 #0A84FF。纸面语义色加深以保证 4.5:1。</p>
-    <div class="tokens">
-      <div class="token"><div class="swatch" style="background:#0A84FF"></div><b>Accent</b><code>#0A84FF</code></div>
-      <div class="token"><div class="swatch" style="background:#8AA9BB"></div><b>山色</b><code>#8AA9BB</code></div>
-      <div class="token"><div class="swatch" style="background:#121028"></div><b>丝绸</b><code>#121028</code></div>
-      <div class="token"><div class="swatch" style="background:#F4F4F6"></div><b>纸 · 浅</b><code>#F4F4F6</code></div>
-      <div class="token"><div class="swatch" style="background:#1C1A28"></div><b>纸 · 深</b><code>#1C1A28</code></div>
-      <div class="token"><div class="swatch" style="background:#1C1C1E"></div><b>正文</b><code>#1C1C1E</code></div>
-    </div>
-  </section>
-
-  <footer>Lumen Glass · 设计稿 v2 · 过关后再写 theme.css</footer>
+    <div class="footer"><b>Lumen Glass for Obsidian</b><span>Light · Dark · Accessible</span></div>
+  </main>
 </body>
 </html>

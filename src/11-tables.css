@@ -128,7 +128,9 @@
   table-layout: auto;
   border: 1px solid var(--lg-table-outline);
   border-radius: var(--lg-table-radius);
+  border-collapse: separate;
   border-spacing: 0;
+  overflow: hidden;
   background: var(--lg-table-surface);
   color: var(--lg-table-text);
   font-size: var(--lg-table-font-size);
@@ -290,13 +292,13 @@
 }
 
 .markdown-rendered hr {
-  margin-block: 24px;
+  margin-block: var(--lg-space-8);
   border-width: 1px 0 0;
   border-color: var(--lg-doc-divider);
 }
 
 .markdown-rendered .footnotes {
-  margin-top: var(--lg-space-8);
+  margin-top: 2.5em;
   padding-top: var(--lg-space-3);
   border-top: 1px solid var(--lg-doc-divider);
   color: var(--text-muted);
@@ -305,7 +307,7 @@
 }
 
 .markdown-rendered .task-list-item {
-  margin-block: var(--lg-space-1);
+  margin-block: 0.4em;
 }
 
 .markdown-rendered .task-list-item-checkbox {
@@ -319,6 +321,8 @@
 .markdown-rendered .task-list-item.is-checked {
   color: var(--text-muted);
   opacity: 0.72;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
 }
 
 .markdown-rendered .MathJax:not([display="true"]) {
@@ -340,8 +344,10 @@
 
 .internal-embed,
 .markdown-embed {
-  border-radius: var(--lg-radius-s);
+  margin-block: var(--lg-space-6);
+  border: 1px solid var(--lg-paper-border);
+  border-radius: var(--lg-radius-m);
   background: var(--background-primary-alt);
-  padding: var(--lg-space-2) var(--lg-space-3);
+  padding: var(--lg-space-4);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 60%, transparent);
 }
-

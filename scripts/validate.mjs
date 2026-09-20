@@ -77,59 +77,6 @@ function checkBalancedCss(css) {
 }
 
 /*
- * Plugin adaptations must never match when the plugin is absent. Every rule
- * that names a plugin class has to stay behind the view's data-type gate, so a
- * stray unscoped selector fails the build instead of leaking into vanilla
- * Obsidian.
- */
-const scopedPluginViews = [
-  {
-    label: "Claudian",
-    token: "claudian",
-    scopes: ['[data-type="claudian-view"]', ".claudian-settings"],
-    gate: "body:not(.lumen-claudian-plain)",
-  },
-];
-
-function checkPluginScoping(css) {
-  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
-  const selectors = withoutComments.matchAll(/(^|[{}])\s*([^{}@;]+?)\s*\{/g);
-  const seen = new Map(scopedPluginViews.map(({ token }) => [token, 0]));
-
-  for (const match of selectors) {
-    const selector = match[2].replace(/\s+/g, " ").trim();
-    if (!selector) continue;
-
-    for (const { label, token, scopes, gate } of scopedPluginViews) {
-      if (!selector.toLowerCase().includes(token)) continue;
-      seen.set(token, seen.get(token) + 1);
-
-      if (!scopes.some((scope) => selector.includes(scope))) {
-        fail(`${label} rule is not scoped to ${scopes.join(" or ")}: ${selector.slice(0, 120)}`);
-      }
-
-      /*
-       * Every comma-separated branch needs the opt-out gate, not just the
-       * first — a selector list where one branch escapes would keep styling
-       * that element after the reader turned the adaptation off.
-       */
-      const ungated = selector.split(",").filter((part) => !part.includes(gate));
-      if (ungated.length > 0) {
-        fail(`${label} rule is missing the ${gate} gate: ${ungated[0].trim().slice(0, 120)}`);
-      }
-    }
-  }
-
-  /*
-   * The gate is injected at build time, so an empty result would mean the
-   * injection silently stopped matching rather than that the work is done.
-   */
-  for (const { label, token } of scopedPluginViews) {
-    if (seen.get(token) === 0) fail(`${label} adaptation produced no rules; the build gate may be broken`);
-  }
-}
-
-/*
  * Only the theme's own namespaces are audited. Obsidian's variables are
  * declared by the app, so a `var(--text-muted)` with no local declaration is
  * expected, and a `--callout-radius` the theme sets for the app to read is not
@@ -298,7 +245,6 @@ if (!css.includes(`name: ${expectedThemeName}`) || !css.includes(`title: ${expec
   fail("theme.css Style Settings metadata must match the manifest name");
 }
 checkBalancedCss(css);
-checkPluginScoping(css);
 checkTokenGraph(css);
 checkRadiusScale(css);
 

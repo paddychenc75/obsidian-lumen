@@ -25,9 +25,7 @@
   background-image: var(--lg-glass-highlight), linear-gradient(var(--lg-status-luma), var(--lg-status-luma));
   color: var(--lg-text-on-glass-2);
   justify-content: flex-end;
-  box-shadow:
-    inset 0 0.5px 0 color-mix(in srgb, #fff 24%, transparent),
-    0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--lg-glass-shadow);
   z-index: var(--layer-status-bar, 15);
 }
 
@@ -54,5 +52,6 @@ body.is-mobile .status-bar {
 
 .status-bar-item {
   color: inherit;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
-

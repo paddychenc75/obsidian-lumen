@@ -6,6 +6,45 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-21
+
+### Fixed
+
+- Kept the macOS traffic-light cluster clear by suppressing the ribbon/sidebar divider across the native control band, without painting a separate backing that would break the surrounding glass colour.
+- Replaced the mismatched black-tooltip/white-arrow combination with a compact arrowless label.
+- Restored the 120ms press transform on CTA and ribbon controls after the shared transition rule had overwritten it.
+- Removed the separate white label cell inside hovered or focused multi-line Properties rows, so key and value now share one continuous row state.
+- Reduced the doubled edge around Settings popouts by routing the titlebar rule and paper outline through the existing paper-border token instead of separate 8% and 12% strokes. The remaining outer shadow is the native macOS shadow of Obsidian's translucent window.
+
+### Changed
+
+- Added one inset-depth token for active ribbon actions, files, tabs, Settings navigation, command suggestions, and selected menu items.
+- Compacted desktop Properties key fields and icons from 36px to 32px while leaving mobile and multiline values unchanged.
+- Raised disclosure-icon and Properties-heading contrast, and moved core tooltips onto shared border, radius, and shadow tokens.
+- Refined the light appearance into cooler mist glass over a subtly warm paper surface, with a quieter blue-to-champagne environment and low-percentage accent tint in hover and selected states instead of flat black washes.
+- Replaced per-component radial hotspots with one directional glass highlight, carried it through sidebar material, and aligned the status bar with the shared glass shadow.
+- Extended inset selection depth to secondary tree panes, tightened desktop Settings rows and section rhythm, stabilized status numbers with tabular figures, and gave the command input a quiet internal edge.
+- Reworked the light appearance around a neutral editorial hierarchy: white paper, warm-grey environment, near-neutral sidebar glass, flat grey selection capsules, lighter table rules, and contact-only chrome shadows. Accent colour is now reserved for links, focus, checks, and primary actions.
+- Rebalanced document typography toward a calmer editorial rhythm: a distinct 1.8em page title, restrained H1–H4 sizes with larger section gaps, slightly longer paragraph spacing, neutral 4px quote rails, and borderless pale-blue tags. The 40em measure, 17px body size, and CJK-friendly 1.7 leading remain unchanged.
+- Opened the document frame with 32px desktop top breathing room, a 44px root view header, 14px paper corners, 14px/30px file-tree rows, and a white active-tab capsule. Narrow windows and mobile reduce the top inset to 16px.
+- Unified the remaining Markdown surfaces: neutral inline code, lighter code blocks, quieter callouts, roomier low-contrast tables, framed images, clearer completed tasks, wider horizontal-rule spacing, and bordered internal embeds. All surfaces use structural hairlines rather than ambient card shadows.
+- Finished the secondary content set with 10px callout corners, bordered `details` blocks, and consistent muted image-caption typography.
+- Rebuilt quote rails as true 4px capsules instead of rounded CSS borders: solid neutral ink for the first level, softer nested rails, and matching pseudo-element geometry in Reading View and Live Preview.
+- Reduced the doubled list indentation from roughly 53px to about 29–34px by coordinating Obsidian's `--list-indent` with separate unordered and ordered-list gutters. Nested levels retain the same compact step.
+- Aligned Reading View and Live Preview heading metrics. The first H1 uses the shared 32px page inset in both modes, while H2–H4 share explicit line heights and compact 1.2–1.3em section gaps instead of switching between body-leading editor headings and oversized Reading View margins.
+- Added opt-in Liquid regular and Liquid clear material characters for navigation and controls while keeping Paper neutral as the default. Each variant provides light/dark optical layers, material-specific shadows, and solid accessibility fallbacks without applying glass to content surfaces.
+- Removed accent-colour reflections from both Liquid variants. Their optics are now colourless luminance layers with lower saturation and stronger neutral fill, preventing desktop or wallpaper colours from turning light glass muddy blue.
+- Restored visible Live Preview table corners by switching the editor table from collapsed borders to separate borders and clipping its cell backgrounds to the existing radius. External row and column add controls remain outside the clipped table.
+
+### Removed
+
+- Removed the Claudian-specific panel and Settings adaptation, its Style Settings switch, and the build-time selector gate. Claudian now renders entirely with its own styles plus the theme's generic Obsidian variables.
+- Removed obsolete hero, icon, mark, and intermediate preview images. The preview generator is now self-contained HTML/CSS/SVG, and the package keeps only the community-facing `assets/screenshot.png`.
+
+### Preview
+
+- Regenerated the 1280×720 community preview around the current design: Paper-neutral light mode on the left and colourless Liquid-ready dark mode on the right, including the latest quote, inline-code, table, navigation, and status treatments.
+
 ## [1.0.12] - 2026-09-01
 
 ### Changed

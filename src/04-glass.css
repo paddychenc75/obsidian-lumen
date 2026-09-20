@@ -22,7 +22,7 @@ body.theme-light .workspace-split.mod-left-split,
 body.theme-dark .workspace-split.mod-left-split,
 body.theme-light .workspace-split.mod-right-split,
 body.theme-dark .workspace-split.mod-right-split {
-  background-image: var(--lg-sidebar-material);
+  background-image: var(--lg-glass-highlight), var(--lg-sidebar-material);
 }
 
 .workspace-ribbon.side-dock-ribbon,
@@ -46,4 +46,3 @@ body.theme-dark .workspace-split.mod-right-split {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
-

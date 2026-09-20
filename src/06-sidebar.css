@@ -43,7 +43,7 @@
   display: flex;
   align-items: center;
   min-width: 0;
-  min-height: 28px;
+  min-height: 30px;
   margin: 0 0 1px;
   padding-block: 0;
   padding-inline-end: var(--lg-space-2);
@@ -53,6 +53,7 @@
   color: var(--lg-text-on-glass);
   overflow: hidden;
   box-shadow: none;
+  font-size: 14px;
   transition:
     background-color var(--lg-duration-fast) var(--lg-ease),
     color var(--lg-duration-fast) var(--lg-ease);
@@ -77,7 +78,7 @@ body.theme-dark .nav-files-container .collapse-icon {
   height: 14px;
   margin-inline: 0 var(--lg-space-1);
   color: var(--lg-text-on-glass-2);
-  opacity: 0.45;
+  opacity: 0.6;
   transform: translateY(-50%);
   transition:
     color var(--lg-duration-fast) var(--lg-ease),
@@ -93,11 +94,11 @@ body.theme-dark .nav-files-container .collapse-icon {
 
 body.theme-light .nav-files-container .collapse-icon:not(.is-collapsed),
 body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
-  opacity: 0.68;
+  opacity: 0.72;
 }
 
 .nav-files-container .nav-folder-title:hover .collapse-icon {
-  opacity: 0.82;
+  opacity: 0.86;
 }
 
 .nav-files-container .nav-folder-title-content {
@@ -135,8 +136,13 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
 .nav-files-container .nav-file-title.is-active {
   background: var(--lg-list-active-fill);
   color: var(--lg-text-on-glass);
-  box-shadow: none;
+  box-shadow: var(--lg-selected-shadow);
   border: 0;
+}
+
+/* Carry the same inset selection language into Outline, Tags, and link panes. */
+.workspace-split:not(.mod-root) .tree-item-self:is(.is-active, .is-selected) {
+  box-shadow: var(--lg-selected-shadow);
 }
 
 .nav-files-container .tree-item-self:focus-visible {
@@ -273,4 +279,3 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   color: var(--lg-text-on-glass-2);
   font-size: var(--font-ui-smaller);
 }
-
