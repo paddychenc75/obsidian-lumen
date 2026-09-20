@@ -1,10 +1,14 @@
 # Lumen Glass · Final Design Specification
 
-Source file: [`preview.html`](preview.html)
+Reference capture: [`assets/screenshot.png`](assets/screenshot.png)
 
-**Approved for development.** Product review passed; UI, UX, and visual design passed with conditions. See [REVIEW.md](REVIEW.md) for those conditions. The implementation should follow the four screens on this page.
+![Lumen Glass running in Obsidian on macOS](assets/screenshot.png)
 
-## Screens
+The public preview must be captured from a real Obsidian window with the released theme enabled. Reconstructed browser mockups are not acceptable because they can misrepresent native window controls, pane proportions, typography, content density, and material behaviour.
+
+**Approved for development.** The implementation should satisfy the workspace coverage targets below and remain visually consistent with the real application capture above.
+
+## Coverage targets
 
 | No. | Screen | Required elements |
 |---|---|---|

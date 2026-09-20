@@ -2,7 +2,9 @@
 
 A light and dark theme for [Obsidian](https://obsidian.md/) with translucent navigation, restrained interface styling, and a clear reading surface.
 
-![Lumen Glass theme preview](assets/screenshot.png)
+![Lumen Glass running in Obsidian on macOS](assets/screenshot.png)
+
+The preview above is captured from the actual Obsidian workspace in Reading View. It is not a reconstructed web mockup.
 
 ## Features
 
