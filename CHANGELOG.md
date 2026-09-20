@@ -6,6 +6,17 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-09-21
+
+### Fixed
+
+- Replaced the reconstructed dual-mode preview with a 1280×720 capture of the released theme running in a real Obsidian window. The new frame shows native macOS chrome, the file tree, tabs, Reading View typography, quote treatment, lists, links, inline code, the outline pane, and the status bar at their actual proportions.
+- Updated the README and design specification to embed the same production screenshot and to require real-application captures for future public previews.
+
+### Removed
+
+- Removed the obsolete browser-based preview generator so it cannot drift away from the shipped Obsidian interface again.
+
 ## [1.1.0] - 2026-09-21
 
 ### Fixed
