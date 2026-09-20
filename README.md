@@ -1,18 +1,20 @@
 # Lumen Glass
 
-A light and dark theme for [Obsidian](https://obsidian.md/) with translucent navigation, restrained interface styling, and a clear reading surface.
+A reading-first light and dark theme for [Obsidian](https://obsidian.md/). Lumen Glass keeps notes on a stable paper surface while using restrained translucency for navigation and controls.
 
 ![Lumen Glass running in Obsidian on macOS](assets/screenshot.png)
 
-The preview above is captured from the actual Obsidian workspace in Reading View. It is not a reconstructed web mockup.
+The preview above is a 1280×720 capture of Lumen Glass running in a real Obsidian workspace on macOS. It is not a reconstructed web mockup.
 
 ## Features
 
-- Light and dark color schemes
-- Translucent sidebars, tabs, status bar, command palette, and menus
-- Readable editor, reading view, code blocks, tables, callouts, and settings
-- Support for Live Preview, Properties, pop-out windows, and mobile layouts
-- System accessibility preferences for reduced transparency, increased contrast, and reduced motion
+- Reading-first light and dark appearances with a solid, low-distraction note surface
+- Paper neutral by default, with optional colourless Liquid regular and Liquid clear navigation materials
+- Translucent sidebars, tabs, status bar, command palette, menus, and mobile navigation without applying glass to note content
+- Matched typography and spacing between Live Preview and Reading View
+- Refined headings, paragraphs, lists, blockquotes, links, inline code, code blocks, tables, images, callouts, embeds, and Properties
+- Support for pop-out windows and responsive mobile layouts
+- System-aware fallbacks for reduced transparency, increased contrast, and reduced motion
 - Optional customization through the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin
 - Optional Lumen Stage plugin for pan, zoom, and fullscreen diagrams. Any theme can use it; this theme only skins its `.lmm-*` classes
 - No remote fonts, images, or other runtime network requests
@@ -27,7 +29,15 @@ The preview above is captured from the actual Obsidian workspace in Reading View
 
 ## Installation
 
-### GitHub release
+### Community themes (recommended)
+
+1. Open **Settings → Appearance → Themes**.
+2. Select **Manage**, then search for **Lumen Glass**.
+3. Select **Install and use**.
+
+Obsidian checks published GitHub releases for updates. Use the theme manager's update action when a new version is available.
+
+### Manual installation
 
 1. Download `manifest.json` and `theme.css` from the [latest release](https://github.com/paddychenc75/obsidian-lumen/releases/latest).
 2. Create a folder named `Lumen Glass` inside your vault's `.obsidian/themes/` directory.
@@ -43,19 +53,19 @@ git clone https://github.com/paddychenc75/obsidian-lumen.git \
   "/path/to/vault/.obsidian/themes/Lumen Glass"
 ```
 
-Reload Obsidian or switch themes after editing `theme.css`.
+This method tracks the repository rather than packaged releases. Reload Obsidian or switch themes after rebuilding `theme.css`.
 
 ## Customization
 
 Install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) to configure:
 
-- Built-in ambient color bleed
+- Ambient color bleed intensity
 - Paper neutral, Liquid regular, or Liquid clear material character
-- Thin, regular, or thick glass
-- Inset or flush interface layout
-- Specular highlights
-- Neutral or high-contrast reading surfaces
-- Transparency and contrast preferences
+- Thin, regular, or thick glass density
+- Inset or flush workspace layout
+- Specular highlight visibility
+- Note width and neutral or high-contrast reading surfaces
+- Reduced transparency and increased contrast overrides
 - Accent color
 
 Lumen Glass also follows the matching accessibility preferences provided by your operating system.
