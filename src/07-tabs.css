@@ -107,7 +107,7 @@ body.theme-dark .workspace-split.mod-root .workspace-tab-header.is-active .works
   color: var(--lg-text-on-glass);
   border: 0;
   outline: 0;
-  box-shadow: none;
+  box-shadow: var(--lg-selected-shadow);
 }
 
 .workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner-title {
@@ -183,4 +183,3 @@ body.theme-dark .workspace-split.mod-root .workspace-tab-header-inner-close-butt
   width: 14px;
   height: 14px;
 }
-

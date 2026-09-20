@@ -2,24 +2,124 @@
    13. Style Settings + a11y
    -------------------------------------------------------------------------- */
 
-body.lumen-glass-thin.theme-light {
+body.lumen-glass-thin:not(.lumen-liquid-regular):not(.lumen-liquid-clear).theme-light {
   --lg-glass-blur: 16px;
   --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 18%, rgba(255, 255, 255, 0.2));
 }
 
-body.lumen-glass-thin.theme-dark {
+body.lumen-glass-thin:not(.lumen-liquid-regular):not(.lumen-liquid-clear).theme-dark {
   --lg-glass-blur: 16px;
   --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 18%, rgba(84, 84, 84, 0.22));
 }
 
-body.lumen-glass-thick.theme-light {
+body.lumen-glass-thick:not(.lumen-liquid-regular):not(.lumen-liquid-clear).theme-light {
   --lg-glass-blur: 28px;
   --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 50%, rgba(255, 255, 255, 0.18));
 }
 
-body.lumen-glass-thick.theme-dark {
+body.lumen-glass-thick:not(.lumen-liquid-regular):not(.lumen-liquid-clear).theme-dark {
   --lg-glass-blur: 28px;
   --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) 50%, rgba(84, 84, 84, 0.18));
+}
+
+/*
+ * Liquid Glass is an opt-in functional layer. It changes only the shared glass
+ * tokens consumed by navigation and controls; paper, Markdown and data surfaces
+ * remain opaque. Multiple optical gradients share one backdrop-filter layer.
+ */
+body.lumen-liquid-regular.theme-light {
+  --lg-glass-blur: 22px;
+  --lg-glass-saturate: 120%;
+  --lg-glass-fill: rgba(255, 255, 255, 0.46);
+  --lg-glass-luma: rgba(255, 255, 255, 0.08);
+  --lg-glass-border: rgba(255, 255, 255, 0.58);
+  --lg-glass-highlight:
+    radial-gradient(90% 68% at 16% 0%, rgba(255, 255, 255, 0.52), transparent 54%),
+    radial-gradient(78% 58% at 92% 100%, rgba(255, 255, 255, 0.18), transparent 62%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.16), transparent 44%);
+  --lg-sidebar-material: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.34));
+  --lg-glass-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.62),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.065);
+  --lg-status-fill: rgba(255, 255, 255, 0.24);
+  --lg-status-luma: rgba(255, 255, 255, 0.08);
+}
+
+body.lumen-liquid-regular.theme-dark {
+  --lg-glass-blur: 22px;
+  --lg-glass-saturate: 120%;
+  --lg-glass-fill: rgba(38, 34, 56, 0.38);
+  --lg-glass-luma: rgba(255, 255, 255, 0.035);
+  --lg-glass-border: rgba(255, 255, 255, 0.2);
+  --lg-glass-highlight:
+    radial-gradient(90% 68% at 16% 0%, rgba(255, 255, 255, 0.18), transparent 54%),
+    radial-gradient(78% 58% at 92% 100%, rgba(255, 255, 255, 0.07), transparent 62%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.07), transparent 44%);
+  --lg-sidebar-material: linear-gradient(180deg, rgba(66, 58, 94, 0.5), rgba(38, 34, 56, 0.42));
+  --lg-glass-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 1px 2px rgba(0, 0, 0, 0.26),
+    0 10px 28px rgba(0, 0, 0, 0.26);
+  --lg-status-fill: rgba(38, 34, 56, 0.34);
+  --lg-status-luma: rgba(255, 255, 255, 0.035);
+}
+
+body.lumen-liquid-clear.theme-light {
+  --lg-glass-blur: 18px;
+  --lg-glass-saturate: 125%;
+  --lg-glass-fill: rgba(255, 255, 255, 0.28);
+  --lg-glass-luma: rgba(255, 255, 255, 0.035);
+  --lg-glass-border: rgba(255, 255, 255, 0.7);
+  --lg-glass-highlight:
+    radial-gradient(84% 64% at 14% 0%, rgba(255, 255, 255, 0.66), transparent 52%),
+    radial-gradient(72% 56% at 92% 100%, rgba(255, 255, 255, 0.22), transparent 60%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.2), transparent 42%);
+  --lg-sidebar-material: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.22));
+  --lg-glass-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.74),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 1px 2px rgba(0, 0, 0, 0.035),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  --lg-status-fill: rgba(255, 255, 255, 0.14);
+  --lg-status-luma: rgba(255, 255, 255, 0.04);
+}
+
+body.lumen-liquid-clear.theme-dark {
+  --lg-glass-blur: 18px;
+  --lg-glass-saturate: 125%;
+  --lg-glass-fill: rgba(24, 22, 34, 0.2);
+  --lg-glass-luma: rgba(255, 255, 255, 0.025);
+  --lg-glass-border: rgba(255, 255, 255, 0.24);
+  --lg-glass-highlight:
+    radial-gradient(84% 64% at 14% 0%, rgba(255, 255, 255, 0.22), transparent 52%),
+    radial-gradient(72% 56% at 92% 100%, rgba(255, 255, 255, 0.09), transparent 60%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 42%);
+  --lg-sidebar-material: linear-gradient(180deg, rgba(52, 46, 72, 0.3), rgba(24, 22, 34, 0.18));
+  --lg-glass-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    0 1px 2px rgba(0, 0, 0, 0.24),
+    0 5px 14px rgba(0, 0, 0, 0.2);
+  --lg-status-fill: rgba(24, 22, 34, 0.2);
+  --lg-status-luma: rgba(255, 255, 255, 0.025);
+}
+
+body:is(.lumen-liquid-regular, .lumen-liquid-clear) :is(
+  .workspace-split.mod-left-split,
+  .workspace-split.mod-right-split
+) {
+  background-color: var(--lg-glass-fill);
+  box-shadow: var(--lg-glass-shadow);
+}
+
+body:is(.lumen-liquid-regular, .lumen-liquid-clear)
+  .workspace-split.mod-root
+  .workspace-tab-header-container,
+body:is(.lumen-liquid-regular, .lumen-liquid-clear) .prompt {
+  box-shadow: var(--lg-glass-shadow);
 }
 
 body.lumen-chrome-flush {
@@ -79,6 +179,10 @@ body.lumen-increase-contrast.theme-dark {
   --lg-glass-blur: 0px;
   --lg-glass-fill: var(--lg-glass-solid);
   --lg-glass-luma: transparent;
+  --lg-glass-highlight: none;
+  --lg-sidebar-material: linear-gradient(var(--lg-glass-solid), var(--lg-glass-solid));
+  --lg-status-fill: var(--lg-glass-solid);
+  --lg-status-luma: transparent;
 }
 
 body.lumen-reduce-transparency .workspace-ribbon.side-dock-ribbon,
@@ -102,6 +206,10 @@ body.lumen-increase-contrast .prompt {
     --lg-glass-blur: 0px;
     --lg-glass-fill: var(--lg-glass-solid);
     --lg-glass-luma: transparent;
+    --lg-glass-highlight: none;
+    --lg-sidebar-material: linear-gradient(var(--lg-glass-solid), var(--lg-glass-solid));
+    --lg-status-fill: var(--lg-glass-solid);
+    --lg-status-luma: transparent;
   }
 
   .workspace-ribbon.side-dock-ribbon,
@@ -158,6 +266,10 @@ body.lumen-increase-contrast .prompt {
   body {
     --lg-focus-width: 3px;
     --lg-focus-color: var(--lg-accent);
+    --lg-glass-highlight: none;
+    --lg-sidebar-material: linear-gradient(var(--lg-glass-solid), var(--lg-glass-solid));
+    --lg-status-fill: var(--lg-glass-solid);
+    --lg-status-luma: transparent;
   }
 }
 
@@ -224,6 +336,7 @@ body.lumen-increase-contrast .prompt {
   body.is-mobile .cm-sizer,
   body.is-mobile .markdown-preview-sizer {
     padding-inline: var(--lg-space-4);
+    padding-top: var(--lg-space-4);
   }
 }
 
@@ -247,7 +360,12 @@ body.lumen-increase-contrast .prompt {
 .menu-item,
 .side-dock-ribbon-action,
 button.mod-cta {
-  transition: background-color var(--lg-duration) var(--lg-ease), color var(--lg-duration) var(--lg-ease), box-shadow var(--lg-duration) var(--lg-ease);
+  transition:
+    background-color var(--lg-duration) var(--lg-ease),
+    border-color var(--lg-duration) var(--lg-ease),
+    color var(--lg-duration) var(--lg-ease),
+    box-shadow var(--lg-duration) var(--lg-ease),
+    transform var(--lg-duration-fast) var(--lg-ease);
 }
 
 @media (prefers-reduced-motion: reduce) {

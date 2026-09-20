@@ -30,6 +30,23 @@ settings:
         type: heading
         level: 2
     -
+        id: lumen-glass-character
+        title: Glass character
+        description: Paper neutral keeps the quiet reading-first appearance. Liquid modes add adaptive optical highlights only to navigation and controls; note content stays solid.
+        type: class-select
+        allowEmpty: false
+        default: lumen-glass-neutral
+        options:
+            -
+                label: Paper neutral
+                value: lumen-glass-neutral
+            -
+                label: Liquid regular
+                value: lumen-liquid-regular
+            -
+                label: Liquid clear
+                value: lumen-liquid-clear
+    -
         id: lumen-glass-weight
         title: Glass density
         type: class-select
@@ -81,25 +98,6 @@ settings:
         type: class-toggle
         default: false
     -
-        id: lumen-plugins-h
-        title: Plugins
-        type: heading
-        level: 2
-    -
-        id: lumen-claudian-style
-        title: Claudian panel
-        description: Matches the Claudian chat panel to the theme. Choosing Plugin default hands the panel back untouched. Either way this does nothing unless Claudian is installed.
-        type: class-select
-        allowEmpty: false
-        default: lumen-claudian-themed
-        options:
-            -
-                label: Themed
-                value: lumen-claudian-themed
-            -
-                label: Plugin default
-                value: lumen-claudian-plain
-    -
         id: lumen-a11y-h
         title: Accessibility and performance
         type: heading
@@ -124,4 +122,3 @@ settings:
         default-dark: '#0A84FF'
 
 */
-

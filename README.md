@@ -48,6 +48,7 @@ Reload Obsidian or switch themes after editing `theme.css`.
 Install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) to configure:
 
 - Built-in ambient color bleed
+- Paper neutral, Liquid regular, or Liquid clear material character
 - Thin, regular, or thick glass
 - Inset or flush interface layout
 - Specular highlights
@@ -68,7 +69,7 @@ npm run build
 npm run check
 ```
 
-`npm run check` verifies that `theme.css` matches `src/`, so a source edit that was never rebuilt fails rather than shipping silently. It also checks that plugin adaptations stay scoped to their own view, which is what keeps them inert for anyone who does not have the plugin installed.
+`npm run check` verifies that `theme.css` matches `src/`, so a source edit that was never rebuilt fails rather than shipping silently. It also validates the theme's token graph, radius scale, release metadata, and packaged assets.
 
 Version tags must match the version in `manifest.json`. Pushing a version tag runs the release workflow and uploads the files required by Obsidian. Existing tags and releases remain immutable historical artifacts.
 

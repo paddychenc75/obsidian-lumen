@@ -40,20 +40,45 @@
   text-wrap: balance;
 }
 
-.markdown-rendered h1 {
-  margin-block: 0 var(--lg-space-6);
+body .markdown-rendered h1 {
+  margin-block: 1.3em var(--lg-space-4);
 }
 
 .markdown-rendered h2 {
-  margin-block: var(--lg-space-10) var(--lg-space-4);
+  margin-block: 1.3em var(--lg-space-4);
 }
 
 .markdown-rendered h3 {
-  margin-block: var(--lg-space-8) var(--lg-space-3);
+  margin-block: 1.25em var(--lg-space-3);
 }
 
 .markdown-rendered h4 {
-  margin-block: var(--lg-space-6) var(--lg-space-2);
+  margin-block: 1.2em var(--lg-space-2);
+}
+
+/*
+ * Core applies the body 1.7 leading to every CodeMirror line, including
+ * headings. Pair explicit heading leading and top spacing with Reading View so
+ * switching modes does not change either density or hierarchy.
+ */
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  padding-top: 0;
+  line-height: var(--h1-line-height);
+}
+
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
+  padding-top: 1.3em;
+  line-height: var(--h2-line-height);
+}
+
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-3 {
+  padding-top: 1.25em;
+  line-height: var(--h3-line-height);
+}
+
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-4 {
+  padding-top: 1.2em;
+  line-height: var(--h4-line-height);
 }
 
 .markdown-rendered h5 {
@@ -97,7 +122,11 @@
 }
 
 .markdown-rendered details {
-  margin-block: var(--lg-space-4);
+  margin-block: var(--lg-space-6);
+  padding: var(--lg-space-3) var(--lg-space-4);
+  border: 1px solid var(--lg-doc-divider);
+  border-radius: var(--lg-radius-m);
+  background: var(--background-primary-alt);
 }
 
 .markdown-rendered summary {
@@ -106,13 +135,28 @@
   cursor: pointer;
 }
 
+.markdown-rendered details[open] > summary {
+  margin-bottom: var(--lg-space-2);
+}
+
 .markdown-rendered :is(ul, ol) {
-  margin-block: var(--lg-space-2) var(--lg-space-4);
-  padding-inline-start: 1.5em;
+  margin-block: var(--lg-space-2) var(--lg-space-5);
+}
+
+.markdown-rendered ul {
+  padding-inline-start: 1em;
+}
+
+.markdown-rendered ol {
+  padding-inline-start: 1.1em;
+}
+
+.markdown-rendered :is(ul, ol) > li {
+  margin-inline-start: 1em;
 }
 
 .markdown-rendered li {
-  margin-block: var(--lg-space-1);
+  margin-block: 0.35em;
 }
 
 /*
@@ -164,32 +208,45 @@
 }
 
 /*
- * 3px rather than 2px: at hairline width the rule competed with the text's own
- * stems and read as an artifact of rendering. The extra pixel is what makes it
- * read as drawn, and it lets the nesting ladder step down in colour without any
- * level becoming a smudge.
+ * A 4px neutral rail gives editorial emphasis without introducing another
+ * accent colour. Nested levels step down in opacity rather than width.
  */
 .markdown-rendered blockquote {
+  position: relative;
   background: transparent;
-  border-inline-start-color: var(--lg-quote-line);
-  border-inline-start-width: 3px;
-  border-radius: var(--lg-radius-xs);
-  margin-block: var(--lg-space-4);
-  padding: 2px 0;
+  border: 0;
+  border-radius: 0;
+  margin-block: var(--lg-space-6);
+  padding: var(--lg-space-1) 0;
   padding-inline-start: var(--lg-space-4);
-  color: var(--text-muted);
+  color: var(--blockquote-color);
+}
+
+.markdown-rendered blockquote::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 4px;
+  border-radius: var(--lg-radius-pill);
+  background: var(--lg-quote-line);
 }
 
 .markdown-rendered blockquote blockquote {
   --blockquote-border-color: var(--lg-quote-line-nested);
-  border-inline-start-color: var(--lg-quote-line-nested);
-  border-inline-start-width: 3px;
   margin-inline-start: 16px;
+}
+
+.markdown-rendered blockquote blockquote::before {
+  background: var(--lg-quote-line-nested);
 }
 
 .markdown-rendered blockquote blockquote blockquote {
   --blockquote-border-color: var(--lg-quote-line-deep);
-  border-inline-start-color: var(--lg-quote-line-deep);
+}
+
+.markdown-rendered blockquote blockquote blockquote::before {
+  background: var(--lg-quote-line-deep);
 }
 
 .markdown-rendered blockquote > :last-child {
@@ -202,36 +259,30 @@
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before {
-  border-inline-start-color: var(--lg-quote-line);
-  border-inline-start-width: 3px;
+  width: 4px;
+  border: 0;
+  border-radius: var(--lg-radius-pill);
+  background: var(--lg-quote-line);
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
-  border-inline-start-color: var(--lg-quote-line-nested);
-  border-inline-start-width: 3px;
+  width: 4px;
+  border: 0;
+  border-radius: var(--lg-radius-pill);
+  background: var(--lg-quote-line-nested);
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote-3 .cm-blockquote-border::before {
-  border-inline-start-color: var(--lg-quote-line-deep);
+  background: var(--lg-quote-line-deep);
 }
-
-/*
- * The rule is square at both ends. Live preview draws it per line, so a cap can
- * only be put on the first or last line currently in the DOM — and CodeMirror
- * only keeps the viewport in the DOM, so a rounded cap would appear wherever the
- * quote happens to be cut off by scrolling, and travel as the reader scrolls. A
- * 3px stroke gains almost nothing from a 1.5px radius anyway, and square keeps
- * live preview identical to reading view.
- */
 
 .markdown-rendered .callout,
 .callout {
-  background-color: color-mix(in srgb, var(--callout-color) 5%, transparent);
-  border: 0;
-  border-inline-start: 2px solid color-mix(in srgb, var(--callout-color) 44%, transparent);
+  background-color: color-mix(in srgb, var(--callout-color) 3%, var(--lg-paper-solid));
+  border: 1px solid color-mix(in srgb, var(--callout-color) 18%, var(--lg-paper-solid));
   border-radius: var(--callout-radius);
-  margin-block: var(--lg-space-4);
-  padding: var(--callout-padding);
+  margin-block: var(--lg-space-6);
+  padding: var(--lg-space-3) var(--lg-space-4);
   box-shadow: none;
   mix-blend-mode: normal;
 }
@@ -302,12 +353,12 @@
  * reading view and CodeMirror's `.cm-*` in the editor.
  */
 .theme-light {
-  --code-background: #f2f2f7;
-  --code-normal: #242426;
-  --lg-code-border: rgba(60, 60, 67, 0.2);
-  --lg-code-header: color-mix(in srgb, var(--code-normal) 3%, var(--code-background));
-  --lg-code-header-divider: rgba(60, 60, 67, 0.12);
-  --lg-code-highlight: rgba(255, 255, 255, 0.72);
+  --code-background: #f7f7f6;
+  --code-normal: #2c2c2e;
+  --lg-code-border: rgba(60, 60, 67, 0.11);
+  --lg-code-header: #f2f2f1;
+  --lg-code-header-divider: rgba(60, 60, 67, 0.09);
+  --lg-code-highlight: rgba(255, 255, 255, 0.82);
   --lg-diagram-surface: color-mix(in srgb, var(--lg-accent) 2%, var(--lg-paper-solid));
   --lg-diagram-border: color-mix(in srgb, var(--text-normal) 14%, transparent);
   --lg-diagram-node: color-mix(in srgb, var(--lg-accent) 8%, var(--lg-paper-solid));
@@ -325,11 +376,11 @@
   --lg-syn-comment: #5b6570;
   --lg-syn-operator: #45454a;
   --lg-syn-punctuation: #6a6a70;
-  --lg-inline-code-bg: #edf1f5;
-  --lg-inline-code-border: rgb(56 64 74 / 55%);
-  --lg-inline-code-text: #20242a;
-  --lg-mark-bg: color-mix(in srgb, var(--lg-accent) 18%, var(--lg-paper-solid));
-  --lg-doc-divider: rgba(60, 60, 67, 0.14);
+  --lg-inline-code-bg: #f3f3f2;
+  --lg-inline-code-border: rgba(60, 60, 67, 0.09);
+  --lg-inline-code-text: #303033;
+  --lg-mark-bg: #fff1b8;
+  --lg-doc-divider: rgba(60, 60, 67, 0.1);
 }
 
 .theme-dark {
@@ -400,14 +451,14 @@ body {
 
 .markdown-rendered :not(pre) > code,
 .cm-s-obsidian .cm-inline-code:not(.cm-formatting) {
-  padding: 1px var(--lg-space-1);
+  padding: 0.12em 0.34em;
   border: 0;
   border-radius: var(--lg-radius-xs);
   background: var(--lg-inline-code-bg);
   color: var(--lg-inline-code-text);
   box-shadow: inset 0 0 0 1px var(--lg-inline-code-border);
-  font-size: 0.9em;
-  vertical-align: 0.01em;
+  font-size: 0.88em;
+  vertical-align: 0.02em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
@@ -423,6 +474,35 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
   font-size: 0.875em;
   line-height: 1.55;
   overflow-x: auto;
+}
+
+/* Images are figures on the page, not unframed browser content. */
+.markdown-rendered .image-embed {
+  display: block;
+  margin-block: var(--lg-space-8);
+  text-align: center;
+}
+
+.markdown-rendered .image-embed img,
+.markdown-source-view.mod-cm6 .image-embed img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border: 1px solid var(--lg-paper-border);
+  border-radius: var(--lg-radius-m);
+  background: var(--background-primary-alt);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.035);
+}
+
+body.image-captions-enabled .image-embed::after {
+  display: block;
+  margin-top: var(--lg-space-2);
+  color: var(--text-muted);
+  font-family: var(--font-interface-theme);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 /*
@@ -626,4 +706,3 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
     max-width: none;
   }
 }
-

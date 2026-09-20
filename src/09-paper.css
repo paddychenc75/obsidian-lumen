@@ -15,12 +15,13 @@
   isolation: isolate;
   background-color: var(--lg-paper-solid);
   border: 1px solid var(--lg-paper-border);
-  border-radius: var(--lg-radius-m);
+  border-radius: var(--lg-radius-l);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
 .mod-root .view-header {
+  min-height: 44px;
   background: transparent;
   border-bottom: 1px solid var(--background-modifier-border);
 }
@@ -31,9 +32,9 @@
 }
 
 .mod-root .inline-title {
-  margin-bottom: var(--lg-space-6);
+  margin-bottom: var(--lg-space-8);
   font-family: var(--font-text-theme);
-  font-size: var(--h1-size);
+  font-size: var(--lg-inline-title-size);
   font-weight: var(--h1-weight);
   line-height: var(--h1-line-height);
   letter-spacing: var(--lg-tracking-h1);
@@ -58,6 +59,7 @@
   width: 100%;
   max-width: min(var(--file-line-width), 100%);
   padding-inline: var(--lg-space-6);
+  padding-top: var(--lg-space-8);
   padding-bottom: calc(var(--lg-status-height) + var(--lg-space-4));
 }
 
@@ -100,7 +102,7 @@
 }
 
 .metadata-properties-heading {
-  color: var(--text-faint);
+  color: var(--text-muted);
   font-size: var(--font-ui-smaller);
 }
 
@@ -115,6 +117,19 @@
   height: var(--lg-control-size);
 }
 
+/*
+ * Properties are support UI inside the reading surface. On desktop, using the
+ * full 36px form floor for every scalar row lets a long frontmatter block push
+ * the note title below the first viewport. Keep touch layouts unchanged while
+ * compacting keys and their icons to a pointer-friendly 32px; multiline values
+ * still grow naturally.
+ */
+body:not(.is-mobile) .metadata-container .metadata-property-icon,
+body:not(.is-mobile) .metadata-container .metadata-property-key-input {
+  height: var(--lg-metadata-control-size);
+  min-height: var(--lg-metadata-control-size);
+}
+
 .metadata-container .metadata-add-button.clickable-icon {
   color: var(--text-faint);
   transition: color var(--lg-duration-fast) var(--lg-ease);
@@ -124,4 +139,3 @@
 .metadata-container .metadata-add-button.clickable-icon:focus-visible {
   color: var(--text-muted);
 }
-

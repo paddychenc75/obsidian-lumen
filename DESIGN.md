@@ -1,147 +1,148 @@
-# Lumen Glass · 设计定稿
+# Lumen Glass · Final Design Specification
 
-源文件：[`preview.html`](preview.html)
+Source file: [`preview.html`](preview.html)
 
-**过审：可以开发。** 产品通过；UI / UX / 视觉有条件通过。条件见 [REVIEW.md](REVIEW.md)。实现以本页四屏为准。
+**Approved for development.** Product review passed; UI, UX, and visual design passed with conditions. See [REVIEW.md](REVIEW.md) for those conditions. The implementation should follow the four screens on this page.
 
-## 屏幕
+## Screens
 
-| 编号 | 屏 | 必须看到 |
+| No. | Screen | Required elements |
 |---|---|---|
-| 01 | 浅色工作区 | 山色环境、玻璃铬、白纸正文、当前文件/标签为胶囊 |
-| 02 | 深色命令面板 | 紫蓝丝绸、居中横向玻璃卡；圆角同心、间距已修 |
-| 03 | 设置 | 玻璃外壳 + 纸面表单，主按钮实心蓝 |
-| 04 | 移动端 | 纸在中间、底栏玻璃岛、44px 热区 |
+| 01 | Light workspace | Mountain-toned environment, glass chrome, white paper content, and capsule treatments for the current file and tab |
+| 02 | Dark command palette | Violet-blue silk background and a centered horizontal glass card; concentric radii and corrected spacing |
+| 03 | Settings | Glass shell, paper form surface, and a solid-blue primary button |
+| 04 | Mobile | Paper centered in the viewport, a glass-island bottom bar, and 44px hit targets |
 
-## 分层
+## Layering
 
-1. 环境：墙纸 / 渐变，只染色
-2. 纸：编辑器、阅读、设置正文、代码、Callout
-3. 玻璃：ribbon、侧栏、标签、状态胶囊、命令面板、菜单
+1. Environment: wallpaper or gradient; provides colour only
+2. Paper: editor, reading view, Settings content, code, and callouts
+3. Glass: ribbon, sidebars, tabs, status capsule, command palette, and menus
 
-## 选中
+## Selection
 
-内嵌更深的胶囊。不是描边，不是色条。
+Use a more deeply inset capsule. Do not use an outline or a coloured rail.
 
-## 间距与圆角
+## Spacing and Radii
 
-- 铬:窗口边留外框 8px(`--lg-chrome-frame`),面板之间留缝 8px(`--lg-chrome-gap`, `--lg-space-2`)。共享一条缝的两块面板各出一半,贴窗口边的那侧出外框——缝是声明出来的量,不是 margin 相撞的余数。8px 是结构缝,不是漂浮桌距:12px 时墙纸通道比圆角还宽,三栏读成各漂在桌面上;收到 `--lg-space-2` 后仍能看见 10px 圆角,也不会贴成默认主题那样的 0px 平板。窄窗(≤700px)只收外框到 4px,缝不动;`.lumen-chrome-flush` 两者归零
-- macOS 无边框窗口下外框封顶 4px。系统把红绿灯画在我们的面板上,实测占 x 14..74、y 12..25,且不会为主题让位;外框一旦超过这个内缩量,面板上沿就会顶到按钮上。这是平台约束,所以整圈一起收——只削上边会换来一个更显眼的不对称
-- 同一处:红绿灯右端到 x 74,已经越过 ribbon 的内缘,ribbon 那条分隔线正好从黄灯和绿灯之间穿过,把系统当成一组画的三个按钮切成两半。控件带内(上 32px)不画分隔线,让 ribbon 和侧栏在那一段读作同一个面,分隔线从 32px 往下才开始
-- 半缝的除法写在使用点(`calc(var(--lg-chrome-gap) / 2)`),不做派生 token。token 声明在 `:root`,派生值会在那里就被代入并冻结着往下继承,后面改 gap 便失效——flush 模式正是这么踩的
-- 描边用发丝：`1px`、白 22%（深色 16%）。不要多层 inset 描边叠成粗框
-- 状态栏拉满编辑列宽度，字靠右；不是右下角小胶囊
-- ribbon 宽 52px，stadium
-- 侧栏 26px
-- 标签条 / 状态 / 按钮 999px
-- 纸 / Callout / 代码 14px
-- 命令面板外壳 22px，行/输入 10px
-- 文件树与标签 10px，禁止 46/999
-- `999px` 只给状态栏、开关、主按钮、ribbon 岛
-- 正文行长默认 40em，Style Settings 可调
-- 侧栏树行:高亮胶囊离面板边 12px,图标 16px,文字 36px,尾部计数收在 20px——五个面板同一套数,切标签页时行不横移
-- 属性区行:图标高度跟随 `--lg-control-size`,与键输入框同高,图标与标签共一条中线
+- Chrome: reserve an 8px frame at the window edge (`--lg-chrome-frame`) and an 8px seam between panels (`--lg-chrome-gap`, `--lg-space-2`). Two panels that share a seam each contribute half; the side that meets the window contributes the frame. The seam is an explicitly declared quantity, not the remainder of colliding margins. The 8px value is a structural seam, not floating desktop spacing: at 12px, the wallpaper channel was wider than the corner radius and the three columns read as separate objects floating on a desk. Reducing it to `--lg-space-2` keeps the 10px corners visible without collapsing into the default theme's flat 0px layout. On narrow windows (≤700px), only the outer frame contracts to 4px; the seam remains unchanged. `.lumen-chrome-flush` reduces both to zero.
+- Cap the outer frame at 4px on frameless macOS windows. The system paints its traffic lights over our panels at a measured x 14..74 and y 12..25, and it will not move them for the theme. Once the frame exceeds that inset, the panel's top edge runs into controls it cannot avoid. This is a platform constraint, so the entire frame contracts together; trimming only the top edge creates a more obvious asymmetry.
+- In the same area, the traffic lights extend through x 74, beyond the ribbon's inner edge. The ribbon divider therefore falls between the yellow and green controls and splits a three-button group that the OS draws as one unit. Do not draw the divider inside the control band—the top 32px—so the ribbon and sidebar read as one surface there. Resume the divider below 32px.
+- Divide half-seams at the point of use (`calc(var(--lg-chrome-gap) / 2)`) instead of creating a derived token. Tokens declared in `:root` substitute derived values there and inherit the frozen result, so later changes to the gap no longer propagate. Flush mode exposed exactly this failure.
+- Use hairline strokes: `1px`, white at 22% in light mode and 16% in dark mode. Do not stack multiple inset strokes into a heavy frame.
+- Let the status bar span the editor column and align its text to the right; it is not a small capsule floating in the bottom-right corner.
+- Ribbon: 52px wide, stadium shape.
+- Sidebars: 26px.
+- Tab strip, status, and buttons: 999px.
+- Paper, callouts, and code: 14px.
+- Command-palette shell: 22px; rows and input: 10px.
+- File tree and tabs: 10px. Never use 46px or 999px here.
+- Reserve `999px` for the status bar, toggles, primary buttons, and the ribbon island.
+- Default body measure: 40em, configurable through Style Settings.
+- Sidebar tree rows: the highlight capsule starts 12px from the panel edge, the icon at 16px, the label at 36px, and the trailing count at 20px. All five panes use the same measurements, so rows do not shift horizontally when switching tabs.
+- Properties rows: the icon height follows `--lg-control-size`, matching the key input height so the icon and label share one centreline.
 
-旧稿外壳 28px、内行 46px 胶囊，右边会挤出一圈怪弧。已改，比之前好。
+The old draft used a 28px shell and 46px capsules for inner rows, which squeezed an odd arc out of the right side. This has been corrected.
 
-侧栏行的那套数要分两条路才落得下来，因为 Obsidian 自己在各视图间就不一致。行把前导图标悬挂到文字盒左侧 20px 外，好让「有折叠箭头」和「没有」的行标签仍在同一列——标签面板可以验：同一层级，可折叠行与普通行的标签都在 36px。所以悬挂是承重的，不能改深度。它缺的是可悬挂的沟槽：core 在 `--nav-item-padding` 里本来留了 24px，却在部分视图把它交成 8px，于是图标悬到面板自己的边距里去了（属性面板实测离边 4px、链接面板约 0），跑到行 hover 形状之外。
+The sidebar-row measurements require two implementation paths because Obsidian itself is inconsistent across views. A row hangs its leading icon 20px to the left of the text box so labels remain in the same column whether or not the row has a disclosure arrow. The Tags pane demonstrates that this offset is load-bearing: collapsible and ordinary rows at the same depth both place their labels at 36px. The depth therefore cannot change. What is missing is a gutter into which the icon can hang. Core normally reserves 24px in `--nav-item-padding`, but some views reduce it to 8px. The icon then hangs into the panel margin—measured at 4px from the edge in Properties and approximately 0 in link panes—outside the row's hover shape.
 
-标签 / 反链 / 出链 / 书签把那 24px 补回去即可。属性和大纲补不了——core 把缩进写成内联 `padding-inline-start: 12px !important`，样式表出不了价。但图标是 `position: absolute` 的，偏移量来自它自己的 margin，所以把悬挂从 20px 缩到 8px 能从另一侧走到同一个落点。代价是图标出流、标签不跟着走，只缩悬挂会让图标压到头几个字上（实测压 8px），所以标签另外推同样的 12px。
+Tags, Backlinks, Outgoing Links, and Bookmarks only need that 24px restored. Properties and Outline cannot be fixed the same way because core writes `padding-inline-start: 12px !important` inline, beyond the stylesheet's ability to override. The icon itself is `position: absolute`, however, and its offset comes from its own margin. Reducing the hang from 20px to 8px reaches the same landing point from the other direction. Because the icon is out of flow, the label does not follow it; shortening the hang alone overlaps the first characters by a measured 8px. Move the label by the same additional 12px.
 
-正文里的属性区是另一处同类欠账，且是我们自己造的。键单元顶对齐子元素，好让值换行时标签留在第一行，于是决定图标落点的是它自己的高度而不是行高；Obsidian 按它自己那套 28px 字段给图标定高，而我们的表单下限把字段撑到 `--lg-control-size`（36px）。差的一半就是图标高出的量——十行实测每行都高 4px。所以图标跟着字段走，不写死数字：窄窗下控件降到 32px 时两边一起降。
+The in-document Properties block carries a similar debt, this time introduced by the theme. The key cell top-aligns its children so a wrapped value leaves the label on the first line. The icon's own height, rather than the row height, therefore determines its landing point. Obsidian sizes the icon for its native 28px field, while our form minimum expands fields to `--lg-control-size` (36px). Half that difference is the icon's measured 4px vertical error across all ten tested rows. Make the icon follow the field instead of hardcoding a number: when narrow windows reduce controls to 32px, both sides shrink together.
 
-## 排版尺度
+## Type Scale
 
-标题一律 `em`，跟随读者在 Style Settings 里选的正文字号，不锁 root。
+Headings use `em` throughout so they follow the body size selected in Style Settings instead of locking to the root size.
 
-| 级 | 尺寸 | 字重 | 行高 | 字距 |
+| Level | Size | Weight | Line height | Tracking |
 |---|---|---|---|---|
-| h1 | 1.9em | 700 | 1.16 | -0.02em |
-| h2 | 1.55em | 700 | 1.22 | -0.016em |
-| h3 | 1.3em | 600 | 1.3 | -0.012em |
-| h4 | 1.12em | 600 | 1.4 | -0.008em |
-| h5 | 1em | 700 | 1.45 | -0.003em |
+| h1 | 1.55em | 700 | 1.22 | -0.016em |
+| h2 | 1.34em | 700 | 1.28 | -0.012em |
+| h3 | 1.18em | 650 | 1.35 | -0.008em |
+| h4 | 1.05em | 650 | 1.42 | -0.004em |
+| h5 | 1em | 700 | 1.45 | 0 |
 | h6 | 0.875em | 700 | 1.5 | +0.006em |
 
-级差自上而下收窄（1.22 → 1.19 → 1.17 → 1.12）。尺寸在 h4 之后就用完了，所以 h5 / h6 换通道：比 h4 更小但更重，h6 再降为 muted 当标签用——同 macOS 在 Title 3 与 Headline 之间做的字重反转。
+The ratios tighten down the scale (1.16 → 1.14 → 1.12 → 1.05). The hierarchy remains clear without making every section title oversized. Size range is exhausted after h4, so h5 and h6 switch channels: they become smaller but heavier than h4, while h6 also drops to muted text and reads as a label. This mirrors the weight inversion macOS uses between Title 3 and Headline.
 
-字距是光学补偿：大字收紧、小字放开，否则整套尺度读起来像同一个字号放大缩小。
+Tracking is optical compensation: tighten larger text and open smaller text. Without this adjustment, the scale reads like one font size mechanically enlarged and reduced.
 
-正文与列表用 `text-wrap: pretty`，只管段尾不再吐出孤字；标题才用 `balance`，因为标题每一行都值得摊平。
+Body copy and lists use `text-wrap: pretty`, which only prevents orphaned final words. Headings use `balance`, because every heading line is worth evening out.
 
-行长、段间距、行高三者都以读者的正文字号为单位，不用 px 也不用 rem。rem 锚定 root 的 16px，与正文字号无关：旧稿的 `46rem` 是恒定 736px，字号从 14 调到 21，每行汉字会从 52 跌到 35——名义上固定的行长，实际上跟着字号乱飘。改成 `40em` 后行长锁在约 37 汉字 / 77 拉丁字符（实测 Chromium 142），段间距 `1em`、行高 1.7 同步跟随。窗口不够宽时仍由 `100%` 夹住，不横向溢出。
+Line length, paragraph spacing, and line height are all expressed relative to the reader's body size, not in px or rem. A rem is anchored to the 16px root rather than the body size: the old `46rem` remained a fixed 736px, so increasing the font from 14px to 21px reduced a line from 52 to 35 Han characters. Its nominally fixed measure therefore drifted with the font size. At `40em`, the measure remains approximately 37 Han characters or 77 Latin characters in Chromium 142, while `1.05em` paragraph spacing and 1.7 line height scale with it. When the window is too narrow, `100%` still clamps the measure and prevents horizontal overflow.
 
-37 / 77 是照两套惯例同时取的：拉丁正文的舒适区 45–75 字符，汉字 25–40 字。旧稿的 43 / 86 两头都在界外，拉丁那一头超得尤其多。
+The 37/77 target reconciles two conventions: comfortable Latin body copy is about 45–75 characters, while Han text is about 25–40 characters. The old 43/86 result exceeded both ranges, particularly the Latin one.
 
-行高 1.7 高于拉丁常用值，因为汉字填满字身框：没有 x-height 可借，行距买到的空隙就是全部可见的空隙，一个在英文里读着通透的值放到中文里会读作局促。
+A 1.7 line height is higher than the usual Latin value because Han glyphs fill the em box. Without x-height headroom, the space purchased by leading is all the visible space available. A value that feels open in English feels cramped in Chinese.
 
-列表符号降到 `--text-faint`。它是脚手架不是内容，全字重的密集列表会读成两列争夺视线。
+List markers use `--text-faint`. They are scaffolding, not content; full-weight markers in a dense list create a second visual column that competes with the text.
 
-## 中日韩排版
+## CJK Typography
 
-汉字紧贴拉丁或数字时，排版惯例是塞一线空隙。浏览器默认不做（`text-autospace` 实测默认 `no-autospace`），所以主题在笔记正文与编辑器里都开成 `normal`。
+Typographic convention calls for a sliver of space where Han characters meet Latin letters or digits. Browsers do not add it by default—`text-autospace` measures as `no-autospace`—so the theme enables `normal` in both note content and the editor.
 
-这条是**加法而非纠正**：Chromium 142 实测，边界上已有手打空格的位置一分不加（delta 0），漏打的位置补 4.25px。所以「中英交界必加空格」的库看不出变化，忘了打的地方也不难看。
+This is **additive, not corrective**. In Chromium 142, a boundary that already contains a manually typed space receives no additional width (delta 0), while a missing space gains 4.25px. Vaults that consistently type spaces see no change, and omissions remain readable.
 
-标点挤压（`text-spacing-trim`）不写——实测 Chromium 默认已是 `normal`，写了是空操作。
+Do not declare punctuation compression with `text-spacing-trim`: Chromium already measures as `normal`, so the declaration would be a no-op.
 
-## 代码调色盘
+## Code Palette
 
-语法色对着代码底色单独挑，不复用界面调色盘。Obsidian 默认把这些映射到 `--color-*`，那套是给 chrome 调的，落到近白的代码块上九个 token 全部低于 4.5:1，函数名只有 1.9:1。现在浅深两套每个 token 都过 4.5:1（最低 4.82:1 / 5.10:1）。
+Choose syntax colours against the code background rather than reusing the interface palette. Obsidian maps syntax to `--color-*` by default, but those colours are tuned for chrome; on a near-white code block, all nine tokens fell below 4.5:1 and function names reached only 1.9:1. Every token in both the light and dark palettes now exceeds 4.5:1, with minimum ratios of 4.82:1 and 5.10:1 respectively.
 
-六个色相承载语义。注释、运算符、标点**故意共用一个中性族**——它们是结构不是内容，各给一个色相就是代码块变格子布的原因。注释改用斜体区分，既留得住区分度又不抢注意力。
+Six hues carry semantics. Comments, operators, and punctuation **deliberately share one neutral family**: they describe structure rather than content, and assigning each a separate hue turns code into a patchwork. Comments use italics for distinction, preserving differentiation without competing for attention.
 
-一次映射覆盖两个渲染器：这些变量同时喂阅读视图的 Prism `.token-*` 和编辑器的 CodeMirror `.cm-*`。
+One mapping serves both renderers. The variables feed Prism `.token-*` in Reading View and CodeMirror `.cm-*` in the editor.
 
-代码框不是浮卡，不投环境影；靠一像素结构线、顶部高光和相邻纸面的色差分层。圆角用 10px，正文内边距 16px，代码行高 1.55。它比正文的 1.7 紧，因为等宽字的字形和缩进本身已经提供了横纵锚点；沿用正文行高会把一段程序拆成互不相干的行。
+A code block is not a floating card and casts no environmental shadow. A one-pixel structural line, a top highlight, and a temperature shift from the neighbouring paper are sufficient separation. Use a 10px radius, 16px body inset, and 1.55 code line height. This is tighter than the body's 1.7 because monospaced glyphs and indentation already provide horizontal and vertical anchors; reusing body leading would split a program into visually unrelated lines.
 
-实时预览与阅读视图的 DOM 完全不同。阅读视图是一整块 `<pre>`；CodeMirror 则把围栏和每一行代码拆成独立 `.cm-line`。所以实时预览把开围栏行用作 36px 的静默标题带，第一行代码再留 16px 顶部 inset，与阅读视图的正文内边距一致，也抵消闭围栏行自身行高带来的视觉下重；每一行用不占布局的 inset stroke 接续左右边。直接给每行画 border 会叠出横线并改变行宽，给外层画边又拿不到一整块连续 DOM。
+Live Preview and Reading View use completely different DOMs. Reading View has one `<pre>` element, while CodeMirror separates the opening fence and every code line into individual `.cm-line` elements. Live Preview therefore uses the opening fence as a quiet 36px title band, then gives the first code line a 16px top inset. This matches the Reading View content inset and counterbalances the closing fence's own line height. Each line continues the side rails with a layout-neutral inset stroke. A real border on every line would stack horizontal rules and change line width, while a border on the outer wrapper cannot access a single continuous DOM block.
 
-语言标签同时是复制入口，因此保留文字而不再另塞图标。默认只给中等对比，hover 才出现 state fill；它说明代码种类和可操作性，但不能比代码本身更醒目。
+The language label is also the copy entry point, so keep the text and do not add another icon. It has medium contrast by default and receives a state fill only on hover. It communicates both the code language and interactivity, but must remain quieter than the code itself.
 
-打印时整套塌成单色墨。印出来的代码本来就该是单色的，经得起复印，也不必为没法 hover 的纸面花颜色。
+In print, the entire palette collapses to monochrome ink. Printed code should survive photocopying, and paper that cannot hover does not benefit from colour.
 
-## Mermaid 图表
+## Mermaid Diagrams
 
-图表是 figure，不是另一段正文。正文继续守 40em，Mermaid 最多从两侧各借 4rem、总宽封顶 48rem；空间关系因此能展开，前后段落的扫读长度不受影响。窄窗收回正文宽度，但不把 736px 的图硬压成手机宽——那会把 16px 标签压到约 7px。图表在自己的容器内横向滚动，整篇笔记不横移。
+A diagram is a figure, not another paragraph. Body copy retains its 40em measure, while Mermaid may borrow up to 4rem from each gutter for a total maximum width of 48rem. Spatial relationships can therefore expand without changing the scanning length of surrounding paragraphs. Narrow windows return the figure to the body width, but do not force a 736px diagram down to phone width, which would reduce 16px labels to roughly 7px. The figure scrolls horizontally inside its own container; the full note never shifts sideways.
 
-画布不悬浮：一像素结构线、顶部高光和与纸面略有温差的 surface 足以分组。节点用 accent 的低饱和 tint，连线与箭头共一支中性墨，标签仍用正文色；颜色负责层级，不承担唯一语义。浅色和深色各有独立 token，打印强制回到白纸、单页宽。
+The canvas does not float. A one-pixel structural line, top highlight, and slight temperature difference from the paper provide enough grouping. Nodes use a low-saturation accent tint; connectors and arrows share one neutral ink; labels retain the body text colour. Colour communicates hierarchy but is never the only carrier of meaning. Light and dark appearances have independent tokens, while print returns to white paper and a single-page width.
 
-Mermaid 的 SVG 会注入一个随机 ID 选择器并写死浅色调色盘，Obsidian 深色模式默认对整张 SVG 做 `invert + hue-rotate`。那能“变暗”，却不能保持语义色、文字对比和用户自定义色。主题关闭整图滤镜，直接覆盖默认节点 / 连线 / 标签。覆盖选择器用 `:is(#lumen-mermaid-theme, .mermaid)`：并不存在的 ID 只负责把 specificity 提到生成规则之上，真正匹配的是 `.mermaid`，因此无需 `!important`；用户写在 `classDef` / `style` 的 inline 声明仍然优先。
+Mermaid injects a random ID selector into its SVG and hardcodes a light palette. Obsidian's dark mode normally applies `invert + hue-rotate` to the entire SVG. That makes it darker but cannot preserve semantic colours, text contrast, or author-defined colours. The theme disables the whole-image filter and directly overrides default nodes, connectors, and labels. The override uses `:is(#lumen-mermaid-theme, .mermaid)`: the nonexistent ID only raises specificity above generated rules, while `.mermaid` performs the actual match. No `!important` is required, and author declarations in `classDef` or inline `style` still win.
 
-回归面覆盖 flowchart、sequence、state、class、ER 五种 DOM：它们的节点标签和连线类名不同，不能只对着一张流程图调色。字体统一走 `--font-interface-theme`，避免 Mermaid 自带字体在中文环境里退化成另一套字面。
+Regression coverage includes five DOM families: flowchart, sequence, state, class, and ER. Their node labels and connector class names differ, so a single flowchart is not enough to validate the palette. All diagrams use `--font-interface-theme` to prevent Mermaid's bundled font from falling back to a different face in Chinese environments.
 
-交互不进主题。独立插件 Lumen Stage（`lumen-stage`）提供拖移、`Ctrl`/`Cmd`+滚轮缩放、适应画布、复位和全屏；普通滚轮仍滚笔记。插件不绑定本主题，任意主题都能用；本主题只给它的 `.lmm-*` 类做皮肤。装上之后，figure 收成正文内容宽（100% border-box），不再向两侧借 4rem。控件复用代码块的静默标题带：36px 顶栏、文字 flair、默认低对比、hover 才出 state fill。画布贴齐内容区，没有网格纸、没有浮在图上的玻璃工具条。全屏是和 modal 一样的轻量遮罩，中间仍是同一张 figure，不是另一套画布皮肤。未装插件的读者只看到上面的静态 figure。
+Interaction does not belong in the theme. The separate Lumen Stage plugin (`lumen-stage`) provides panning, `Ctrl`/`Cmd` + wheel zoom, fit-to-canvas, reset, and fullscreen; ordinary wheel input still scrolls the note. The plugin is not coupled to this theme and works with any theme; Lumen Glass only skins its `.lmm-*` classes. Once installed, the figure contracts to the body content width (`100%` border-box) and no longer borrows 4rem from each side. Controls reuse the code block's quiet title band: a 36px toolbar, text flair, low contrast at rest, and state fill on hover. The canvas sits flush with the content area, with no graph paper and no glass toolbar floating above it. Fullscreen uses the same light scrim as a modal and keeps the same figure in the centre rather than introducing a second canvas skin. Readers without the plugin see only the static figure described above.
 
-## 焦点与动效
+## Focus and Motion
 
-焦点只有一种语言，全部由 token 合成：`--lg-focus-ring`（宽 + 色）配 `--lg-focus-offset`，被裁切的行/单元格用 `--lg-focus-offset-inset`。`prefers-contrast: more` 只改 token，不写选择器——否则会输给各组件自己的 focus 规则。
+Focus has one visual language, composed entirely from tokens: `--lg-focus-ring` (width and colour) with `--lg-focus-offset`; clipped rows and cells use `--lg-focus-offset-inset`. `prefers-contrast: more` changes only the tokens rather than adding selectors, which would otherwise lose to component-specific focus rules.
 
-动效两档按位移距离分：`--lg-duration-fast` 120ms（原地的状态变化）、`--lg-duration` 180ms（元素移动）。主要控件按下压 `--lg-press-scale`。`prefers-reduced-motion` 把两档归零并把压感还原为 1。
+Motion has two tiers based on travel distance: `--lg-duration-fast` at 120ms for state changes in place, and `--lg-duration` at 180ms for moving elements. Primary controls compress on press using `--lg-press-scale`. `prefers-reduced-motion` reduces both durations to zero and restores the press scale to 1.
 
-本主题不写 keyframes 动画，所以没有第三档。缺口出现前不预留 token——`npm run check` 会把定义了却没人读的 token 报出来。
+The theme defines no keyframe animations, so there is no third tier. Do not reserve tokens before a need exists: `npm run check` reports tokens that are defined but never consumed.
 
-## 色
+## Colour
 
-- Accent / 按钮 `#0A84FF`
-- 浅色纸面链接 `#0058B0`（过 4.5:1）
-- 深色纸面链接 `#70B8FF`
-- 浅纸 `#F4F4F6` 正文 `#1C1C1E`
-- 深纸 `#1C1A28` 正文 `#F5F5F7`
-- 浅色玻璃用深色字（#1C1C1E）；深色玻璃用白字。选中靠内阴影做出按进液面的体积。
+- Accent and buttons: `#0A84FF`
+- Light-paper links: `#0058B0` (exceeds 4.5:1)
+- Dark-paper links: `#70B8FF`
+- Light paper: `#FFFFFF`; body text: `#262628`
+- Dark paper: `#1C1A28`; body text: `#F5F5F7`
+- Light sidebar glass: `#F1F2F2`; dark sidebar glass: `#2B2742`
+- Light glass uses neutral dark text (`#2A2A2C`); dark glass uses white text. Light selection is a flat neutral-grey capsule with only a hairline inset edge, while dark selection keeps the deeper inset treatment.
 
-深色下侧栏偏紫（`#2B2742`）而纸面中性（`#1C1C1E`）不是漂移：玻璃透出的是紫调壁纸，纸不是玻璃所以不透。两者温度不同是分层的结果，不要「统一」掉。
+The violet sidebar in dark mode (`#2B2742`) and neutral paper (`#1C1C1E`) are not palette drift. Glass reveals the violet wallpaper beneath it, while paper is opaque. Their different temperatures are a consequence of layering and should not be "unified."
 
-引用线 3px，浅色 78% / 嵌套 54% / 三层 38%，两端方角。旧稿 2px、56/36/24 太淡：一条比正文笔画还轻的竖线读不出是画上去的，像渲染残留；而按 24% 收尾的阶梯让第三层近乎消失，嵌套读作「线断了」而不是「更深一层」。宽一个像素换来的是它站得住，也让阶梯有降的余地。
+Quote rails are 4px neutral capsules: solid `#303033` at the first level, 44% when nested, and 28% at the third level. The dark first rail gives introductory prose a stable editorial anchor, while the descending neutral ladder preserves nesting without introducing another accent colour.
 
-两端不做圆角。实时预览的线是按行画的，圆角只能落在当前在 DOM 里的首行或末行——而 CodeMirror 只保留视口内的行，于是圆头会出现在引用块被滚动切断的地方，还跟着滚动跑。3px 的笔画本来也不差那 1.5px 圆角，方角还能让实时预览和阅读视图长得一样。
+Use fully rounded ends. Reading View draws one absolute capsule for the blockquote, while Live Preview converts each source quote line into a full-height 4px capsule. Natural text wrapping stays inside that line, so the rail remains continuous through wrapped prose.
 
-## 阴影
+## Shadows
 
-阴影分层叠，不用单层模糊。真实光在物体几乎贴到表面的地方投一道紧而深的接触影，房间再投一道宽而淡的环境影；一个模糊半径只能是其中一个，于是要么像贴上去的，要么糊在雾里。叠起来买的是边缘清晰度，不是重量——总黑度压在原来单层值附近。
+Build shadows in layers instead of using one blurred shadow. Real light creates a tight, darker contact shadow where an object nearly touches a surface and a broader, lighter ambient shadow from the room. A single blur radius can represent only one of these, so it either looks pasted down or lost in fog. Layering improves edge definition rather than adding weight; keep the total darkness near the previous single-shadow value.
 
-## 插件适配
+## Optional Liquid Glass
 
-适配是**默认开、可关**，而不是默认关、可开：闸门写成否定类 `body:not(.lumen-claudian-plain)`。反过来做的话，凡是没装 Style Settings 的人永远等不到那个类，适配就一直是暗的。
+Paper neutral remains the reading-first default. Liquid regular and Liquid clear are opt-in functional-layer materials for the ribbon, sidebars, tab strip, status bar, command palette, and mobile navigation. They never enter paper, Markdown, code, tables, callouts, or other content surfaces.
 
-闸门在**构建期**注入，源码里一条规则一个选择器，读得清；`npm run check` 校验产物里每条含插件类名的规则都同时带着 view 作用域和闸门，漏一条就 fail。所以新加规则忘不掉，也不会泄漏给没装插件的人。
+Both Liquid variants combine one backdrop-filter layer with multiple colourless optical backgrounds: a primary specular field, a secondary luminance reflection, and a directional highlight. They do not inject the accent colour into the material. Regular simulates a thicker material with a stronger fill and wider ambient shadow; clear is more transparent and limited to shorter contact shadows. Reduce Transparency and Increase Contrast remove the optical layers and replace them with `--lg-glass-solid`.
