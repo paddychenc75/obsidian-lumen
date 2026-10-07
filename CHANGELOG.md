@@ -21,6 +21,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 - Images are bare, centred figures in both views. Only note embeds keep the card.
 - Changed the dark `==highlight==` colour from accent blue, which read as a text selection, to amber.
 - Styled `<kbd>`, `<mark>`, `<small>`, `<abbr>`, and `<details>` in Live Preview as they are in Reading View.
+- Replaced the preview screenshot with a 2560×1440 capture of the demo vault with an English interface, taken from the running app after these changes.
 
 ### Fixed
 
