@@ -6,6 +6,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-07
+
 ### Changed
 
 - Redrew the dark appearance as the night version of light mode. The wallpaper is now deep ink with a half-strength violet aurora, the ribbon, sidebars, and tab strip share one material, and the paper is a hue-matched `#1e1d25` that sits one step lighter than the chrome.
