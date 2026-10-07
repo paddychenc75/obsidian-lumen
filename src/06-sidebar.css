@@ -151,6 +151,13 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   border: 0;
 }
 
+/*
+ * Core paints the footer with --background-secondary through
+ * `body:not(.is-mobile) .workspace-split.mod-primary-split`, which left an
+ * opaque band across the bottom of a translucent panel. The first selector
+ * exists only to outweigh that one.
+ */
+body:not(.is-mobile) .workspace-split:is(.mod-left-split, .mod-primary-split) .workspace-sidedock-vault-profile,
 .workspace-sidedock-vault-profile {
   background: transparent;
   border-top: 1px solid color-mix(in srgb, var(--lg-text-on-glass) 10%, transparent);
@@ -278,4 +285,13 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
 .search-empty-state {
   color: var(--lg-text-on-glass-2);
   font-size: var(--font-ui-smaller);
+}
+
+/*
+ * The empty-state line in the link panes starts 16px left of the section title
+ * above it, so the two read as unrelated blocks. It takes the same 24px lead
+ * the rows use and lands in the label column.
+ */
+.workspace-leaf-content:is([data-type="backlink"], [data-type="outgoing-link"]) .search-empty-state {
+  padding-inline-start: var(--lg-space-6);
 }

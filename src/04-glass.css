@@ -16,12 +16,14 @@
   box-shadow: var(--lg-glass-shadow);
 }
 
-body.theme-light .workspace-ribbon.side-dock-ribbon.mod-left,
-body.theme-dark .workspace-ribbon.side-dock-ribbon.mod-left,
+body.theme-light .workspace-ribbon.side-dock-ribbon:is(.mod-left, .mod-primary),
+body.theme-dark .workspace-ribbon.side-dock-ribbon:is(.mod-left, .mod-primary),
 body.theme-light .workspace-split.mod-left-split,
 body.theme-dark .workspace-split.mod-left-split,
 body.theme-light .workspace-split.mod-right-split,
-body.theme-dark .workspace-split.mod-right-split {
+body.theme-dark .workspace-split.mod-right-split,
+body.theme-light .workspace-split.mod-root .workspace-tab-header-container,
+body.theme-dark .workspace-split.mod-root .workspace-tab-header-container {
   background-image: var(--lg-glass-highlight), var(--lg-sidebar-material);
 }
 

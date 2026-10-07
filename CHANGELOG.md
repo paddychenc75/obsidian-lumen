@@ -6,6 +6,32 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Redrew the dark appearance as the night version of light mode. The wallpaper is now deep ink with a half-strength violet aurora, the ribbon, sidebars, and tab strip share one material, and the paper is a hue-matched `#1e1d25` that sits one step lighter than the chrome.
+- Lowered dark hairlines: chrome borders from 16% to 8%, and Properties, table, code, and inline-code strokes to 14% or less.
+- Changed dark selection from an inset well to a lifted capsule for the current file, tab, and ribbon action.
+- Gave the dark status island a near-opaque fill so note text no longer shows through it.
+- Added space below headings in Live Preview so a line typed directly under a heading no longer touches it.
+
+- Matched Live Preview to Reading View for every Markdown block. Blank lines, headings, lists, tasks, blockquotes, rules, footnotes, callouts, code, tables, math, images, and embeds now use the same spacing, indent, and shapes in both; the rules live side by side in the new `src/15-editor-parity.css`.
+- A blank line in Live Preview is now as tall as the paragraph gap in Reading View. Added a Style Settings toggle, `Full-height blank lines while editing`, to turn this off.
+- Fenced code in Live Preview is the same card as in Reading View: no header band, full column width, language label in the corner.
+- Tightened Reading View lists to consecutive lines and one 1.7em indent step, as in the editor.
+- Images are bare, centred figures in both views. Only note embeds keep the card.
+- Changed the dark `==highlight==` colour from accent blue, which read as a text selection, to amber.
+- Styled `<kbd>`, `<mark>`, `<small>`, `<abbr>`, and `<details>` in Live Preview as they are in Reading View.
+
+### Fixed
+
+- Blockquote rails in Live Preview were drawn as one rounded capsule per source line and read as a dashed line; each level is now one continuous rail.
+- Removed the doubled rule above footnotes in Reading View.
+- `[/]` and other custom task states were struck through in Reading View but not in the editor.
+- Restored the ribbon's frame, corner radius, material, and traffic-light clearance on Obsidian 1.14, which renamed its side class from `.mod-left` to `.mod-primary`.
+- Removed the opaque band core painted behind the vault switcher at the bottom of the left sidebar.
+- Evened Properties row heights; number fields were 4px taller than text and date rows.
+- Aligned the empty-state line in the Backlinks and Outgoing links panes with the section title above it.
+
 ## [1.1.1] - 2026-09-21
 
 ### Fixed

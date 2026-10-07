@@ -159,7 +159,11 @@
   --lg-cta-hover: #0058b8;
   --lg-cta-active: #004b9f;
   /*
-   * A quote rule is structure, so it has to read as drawn rather than as a
+   * Rail colours are mixed against the paper rather than left translucent: the
+ * editor draws the rail one source line at a time with a 1px overlap, and
+ * stacked alpha would show as a tick at every line.
+ *
+ * A quote rule is structure, so it has to read as drawn rather than as a
    * rendering artifact. The ladder also has to stay legible at the second and
    * third level: fading it to a quarter made nesting read as a broken line
    * instead of a deeper one.
@@ -167,17 +171,17 @@
   --lg-quote-line: color-mix(
     in srgb,
     color-mix(in srgb, var(--lg-accent) 18%, var(--text-muted)) 80%,
-    transparent
+    var(--lg-paper-solid)
   );
   --lg-quote-line-nested: color-mix(
     in srgb,
     color-mix(in srgb, var(--lg-accent) 10%, var(--text-muted)) 56%,
-    transparent
+    var(--lg-paper-solid)
   );
   --lg-quote-line-deep: color-mix(
     in srgb,
     color-mix(in srgb, var(--lg-accent) 6%, var(--text-muted)) 40%,
-    transparent
+    var(--lg-paper-solid)
   );
 
   --font-interface-theme: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
@@ -249,8 +253,8 @@
   );
   --lg-table-control-surface: #fafafa;
   --lg-quote-line: #303033;
-  --lg-quote-line-nested: rgba(38, 38, 40, 0.44);
-  --lg-quote-line-deep: rgba(38, 38, 40, 0.28);
+  --lg-quote-line-nested: color-mix(in srgb, #262628 44%, var(--lg-paper-solid));
+  --lg-quote-line-deep: color-mix(in srgb, #262628 28%, var(--lg-paper-solid));
 }
 
 .theme-dark {
@@ -258,27 +262,32 @@
   --lg-accent-hover: color-mix(in srgb, var(--lg-accent) 72%, #fff);
   --lg-accent-1: color-mix(in srgb, var(--lg-accent) 55%, #fff);
   --lg-accent-2: color-mix(in srgb, var(--lg-accent) 70%, #000);
-  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) var(--lumen-ambient-bleed), rgba(84, 84, 84, 0.22));
-  --lg-glass-border: rgba(255, 255, 255, 0.16);
-  --lg-glass-luma: rgba(255, 255, 255, 0.06);
-  --lg-glass-hover: rgba(255, 255, 255, 0.08);
-  --lg-glass-selected: rgba(255, 255, 255, 0.16);
+  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) var(--lumen-ambient-bleed), rgba(72, 70, 90, 0.26));
+  --lg-glass-border: rgba(255, 255, 255, 0.08);
+  --lg-glass-luma: rgba(255, 255, 255, 0.03);
+  --lg-glass-hover: rgba(255, 255, 255, 0.06);
+  --lg-glass-selected: rgba(255, 255, 255, 0.11);
+  /*
+   * Selection lifts in dark, as it does in light. The earlier inset shadow
+   * turned the current row and tab into holes punched in the chrome, which
+   * made the thing the reader is on the dimmest object in its list.
+   */
   --lg-selected-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.34),
-    inset 0 -0.5px 0 rgba(255, 255, 255, 0.1);
-  --lg-sidebar-fill: #2b2742;
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.18);
+  --lg-sidebar-fill: #181622;
   --lg-sidebar-material:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--lg-sidebar-fill) 88%, transparent) 0%,
-      color-mix(in srgb, var(--lg-sidebar-fill) 84%, transparent) 24%,
-      color-mix(in srgb, var(--lg-sidebar-fill) 88%, transparent) 100%
+      color-mix(in srgb, var(--lg-sidebar-fill) 82%, transparent) 0%,
+      color-mix(in srgb, var(--lg-sidebar-fill) 78%, transparent) 24%,
+      color-mix(in srgb, var(--lg-sidebar-fill) 82%, transparent) 100%
     );
-  --lg-state-hover: rgba(255, 255, 255, 0.055);
-  --lg-list-active-fill: rgba(255, 255, 255, 0.12);
-  --lg-tab-active-fill: rgba(0, 0, 0, 0.28);
-  --lg-glass-solid: #1c1a2a;
-  --lg-overlay-solid: #2c2c2e;
+  --lg-state-hover: rgba(255, 255, 255, 0.05);
+  --lg-list-active-fill: rgba(255, 255, 255, 0.085);
+  --lg-tab-active-fill: rgba(255, 255, 255, 0.085);
+  --lg-glass-solid: #17151f;
+  --lg-overlay-solid: #25242d;
   --lg-overlay-shadow:
     0 1px 2px rgba(0, 0, 0, 0.28), 0 6px 16px rgba(0, 0, 0, 0.22),
     0 16px 36px rgba(0, 0, 0, 0.24);
@@ -288,7 +297,7 @@
    * deeper cast shadow, because 7% black over a dark canvas renders as nothing.
    */
   --lg-glass-shadow:
-    inset 0 0.5px 0 rgba(255, 255, 255, 0.14), 0 1px 2px rgba(0, 0, 0, 0.24),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.08), 0 1px 2px rgba(0, 0, 0, 0.24),
     0 4px 16px rgba(0, 0, 0, 0.3);
   /*
    * The light CTA is tuned to carry white text on a white page, which leaves
@@ -305,12 +314,12 @@
   --lg-cta-active: color-mix(in srgb, var(--lg-accent) 72%, #000);
   --lg-glass-highlight: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.13) 0%,
-    rgba(255, 255, 255, 0.04) 34%,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.015) 34%,
     transparent 58%
   );
-  --lg-status-fill: rgba(28, 26, 42, 0.28);
-  --lg-status-luma: rgba(255, 255, 255, 0.04);
+  --lg-status-fill: rgba(40, 39, 50, 0.78);
+  --lg-status-luma: transparent;
   --lg-tooltip-bg: rgba(14, 13, 20, 0.92);
   --lg-tooltip-text: #ffffff;
   --lg-tooltip-border: rgba(255, 255, 255, 0.14);
@@ -319,16 +328,26 @@
     0 5px 14px rgba(0, 0, 0, 0.26);
   --lg-scrollbar-thumb: rgba(235, 235, 245, 0.28);
   --lg-scrollbar-thumb-hover: rgba(235, 235, 245, 0.46);
-  --lg-paper-solid: #1c1c1e;
-  --lg-paper-border: rgba(255, 255, 255, 0.10);
+  /*
+   * Paper carries a trace of the environment's hue and sits a step lighter
+   * than the chrome, the same order light mode uses. A pure neutral grey here
+   * read as a stock dark page dropped into a violet frame.
+   */
+  --lg-paper-solid: #1e1d25;
+  --lg-paper-border: rgba(255, 255, 255, 0.065);
   --lg-paper-link: #2997ff;
   --lg-paper-link-hover: #64b5ff;
-  --lg-text-on-glass: #f5f5f7;
-  --lg-text-on-glass-2: rgba(245, 245, 247, 0.72);
-  --lg-wallpaper-fallback: #121028;
+  --lg-text-on-glass: #e9e9ef;
+  --lg-text-on-glass-2: rgba(233, 233, 239, 0.66);
+  /*
+   * Night, not neon: the violet is an aurora low on the horizon. At full
+   * chroma it showed through every panel at a different strength, so the
+   * three chrome surfaces read as three unrelated purples.
+   */
+  --lg-wallpaper-fallback: #0e0d18;
   --lg-wallpaper:
-    radial-gradient(70% 50% at 16% 0%, #6a4fa8 0%, transparent 58%),
-    linear-gradient(165deg, #2a184c 0%, #0c122e 100%);
+    radial-gradient(64% 48% at 10% 0%, rgba(98, 76, 172, 0.5) 0%, transparent 64%),
+    linear-gradient(165deg, #15121f 0%, #0b0c17 100%);
   --lg-ok: #30d158;
   --lg-warn: #ff9f0a;
   --lg-danger: #ff453a;
@@ -336,10 +355,10 @@
   --lg-table-surface: var(--lg-paper-solid);
   --lg-table-header-surface: color-mix(in srgb, var(--lg-table-surface) 96%, #f5f5f7);
   --lg-table-text: var(--text-normal);
-  --lg-table-outline: rgba(235, 235, 245, 0.2);
-  --lg-table-row-divider: rgba(235, 235, 245, 0.135);
-  --lg-table-col-divider: rgba(235, 235, 245, 0.095);
-  --lg-table-header-divider: rgba(235, 235, 245, 0.19);
+  --lg-table-outline: rgba(235, 235, 245, 0.14);
+  --lg-table-row-divider: rgba(235, 235, 245, 0.09);
+  --lg-table-col-divider: rgba(235, 235, 245, 0.065);
+  --lg-table-header-divider: rgba(235, 235, 245, 0.13);
   --lg-table-row-hover: rgba(235, 235, 245, 0.042);
   --lg-table-focus-surface: color-mix(in srgb, var(--lg-accent) 6%, var(--lg-table-surface));
   --lg-table-focus-ring: color-mix(
@@ -347,20 +366,20 @@
     color-mix(in srgb, var(--lg-accent) 22%, var(--text-muted)) 76%,
     transparent
   );
-  --lg-table-control-surface: #222224;
+  --lg-table-control-surface: #23222b;
   --lg-quote-line: color-mix(
     in srgb,
     color-mix(in srgb, var(--lg-accent) 14%, var(--text-muted)) 84%,
-    transparent
+    var(--lg-paper-solid)
   );
   --lg-quote-line-nested: color-mix(
     in srgb,
     color-mix(in srgb, var(--lg-accent) 7%, var(--text-muted)) 60%,
-    transparent
+    var(--lg-paper-solid)
   );
   --lg-quote-line-deep: color-mix(
     in srgb,
     color-mix(in srgb, var(--lg-accent) 3%, var(--text-muted)) 44%,
-    transparent
+    var(--lg-paper-solid)
   );
 }

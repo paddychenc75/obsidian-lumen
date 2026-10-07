@@ -2,7 +2,12 @@
    4. Ribbon
    -------------------------------------------------------------------------- */
 
-.workspace-ribbon.side-dock-ribbon.mod-left {
+/*
+ * Obsidian 1.14 renamed the ribbon's side class from .mod-left to
+ * .mod-primary. Both are matched so the rail keeps its frame, radius and
+ * material on either side of that release.
+ */
+.workspace-ribbon.side-dock-ribbon:is(.mod-left, .mod-primary) {
   width: 48px;
   /* Flush to the left split on its inner edge, so no seam there. */
   margin: var(--lg-chrome-frame) 0 var(--lg-chrome-frame) var(--lg-chrome-frame);
@@ -20,13 +25,13 @@
  * the sidebar read as a single surface up there; resume it below.
  */
 body.mod-macos.is-hidden-frameless:not(.is-popout-window)
-  .workspace-ribbon.side-dock-ribbon.mod-left {
+  .workspace-ribbon.side-dock-ribbon:is(.mod-left, .mod-primary) {
   padding-top: 36px;
   border-inline-end-color: transparent;
 }
 
 body.mod-macos.is-hidden-frameless:not(.is-popout-window)
-  .workspace-ribbon.side-dock-ribbon.mod-left::after {
+  .workspace-ribbon.side-dock-ribbon:is(.mod-left, .mod-primary)::after {
   content: "";
   position: absolute;
   inset: 32px 0 0 auto;

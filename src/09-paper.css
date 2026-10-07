@@ -23,7 +23,7 @@
 .mod-root .view-header {
   min-height: 44px;
   background: transparent;
-  border-bottom: 1px solid var(--background-modifier-border);
+  border-bottom: 1px solid var(--lg-paper-border);
 }
 
 .mod-root .view-header-title,
@@ -125,7 +125,8 @@
  * still grow naturally.
  */
 body:not(.is-mobile) .metadata-container .metadata-property-icon,
-body:not(.is-mobile) .metadata-container .metadata-property-key-input {
+body:not(.is-mobile) .metadata-container .metadata-property-key-input,
+body:not(.is-mobile) .metadata-container input.metadata-input-number {
   height: var(--lg-metadata-control-size);
   min-height: var(--lg-metadata-control-size);
 }

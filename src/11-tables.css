@@ -291,40 +291,6 @@
   outline-offset: var(--lg-focus-offset-inset);
 }
 
-.markdown-rendered hr {
-  margin-block: var(--lg-space-8);
-  border-width: 1px 0 0;
-  border-color: var(--lg-doc-divider);
-}
-
-.markdown-rendered .footnotes {
-  margin-top: 2.5em;
-  padding-top: var(--lg-space-3);
-  border-top: 1px solid var(--lg-doc-divider);
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.markdown-rendered .task-list-item {
-  margin-block: 0.4em;
-}
-
-.markdown-rendered .task-list-item-checkbox {
-  width: 16px;
-  height: 16px;
-  margin-inline: 0 var(--lg-space-2);
-  border-radius: var(--lg-radius-xs);
-  transform: translateY(2px);
-}
-
-.markdown-rendered .task-list-item.is-checked {
-  color: var(--text-muted);
-  opacity: 0.72;
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
-}
-
 .markdown-rendered .MathJax:not([display="true"]) {
   font-size: 1em;
 }
@@ -342,7 +308,7 @@
   line-height: var(--line-height-normal);
 }
 
-.internal-embed,
+/* Note embeds are cards. Images and other media are figures and stay bare. */
 .markdown-embed {
   margin-block: var(--lg-space-6);
   border: 1px solid var(--lg-paper-border);

@@ -13,7 +13,7 @@ The public preview must be captured from a real Obsidian window with the release
 | No. | Screen | Required elements |
 |---|---|---|
 | 01 | Light workspace | Mountain-toned environment, glass chrome, white paper content, and capsule treatments for the current file and tab |
-| 02 | Dark command palette | Violet-blue silk background and a centered horizontal glass card; concentric radii and corrected spacing |
+| 02 | Dark command palette | Deep ink background with a low violet aurora and a centered horizontal glass card; concentric radii and corrected spacing |
 | 03 | Settings | Glass shell, paper form surface, and a solid-blue primary button |
 | 04 | Mobile | Paper centered in the viewport, a glass-island bottom bar, and 44px hit targets |
 
@@ -23,9 +23,13 @@ The public preview must be captured from a real Obsidian window with the release
 2. Paper: editor, reading view, Settings content, code, and callouts
 3. Glass: ribbon, sidebars, tabs, status capsule, command palette, and menus
 
+## Dark appearance
+
+Dark is the night version of light, not a separate brand. The surface order is the same: environment deepest, chrome above it, paper lightest. The ribbon, both sidebars, and the tab strip share one material so they read as one chrome. Paper (`#1e1d25`) carries a trace of the environment hue instead of a pure neutral grey. The violet is an aurora at the top-left of the wallpaper at half strength; it must not show through any panel strongly enough to give that panel its own colour.
+
 ## Selection
 
-Use a more deeply inset capsule. Do not use an outline or a coloured rail.
+Use a lifted neutral capsule in both appearances: a faint fill with a hairline top highlight. Do not use an outline, a coloured rail, or an inset shadow; in dark mode the inset made the current row and tab read as holes, the dimmest items in their lists.
 
 ## Spacing and Radii
 
@@ -33,7 +37,7 @@ Use a more deeply inset capsule. Do not use an outline or a coloured rail.
 - Cap the outer frame at 4px on frameless macOS windows. The system paints its traffic lights over our panels at a measured x 14..74 and y 12..25, and it will not move them for the theme. Once the frame exceeds that inset, the panel's top edge runs into controls it cannot avoid. This is a platform constraint, so the entire frame contracts together; trimming only the top edge creates a more obvious asymmetry.
 - In the same area, the traffic lights extend through x 74, beyond the ribbon's inner edge. The ribbon divider therefore falls between the yellow and green controls and splits a three-button group that the OS draws as one unit. Do not draw the divider inside the control band—the top 32px—so the ribbon and sidebar read as one surface there. Resume the divider below 32px.
 - Divide half-seams at the point of use (`calc(var(--lg-chrome-gap) / 2)`) instead of creating a derived token. Tokens declared in `:root` substitute derived values there and inherit the frozen result, so later changes to the gap no longer propagate. Flush mode exposed exactly this failure.
-- Use hairline strokes: `1px`, white at 22% in light mode and 16% in dark mode. Do not stack multiple inset strokes into a heavy frame.
+- Use hairline strokes: `1px`, white at 22% in light mode and 8% in dark mode. Dark hairlines inside the paper (Properties, tables, code) stay at or below 14%. Do not stack multiple inset strokes into a heavy frame.
 - Let the status bar span the editor column and align its text to the right; it is not a small capsule floating in the bottom-right corner.
 - Ribbon: 52px wide, stadium shape.
 - Sidebars: 26px.
@@ -139,7 +143,19 @@ The violet sidebar in dark mode (`#2B2742`) and neutral paper (`#1C1C1E`) are no
 
 Quote rails are 4px neutral capsules: solid `#303033` at the first level, 44% when nested, and 28% at the third level. The dark first rail gives introductory prose a stable editorial anchor, while the descending neutral ladder preserves nesting without introducing another accent colour.
 
-Use fully rounded ends. Reading View draws one absolute capsule for the blockquote, while Live Preview converts each source quote line into a full-height 4px capsule. Natural text wrapping stays inside that line, so the rail remains continuous through wrapped prose.
+Each level is one continuous 4px rail, rounded only where the quote starts and ends. Reading View draws one absolute capsule per blockquote. Live Preview draws the rail one source line at a time, so those segments are square, overlap by 1px, and only the first and last line of a level carry the rounded cap. Rail colours are mixed against the paper instead of being translucent, so the overlap cannot show as a tick. A nested rail sits at its parent's text edge in both views.
+
+## Reading View and Live Preview
+
+The two views are set from the same numbers, in `src/15-editor-parity.css`, with each pair of rules side by side. Check any change to Markdown spacing in both views against the same note.
+
+- One paragraph gap (`--p-spacing`, 1.05em) separates any two blocks. In Live Preview a blank source line is that gap, so it takes the gap's height instead of a full line of leading. `Full-height blank lines while editing` in Style Settings turns this off.
+- A heading has 1.3em (its own em) above and 16 / 16 / 12 / 8 / 8 / 8px below for h1–h6. Live Preview subtracts the blank line above from its padding and drops its bottom padding when a blank line follows.
+- List items sit on consecutive lines with one indent step, `--list-indent` (1.7em), per level in both views.
+- Callouts, code, note embeds, display math, and `<details>` carry no top margin and one paragraph gap below. Tables keep 16px more on each side because the table editor reserves that for its handles.
+- A fenced block is one card in both views. In Live Preview the fence lines are the card's top and bottom padding and the language label sits where Reading View puts the copy button; a fence line shows its source again while it is being edited.
+- Images are bare, centred figures. Only note embeds are cards.
+- Only `[x]` and `[-]` tasks are struck through, in both views.
 
 ## Shadows
 

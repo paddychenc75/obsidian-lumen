@@ -40,71 +40,29 @@
   text-wrap: balance;
 }
 
-body .markdown-rendered h1 {
-  margin-block: 1.3em var(--lg-space-4);
-}
-
-.markdown-rendered h2 {
-  margin-block: 1.3em var(--lg-space-4);
-}
-
-.markdown-rendered h3 {
-  margin-block: 1.25em var(--lg-space-3);
-}
-
-.markdown-rendered h4 {
-  margin-block: 1.2em var(--lg-space-2);
-}
-
 /*
- * Core applies the body 1.7 leading to every CodeMirror line, including
- * headings. Pair explicit heading leading and top spacing with Reading View so
- * switching modes does not change either density or hierarchy.
+ * Heading rhythm lives in 15-editor-parity.css, where Reading View and Live
+ * Preview are set side by side from the same tokens.
  */
-.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
-  padding-top: 0;
-  line-height: var(--h1-line-height);
-}
-
-.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
-  padding-top: 1.3em;
-  line-height: var(--h2-line-height);
-}
-
-.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-3 {
-  padding-top: 1.25em;
-  line-height: var(--h3-line-height);
-}
-
-.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-4 {
-  padding-top: 1.2em;
-  line-height: var(--h4-line-height);
-}
-
-.markdown-rendered h5 {
-  margin-block: var(--lg-space-5) var(--lg-space-2);
-}
-
-.markdown-rendered h6 {
-  margin-block: var(--lg-space-4) var(--lg-space-2);
-}
-
 .markdown-rendered strong {
   font-weight: 600;
 }
 
-.markdown-rendered small {
+.markdown-rendered small,
+.markdown-source-view.mod-cm6 .cm-content small {
   color: var(--text-muted);
   font-size: 0.82em;
   line-height: 1.5;
 }
 
-.markdown-rendered abbr[title] {
+.markdown-rendered abbr[title],
+.markdown-source-view.mod-cm6 .cm-content abbr[title] {
   border-bottom: 1px dotted color-mix(in srgb, currentColor 45%, transparent);
   cursor: help;
 }
 
-.markdown-rendered kbd {
+.markdown-rendered kbd,
+.markdown-source-view.mod-cm6 .cm-content kbd {
   display: inline-flex;
   align-items: center;
   min-height: 1.55em;
@@ -121,42 +79,25 @@ body .markdown-rendered h1 {
   vertical-align: 0.08em;
 }
 
-.markdown-rendered details {
-  margin-block: var(--lg-space-6);
+.markdown-rendered details,
+.markdown-source-view.mod-cm6 .cm-html-embed details {
+  margin-block: 0;
   padding: var(--lg-space-3) var(--lg-space-4);
   border: 1px solid var(--lg-doc-divider);
   border-radius: var(--lg-radius-m);
   background: var(--background-primary-alt);
 }
 
-.markdown-rendered summary {
+.markdown-rendered summary,
+.markdown-source-view.mod-cm6 .cm-html-embed summary {
   color: var(--text-normal);
   font-weight: 600;
   cursor: pointer;
 }
 
-.markdown-rendered details[open] > summary {
+.markdown-rendered details[open] > summary,
+.markdown-source-view.mod-cm6 .cm-html-embed details[open] > summary {
   margin-bottom: var(--lg-space-2);
-}
-
-.markdown-rendered :is(ul, ol) {
-  margin-block: var(--lg-space-2) var(--lg-space-5);
-}
-
-.markdown-rendered ul {
-  padding-inline-start: 1em;
-}
-
-.markdown-rendered ol {
-  padding-inline-start: 1.1em;
-}
-
-.markdown-rendered :is(ul, ol) > li {
-  margin-inline-start: 1em;
-}
-
-.markdown-rendered li {
-  margin-block: 0.35em;
 }
 
 /*
@@ -166,10 +107,6 @@ body .markdown-rendered h1 {
  */
 .markdown-rendered li::marker {
   color: var(--text-faint);
-}
-
-.markdown-rendered li > :is(ul, ol) {
-  margin-block: var(--lg-space-1) var(--lg-space-2);
 }
 
 /*
@@ -197,6 +134,7 @@ body .markdown-rendered h1 {
 }
 
 .markdown-rendered mark,
+.markdown-source-view.mod-cm6 .cm-content mark,
 .cm-highlight {
   background: var(--text-highlight-bg);
   color: var(--text-normal);
@@ -205,75 +143,6 @@ body .markdown-rendered h1 {
   box-shadow: none;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-}
-
-/*
- * A 4px neutral rail gives editorial emphasis without introducing another
- * accent colour. Nested levels step down in opacity rather than width.
- */
-.markdown-rendered blockquote {
-  position: relative;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  margin-block: var(--lg-space-6);
-  padding: var(--lg-space-1) 0;
-  padding-inline-start: var(--lg-space-4);
-  color: var(--blockquote-color);
-}
-
-.markdown-rendered blockquote::before {
-  content: "";
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  width: 4px;
-  border-radius: var(--lg-radius-pill);
-  background: var(--lg-quote-line);
-}
-
-.markdown-rendered blockquote blockquote {
-  --blockquote-border-color: var(--lg-quote-line-nested);
-  margin-inline-start: 16px;
-}
-
-.markdown-rendered blockquote blockquote::before {
-  background: var(--lg-quote-line-nested);
-}
-
-.markdown-rendered blockquote blockquote blockquote {
-  --blockquote-border-color: var(--lg-quote-line-deep);
-}
-
-.markdown-rendered blockquote blockquote blockquote::before {
-  background: var(--lg-quote-line-deep);
-}
-
-.markdown-rendered blockquote > :last-child {
-  margin-bottom: 0;
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,
-.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
-  border-radius: 0;
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before {
-  width: 4px;
-  border: 0;
-  border-radius: var(--lg-radius-pill);
-  background: var(--lg-quote-line);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
-  width: 4px;
-  border: 0;
-  border-radius: var(--lg-radius-pill);
-  background: var(--lg-quote-line-nested);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote-3 .cm-blockquote-border::before {
-  background: var(--lg-quote-line-deep);
 }
 
 .markdown-rendered .callout,
@@ -384,9 +253,9 @@ body .markdown-rendered h1 {
 }
 
 .theme-dark {
-  --code-background: #242426;
+  --code-background: #25242d;
   --code-normal: #e8e8ed;
-  --lg-code-border: rgba(235, 235, 245, 0.18);
+  --lg-code-border: rgba(235, 235, 245, 0.1);
   --lg-code-header: color-mix(in srgb, var(--code-normal) 4%, var(--code-background));
   --lg-code-header-divider: rgba(235, 235, 245, 0.1);
   --lg-code-highlight: rgba(255, 255, 255, 0.06);
@@ -407,11 +276,11 @@ body .markdown-rendered h1 {
   --lg-syn-comment: #8b95a1;
   --lg-syn-operator: #c8c8ce;
   --lg-syn-punctuation: #96969c;
-  --lg-inline-code-bg: #292b30;
-  --lg-inline-code-border: rgb(235 235 245 / 35%);
+  --lg-inline-code-bg: #2b2a34;
+  --lg-inline-code-border: rgb(235 235 245 / 12%);
   --lg-inline-code-text: #e8e8ed;
-  --lg-mark-bg: color-mix(in srgb, var(--lg-accent) 24%, var(--lg-paper-solid));
-  --lg-doc-divider: rgba(235, 235, 245, 0.18);
+  --lg-mark-bg: rgba(255, 204, 72, 0.3);
+  --lg-doc-divider: rgba(235, 235, 245, 0.1);
 }
 
 body {
@@ -479,7 +348,23 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
 /* Images are figures on the page, not unframed browser content. */
 .markdown-rendered .image-embed {
   display: block;
-  margin-block: var(--lg-space-8);
+  margin-block: 0;
+  text-align: center;
+}
+
+/*
+ * The editor's image is an inline widget in its source line. A line holding
+ * nothing else centres it and collapses to the image's own height, so the
+ * blank lines around it are the only spacing, as in Reading View.
+ */
+.markdown-source-view.mod-cm6 .cm-line > .image-embed {
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line:has(> .image-embed):not(:has(> span)) {
+  line-height: 0;
   text-align: center;
 }
 
@@ -507,8 +392,8 @@ body.image-captions-enabled .image-embed::after {
 
 /*
  * Live Preview renders a fenced block as one CodeMirror line per source line,
- * rather than as one <pre>. The fence line therefore becomes the component's
- * header, and each line has to carry its own side rails. Inset strokes preserve
+ * rather than as one <pre>, so each line has to carry its own side rails. The
+ * fence lines themselves are styled in 15-editor-parity.css. Inset strokes preserve
  * line metrics, stay continuous across wrapped visual lines and avoid the
  * half-pixel seams produced by stacking actual borders.
  */
@@ -522,25 +407,6 @@ body.image-captions-enabled .image-embed::after {
     inset -1px 0 0 var(--lg-code-border);
 }
 
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock-begin {
-  min-height: 36px;
-  padding-block: 6px;
-  border-radius: var(--lg-radius-m) var(--lg-radius-m) 0 0;
-  background: var(--lg-code-header);
-  box-shadow:
-    inset 1px 0 0 var(--lg-code-border),
-    inset -1px 0 0 var(--lg-code-border),
-    inset 0 1px 0 var(--lg-code-border),
-    inset 0 -1px 0 var(--lg-code-header-divider),
-    inset 0 2px 0 var(--lg-code-highlight);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview
-  .HyperMD-codeblock-begin
-  + .HyperMD-codeblock:not(.HyperMD-codeblock-end) {
-  padding-block-start: var(--lg-space-4);
-}
-
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock-end {
   min-height: var(--lg-space-3);
   border-radius: 0 0 var(--lg-radius-m) var(--lg-radius-m);
@@ -548,26 +414,6 @@ body.image-captions-enabled .image-embed::after {
     inset 1px 0 0 var(--lg-code-border),
     inset -1px 0 0 var(--lg-code-border),
     inset 0 -1px 0 var(--lg-code-border);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .code-block-flair {
-  inset: 6px var(--lg-space-2) auto auto;
-  min-height: 24px;
-  padding: 2px var(--lg-space-2);
-  border-radius: var(--lg-radius-s);
-  color: var(--text-muted);
-  font-size: var(--font-ui-smaller);
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 20px;
-  transition:
-    color var(--lg-duration-fast) var(--lg-ease),
-    background-color var(--lg-duration-fast) var(--lg-ease);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .code-block-flair:hover {
-  background: var(--lg-state-hover);
-  color: var(--text-normal);
 }
 
 /*

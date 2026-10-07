@@ -127,7 +127,7 @@ body.lumen-chrome-flush {
   --lg-chrome-gap: 0px;
 }
 
-body.lumen-chrome-flush .workspace-ribbon.side-dock-ribbon.mod-left,
+body.lumen-chrome-flush .workspace-ribbon.side-dock-ribbon:is(.mod-left, .mod-primary),
 body.lumen-chrome-flush .workspace-split.mod-left-split,
 body.lumen-chrome-flush .workspace-split.mod-right-split,
 body.lumen-chrome-flush .workspace-split.mod-root .workspace-tab-header-container,
@@ -327,7 +327,7 @@ body.lumen-increase-contrast .prompt {
     --ribbon-width: 44px;
   }
 
-  body:not(.is-mobile) .workspace-ribbon.side-dock-ribbon.mod-left {
+  body:not(.is-mobile) .workspace-ribbon.side-dock-ribbon:is(.mod-left, .mod-primary) {
     width: 40px;
   }
 

@@ -1,0 +1,467 @@
+/* --------------------------------------------------------------------------
+   12. Editor parity — one rhythm for Reading View and Live Preview
+   -------------------------------------------------------------------------- */
+
+/*
+ * Reading View spaces blocks with margins; Live Preview has no blocks, only
+ * source lines, so a blank line is a full line of leading and every gap came
+ * out a different size from the rendered note. This module sets both from the
+ * same numbers and keeps each pair of rules next to each other so they cannot
+ * drift apart again.
+ *
+ * The model: one paragraph gap (--p-spacing) between any two blocks, a larger
+ * gap above a heading (--lg-heading-gap, in the heading's own em) and a fixed
+ * small gap below it.
+ */
+body {
+  --lg-blank-line: var(--lg-p-gap);
+  --lg-h12-after: var(--lg-space-4);
+  --lg-h3-after: var(--lg-space-3);
+  --lg-h456-after: var(--lg-space-2);
+  --lg-quote-rail: 4px;
+  --lg-quote-indent: 0.94em;
+}
+
+/* Opt-out: leave blank source lines at full leading while editing. */
+body.lumen-editor-native-spacing {
+  --lg-blank-line: var(--line-height-normal);
+}
+
+/*
+ * A blank source line is the paragraph gap, so it takes the gap's height. Lines
+ * inside fences, quotes and lists carry a HyperMD-* class and are left alone.
+ */
+.markdown-source-view.mod-cm6.is-live-preview
+  .cm-content
+  > .cm-line:not([class*="HyperMD-"]):has(> br:only-child) {
+  line-height: calc(var(--lg-blank-line) * 1em);
+}
+
+/* ---- Headings ---------------------------------------------------------- */
+
+.markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
+  margin-block-start: calc(var(--lg-heading-gap) * 1em);
+}
+
+.markdown-rendered :is(h1, h2) {
+  margin-block-end: var(--lg-h12-after);
+}
+
+.markdown-rendered h3 {
+  margin-block-end: var(--lg-h3-after);
+}
+
+.markdown-rendered :is(h4, h5, h6) {
+  margin-block-end: var(--lg-h456-after);
+}
+
+/*
+ * A heading line is sized in its own em, so the blank line above it — measured
+ * in body em — is divided by the heading's scale before it is subtracted. The
+ * result is the same distance to the previous block that Reading View's
+ * collapsed margin gives, whether or not the author left a blank line.
+ */
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header {
+  --lg-h-scale: 1;
+  --lg-h-after: var(--lg-h456-after);
+  padding-top: calc(var(--lg-heading-gap) * 1em);
+  padding-bottom: var(--lg-h-after);
+}
+
+/*
+ * CodeMirror's zero-width widget buffers align to text-top, which at heading
+ * sizes pushes the line box 2px past its line-height on every heading.
+ */
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header .cm-widgetBuffer {
+  vertical-align: baseline;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-1 {
+  --lg-h-scale: var(--lg-h1-scale);
+  --lg-h-after: var(--lg-h12-after);
+  line-height: var(--h1-line-height);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-2 {
+  --lg-h-scale: var(--lg-h2-scale);
+  --lg-h-after: var(--lg-h12-after);
+  line-height: var(--h2-line-height);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-3 {
+  --lg-h-scale: var(--lg-h3-scale);
+  --lg-h-after: var(--lg-h3-after);
+  line-height: var(--h3-line-height);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-4 {
+  --lg-h-scale: var(--lg-h4-scale);
+  line-height: var(--h4-line-height);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-5 {
+  --lg-h-scale: var(--lg-h5-scale);
+  line-height: var(--h5-line-height);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-6 {
+  --lg-h-scale: var(--lg-h6-scale);
+  line-height: var(--h6-line-height);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .cm-line:not([class*="HyperMD-"]):has(> br:only-child)
+  + .cm-line.HyperMD-header {
+  padding-top: calc((var(--lg-heading-gap) - var(--lg-blank-line) / var(--lg-h-scale)) * 1em);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .cm-line.HyperMD-header:has(+ .cm-line:not([class*="HyperMD-"]) > br:only-child) {
+  padding-bottom: 0;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .cm-content
+  > .cm-line.HyperMD-header:nth-child(1 of .cm-line) {
+  padding-top: 0;
+}
+
+/* ---- Lists ------------------------------------------------------------- */
+
+/*
+ * One indent step for both views. Live Preview indents a nested line by
+ * --list-indent per tab and starts the first level one marker in, which lands
+ * at the same 1.7em that core gives each rendered item as its margin. Items
+ * sit on consecutive lines, as they do in the source.
+ */
+.markdown-rendered :is(ul, ol) {
+  margin-block: 0 var(--p-spacing);
+}
+
+.markdown-rendered li,
+.markdown-rendered .task-list-item {
+  margin-block: 0;
+}
+
+.markdown-rendered li > :is(ul, ol) {
+  margin-block: 0;
+}
+
+.markdown-rendered li > p {
+  margin-block: 0 var(--p-spacing);
+}
+
+.markdown-rendered li > p:last-child {
+  margin-block-end: 0;
+}
+
+/* ---- Tasks ------------------------------------------------------------- */
+
+.markdown-rendered .task-list-item-checkbox,
+.markdown-source-view.mod-cm6 .task-list-item-checkbox {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  border-radius: var(--checkbox-radius);
+}
+
+/* The editor's box sits 7px in with the label at 32px; these land there too. */
+.markdown-rendered .task-list-item-checkbox {
+  margin-inline: -20px 9px;
+  transform: translateY(2px);
+}
+
+/*
+ * Only a done task is struck. Core marks every non-empty state as checked, so
+ * `[/]` and `[?]` were struck in Reading View and left alone in the editor.
+ */
+.markdown-rendered .task-list-item:is([data-task="x"], [data-task="X"], [data-task="-"]),
+.markdown-source-view.mod-cm6 .HyperMD-task-line:is([data-task="x"], [data-task="X"], [data-task="-"]) {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.markdown-rendered .task-list-item:is([data-task="x"], [data-task="X"], [data-task="-"]) :is(ul, ol),
+.markdown-rendered .task-list-item:not([data-task="x"], [data-task="X"], [data-task="-"]) {
+  color: var(--text-normal);
+  text-decoration: none;
+}
+
+/* ---- Blockquotes ------------------------------------------------------- */
+
+/*
+ * One continuous rail per level, rounded only where the quote starts and ends.
+ * Live Preview draws the rail per source line; rounding each of those left a
+ * dashed line instead of a rule.
+ */
+.markdown-rendered blockquote {
+  position: relative;
+  margin-block: 0 var(--p-spacing);
+  padding: 0;
+  padding-inline-start: var(--lg-quote-indent);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--blockquote-color);
+}
+
+.markdown-rendered blockquote::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--lg-quote-rail);
+  border-radius: var(--lg-radius-pill);
+  background: var(--lg-quote-line);
+}
+
+.markdown-rendered blockquote blockquote {
+  margin-block: var(--p-spacing) 0;
+}
+
+.markdown-rendered blockquote blockquote::before {
+  background: var(--lg-quote-line-nested);
+}
+
+.markdown-rendered blockquote blockquote blockquote::before {
+  background: var(--lg-quote-line-deep);
+}
+
+.markdown-rendered blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,
+.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
+  width: var(--lg-quote-rail);
+  border: 0;
+  border-radius: 0;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before {
+  background: var(--lg-quote-line);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
+  background: var(--lg-quote-line-nested);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-quote
+  :nth-child(n + 2 of .cm-blockquote-border)::before {
+  background: var(--lg-quote-line-deep);
+}
+
+/* Adjacent line boxes meet on a fractional pixel; a 1px overlap closes the seam. */
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:has(+ .HyperMD-quote)::before,
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-quote:has(+ .HyperMD-quote)
+  .cm-blockquote-border::before {
+  bottom: -1px;
+}
+
+/* A bare `>` line is the paragraph gap inside a quote. */
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-quote:not(:has(.cm-quote:not(.cm-formatting))) {
+  line-height: calc(var(--lg-blank-line) * 1em);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line:not(.HyperMD-quote) + .HyperMD-quote::before,
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:nth-child(1 of .cm-line)::before {
+  border-start-start-radius: var(--lg-radius-pill);
+  border-start-end-radius: var(--lg-radius-pill);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:not(:has(+ .HyperMD-quote))::before {
+  border-end-start-radius: var(--lg-radius-pill);
+  border-end-end-radius: var(--lg-radius-pill);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-quote-1
+  + .HyperMD-quote:not(.HyperMD-quote-1)
+  :nth-child(1 of .cm-blockquote-border)::before,
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-quote:is(.HyperMD-quote-1, .HyperMD-quote-2)
+  + .HyperMD-quote:not(.HyperMD-quote-1, .HyperMD-quote-2)
+  :nth-child(2 of .cm-blockquote-border)::before {
+  border-start-start-radius: var(--lg-radius-pill);
+  border-start-end-radius: var(--lg-radius-pill);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-quote:not(:has(+ .HyperMD-quote:not(.HyperMD-quote-1)))
+  :nth-child(1 of .cm-blockquote-border)::before,
+.markdown-source-view.mod-cm6.is-live-preview
+  .HyperMD-quote:not(:has(+ .HyperMD-quote:not(.HyperMD-quote-1, .HyperMD-quote-2)))
+  :nth-child(2 of .cm-blockquote-border)::before {
+  border-end-start-radius: var(--lg-radius-pill);
+  border-end-end-radius: var(--lg-radius-pill);
+}
+
+/* ---- Rules and footnotes ----------------------------------------------- */
+
+/*
+ * In the editor a rule is a source line with a blank line on each side. The
+ * rendered rule takes half a line plus one paragraph gap to land in the same
+ * place.
+ */
+.markdown-rendered hr,
+.markdown-source-view.mod-cm6 .markdown-embed .markdown-rendered hr {
+  margin-block: calc(var(--p-spacing) + var(--line-height-normal) * 0.5em);
+  border-width: 1px 0 0;
+  border-color: var(--lg-doc-divider);
+}
+
+.markdown-source-view.mod-cm6 .cm-line.hr hr,
+.markdown-source-view.mod-cm6 .hr hr {
+  border-width: 1px 0 0;
+  border-color: var(--lg-doc-divider);
+}
+
+/* The section already draws its own rule; core's <hr> inside doubled it. */
+.markdown-rendered .footnotes {
+  margin-top: calc(var(--p-spacing) + var(--line-height-normal) * 0.5em);
+  padding-top: var(--lg-space-3);
+  border-top: 1px solid var(--lg-doc-divider);
+  color: var(--text-muted);
+  font-size: 0.82em;
+  line-height: 1.6;
+}
+
+.markdown-rendered .footnotes > hr {
+  display: none;
+}
+
+.markdown-rendered .footnotes li {
+  margin-block: var(--lg-space-1);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-footnote {
+  color: var(--text-muted);
+  font-size: 0.82em;
+  line-height: 1.6;
+}
+
+.markdown-rendered sup.footnote-ref,
+.markdown-source-view.mod-cm6 .cm-line :is(.cm-footref, .cm-hmd-footnote) {
+  color: var(--lg-paper-link);
+  font-size: 0.72em;
+  font-variant-numeric: tabular-nums;
+}
+
+.markdown-rendered sup.footnote-ref a,
+.markdown-rendered a.footnote-link {
+  box-shadow: none;
+}
+
+/* ---- Code fences ------------------------------------------------------- */
+
+/*
+ * The rendered block is one card with its copy button in the corner. The
+ * editor's fence lines become that card's top and bottom padding rather than a
+ * header band, and the language label sits where the copy button does.
+ */
+/*
+ * Core caps each line at --file-line-width, an em value that resolves against
+ * the line's own font size. Code is set at 0.875em, so its card stopped 12%
+ * short of the column. The sizer already holds the measure.
+ */
+.markdown-source-view.mod-cm6 .cm-line:is(.HyperMD-codeblock, .HyperMD-footnote) {
+  max-width: none;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock-begin {
+  min-height: var(--lg-space-4);
+  padding-block: 0;
+  border-radius: var(--lg-radius-m) var(--lg-radius-m) 0 0;
+  background: var(--code-background);
+  font-size: 0;
+  line-height: 0;
+  box-shadow:
+    inset 1px 0 0 var(--lg-code-border),
+    inset -1px 0 0 var(--lg-code-border),
+    inset 0 1px 0 var(--lg-code-border),
+    inset 0 2px 0 var(--lg-code-highlight);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview
+  .cm-line.HyperMD-codeblock-begin
+  + .HyperMD-codeblock:not(.HyperMD-codeblock-end) {
+  padding-block-start: 0;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock-end {
+  min-height: var(--lg-space-4);
+  font-size: 0;
+  line-height: 0;
+}
+
+/* The fence being edited shows its source again. */
+.markdown-source-view.mod-cm6.is-live-preview
+  .cm-line:is(.HyperMD-codeblock-begin, .HyperMD-codeblock-end):has(.cm-formatting-code-block) {
+  padding-block: var(--lg-space-1);
+  font-size: 0.875em;
+  line-height: 1.55;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair,
+.markdown-rendered pre > .copy-code-button {
+  inset: var(--lg-space-2) var(--lg-space-2) auto auto;
+  min-height: 24px;
+  padding: 2px var(--lg-space-2);
+  border-radius: var(--lg-radius-s);
+  background: transparent;
+  color: var(--text-faint);
+  font-family: var(--font-interface-theme);
+  font-size: var(--font-ui-smaller);
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair:hover,
+.markdown-rendered pre > .copy-code-button:hover {
+  background: var(--lg-state-hover);
+  color: var(--text-normal);
+}
+
+/* ---- Block cards -------------------------------------------------------- */
+
+/*
+ * Callouts, code, embeds and display math are blocks like any other: one
+ * paragraph gap below, none above. Live Preview already spaces them with the
+ * blank source line on either side.
+ */
+.markdown-rendered .callout,
+.markdown-rendered pre,
+.markdown-rendered .markdown-embed,
+.markdown-rendered .internal-query,
+.markdown-rendered details {
+  margin-block: 0 var(--p-spacing);
+}
+
+.markdown-rendered .callout-content > :last-child,
+.markdown-rendered .markdown-embed .markdown-preview-view > :last-child {
+  margin-block-end: 0;
+}
+
+.markdown-rendered .MathJax[display="true"] {
+  margin-block: 0 var(--p-spacing);
+}
+
+.markdown-source-view.mod-cm6 .cm-embed-block.math-block .MathJax[display="true"] {
+  margin-block: 0;
+  padding-block: var(--lg-space-1);
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: var(--text-normal);
+  font-size: 1.05em;
+}
+
+/*
+ * The table editor reserves 16px above and below for its drag handles and add
+ * buttons, and that space cannot be taken back without covering them. The
+ * rendered table is given the same clearance instead.
+ */
+.markdown-preview-view .el-table {
+  margin-block: calc(var(--p-spacing) + var(--lg-space-4));
+}
