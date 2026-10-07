@@ -23,6 +23,10 @@ function sources() {
  * block (the plugin reads the @settings comment) and a short generated-file
  * banner. Shipping the design notes was the cheapest 20KB on the community
  * "larger than recommended" warning, and they are not needed at install time.
+ *
+ * Indentation and blank lines go the same way: 1.2.0 drew that warning again
+ * at 111 KB while 1.1.1 at 103 KB had not. Each declaration keeps its own
+ * line, so the directory's lint still reports usable line numbers.
  */
 function stripAuthorComments(css) {
   const kept = [];
@@ -33,11 +37,15 @@ function stripAuthorComments(css) {
 
   return masked
     .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\u0000K(\d+)\u0000/g, (match, index) => kept[Number(index)])
     .replace(/[ \t]+$/gm, "")
-    .replace(/\n{3,}/g, "\n\n")
+    .replace(/^[ \t]+/gm, "")
+    .replace(/\n{2,}/g, "\n")
+    .replace(/^(-{0,2}[a-z][a-z0-9-]*): /gm, "$1:")
+    .replace(/ \{$/gm, "{")
+    .replace(/^[^"'\n]*$/gm, (line) => line.replace(/, /g, ","))
     .replace(/^\n+/, "")
-    .replace(/\n+$/, "\n");
+    .replace(/\n+$/, "\n")
+    .replace(/\u0000K(\d+)\u0000/g, (match, index) => `${kept[Number(index)]}\n`);
 }
 
 function compose() {

@@ -143,14 +143,15 @@ The violet sidebar in dark mode (`#2B2742`) and neutral paper (`#1C1C1E`) are no
 
 Quote rails are 4px neutral capsules: solid `#303033` at the first level, 44% when nested, and 28% at the third level. The dark first rail gives introductory prose a stable editorial anchor, while the descending neutral ladder preserves nesting without introducing another accent colour.
 
-Each level is one continuous 4px rail, rounded only where the quote starts and ends. Reading View draws one absolute capsule per blockquote. Live Preview draws the rail one source line at a time, so those segments are square, overlap by 1px, and only the first and last line of a level carry the rounded cap. Rail colours are mixed against the paper instead of being translucent, so the overlap cannot show as a tick. A nested rail sits at its parent's text edge in both views.
+Each level is one continuous, square-ended 4px rail. Reading View draws it in one piece. Live Preview draws it one source line at a time, with each segment overlapping the next by 1px to close the seam between line boxes. Rail colours are mixed against the paper instead of being translucent, so the overlap cannot show as a tick. A nested rail sits at its parent's text edge in both views.
 
 ## Reading View and Live Preview
 
 The two views are set from the same numbers, in `src/15-editor-parity.css`, with each pair of rules side by side. Check any change to Markdown spacing in both views against the same note.
 
-- One paragraph gap (`--p-spacing`, 1.05em) separates any two blocks. In Live Preview a blank source line is that gap, so it takes the gap's height instead of a full line of leading. `Full-height blank lines while editing` in Style Settings turns this off.
-- A heading has 1.3em (its own em) above and 16 / 16 / 12 / 8 / 8 / 8px below for h1–h6. Live Preview subtracts the blank line above from its padding and drops its bottom padding when a blank line follows.
+- One paragraph gap separates any two blocks, and it is one full line (`--p-spacing` equals the line height). A blank source line in Live Preview is a line of leading, so this is the only value both views can share without a selector that inspects a line's neighbours.
+- Do not use `:has()`. The Community Directory lint warns on it, and the selectors it would be needed for run on every editor line.
+- A heading sits one line plus 0.6 / 0.4 / 0.2 body em (h1–h2 / h3 / h4–h6) below the previous block and 16 / 16 / 12 / 8 / 8 / 8px above its own text. The two views agree when a blank line precedes the heading and none follows it; a blank line after a heading adds one line in Live Preview only.
 - List items sit on consecutive lines with one indent step, `--list-indent` (1.7em), per level in both views.
 - Callouts, code, note embeds, display math, and `<details>` carry no top margin and one paragraph gap below. Tables keep 16px more on each side because the table editor reserves that for its handles.
 - A fenced block is one card in both views. In Live Preview the fence lines are the card's top and bottom padding and the language label sits where Reading View puts the copy button; a fence line shows its source again while it is being edited.

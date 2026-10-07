@@ -353,31 +353,17 @@ body[class] .workspace-leaf-content .markdown-rendered pre > code {
 }
 
 /*
- * The editor's image is an inline widget in its source line. A line holding
- * nothing else centres it and collapses to the image's own height, so the
- * blank lines around it are the only spacing, as in Reading View.
+ * The editor's image is an inline widget in its source line. Stretching it to
+ * the line's width and centring its content puts the image where Reading View
+ * does without the line having to know what it holds.
  */
 .markdown-source-view.mod-cm6 .cm-line > .image-embed {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
   margin: 0;
   padding: 0;
   vertical-align: top;
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .cm-line:has(> .image-embed):not(:has(> span)) {
-  line-height: 0;
-  text-align: center;
-}
-
-.markdown-rendered .image-embed img,
-.markdown-source-view.mod-cm6 .image-embed img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin-inline: auto;
-  border: 1px solid var(--lg-paper-border);
-  border-radius: var(--lg-radius-m);
-  background: var(--background-primary-alt);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.035);
 }
 
 body.image-captions-enabled .image-embed::after {

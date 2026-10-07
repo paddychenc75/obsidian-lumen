@@ -226,15 +226,15 @@ const cssBytes = Buffer.byteLength(css);
  * Official theme docs do not publish a numeric ceiling. The community
  * directory RELEASES check warns "Theme CSS file is larger than recommended"
  * (a warning, not a blocking error). 1.0.7 at 135632 bytes drew that
- * warning, so the working budget is 128 KiB — the first power-of-two below
- * the flagged file. A 100 KiB bar is unreachable here without dropping
- * features: even a fully minified sheet still sits around 110 KB.
+ * warning, and so did 1.2.0 at 111276 bytes, while 1.1.1 at 103387 bytes is
+ * not known to have. The working budget is 100 KiB, just under the largest
+ * size that passed.
  */
-const recommendedCssBytes = 128 * 1024;
+const recommendedCssBytes = 100 * 1024;
 if (cssBytes > recommendedCssBytes) {
   warn(
     `theme.css is ${cssBytes} bytes (${(cssBytes / 1024).toFixed(1)} KiB); ` +
-      `keep it at or under ${recommendedCssBytes / 1024} KiB to stay below the size that 1.0.7 was flagged for`,
+      `keep it at or under ${recommendedCssBytes / 1024} KiB to stay below the size that 1.2.0 was flagged for`,
   );
 }
 

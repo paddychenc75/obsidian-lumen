@@ -59,11 +59,23 @@
     color var(--lg-duration-fast) var(--lg-ease);
 }
 
+/*
+ * Weight is fixed per kind of row and set through core's own variables. Core
+ * reads --nav-item-weight-hover and -active from selectors that outrank a
+ * plain font-weight here, so the current note went from 400 to 500 under the
+ * pointer and a folder dropped from 500 to 400.
+ */
 .nav-files-container .nav-folder-title {
+  --nav-item-weight: 500;
+  --nav-item-weight-hover: 500;
+  --nav-item-weight-active: 500;
   font-weight: 500;
 }
 
 .nav-files-container .nav-file-title {
+  --nav-item-weight: 400;
+  --nav-item-weight-hover: 400;
+  --nav-item-weight-active: 400;
   font-weight: 400;
 }
 
@@ -106,9 +118,41 @@ body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed) {
   margin-inline-start: 18px;
 }
 
+/*
+ * Folders carry a folder glyph, open or closed, so the tree separates
+ * containers from notes by shape and not only by the 14px disclosure arrow.
+ * It is a mask, so it takes the row's text colour in both appearances. Files
+ * reserve the same width and stay blank, which keeps every label in a level on
+ * one column.
+ */
+.nav-files-container {
+  --lg-tree-icon-size: 16px;
+  --lg-tree-icon-gap: 6px;
+  --lg-tree-folder-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z'/%3E%3C/svg%3E");
+  --lg-tree-folder-open-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2'/%3E%3C/svg%3E");
+}
+
+.nav-files-container .nav-folder-title-content::before {
+  content: "";
+  display: inline-block;
+  width: var(--lg-tree-icon-size);
+  height: var(--lg-tree-icon-size);
+  margin-inline-end: var(--lg-tree-icon-gap);
+  background-color: currentcolor;
+  opacity: 0.72;
+  vertical-align: -3px;
+  -webkit-mask: var(--lg-tree-folder-icon) center / contain no-repeat;
+  mask: var(--lg-tree-folder-icon) center / contain no-repeat;
+}
+
+.nav-files-container .nav-folder:not(.is-collapsed) > .nav-folder-title .nav-folder-title-content::before {
+  -webkit-mask-image: var(--lg-tree-folder-open-icon);
+  mask-image: var(--lg-tree-folder-open-icon);
+}
+
 .nav-files-container .nav-file-title::before {
   content: "";
-  flex: 0 0 18px;
+  flex: 0 0 calc(18px + var(--lg-tree-icon-size) + var(--lg-tree-icon-gap));
 }
 
 .nav-files-container .nav-file-title-content,

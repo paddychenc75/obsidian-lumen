@@ -209,10 +209,9 @@ body {
    * size changes. Custom properties substitute as tokens, so the em resolves at
    * the sizer and the paragraph — not here on body, where it would freeze.
    */
-  --lg-p-gap: 1.05;
-  --lg-heading-gap: 1.3;
-  --p-spacing: calc(var(--lg-p-gap) * 1em);
-  --heading-spacing: calc(var(--lg-heading-gap) * 1em);
+  /* One line of leading: the height of a blank source line in the editor. */
+  --p-spacing: calc(var(--line-height-normal) * 1em);
+  --heading-spacing: calc(var(--line-height-normal) * 1em);
   --file-line-width: var(--lumen-file-line-width, 40em);
   --list-indent: 1.7em;
   --caret-color: var(--lg-accent);

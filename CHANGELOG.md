@@ -6,6 +6,21 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-07
+
+### Changed
+
+- The paragraph gap is now one full line in both Reading View and Live Preview, so a blank source line and a rendered paragraph break are the same height without any selector that inspects a line's neighbours. Reading View is looser than in 1.2.0 (27px instead of 17px at a 16px body size). A heading sits one line plus a small step below the previous block.
+- Removed the `Full-height blank lines while editing` setting added in 1.2.0; blank lines are always full height again.
+- Blockquote rails are square-ended in both views.
+- Added open and closed folder glyphs to the file explorer.
+- The published `theme.css` drops indentation, blank lines, and optional spaces. Each declaration still has its own line.
+
+### Fixed
+
+- Cleared the three Community Directory warnings 1.2.0 introduced: removed every `:has()` selector, removed `text-decoration-thickness`, and brought `theme.css` from 111 KB down to 102 KB, below the 1.1.1 size.
+- The current note in the file explorer turned bold under the pointer, and a folder name turned lighter. Row weight is now fixed through core's own variables.
+
 ## [1.2.0] - 2026-10-07
 
 ### Changed

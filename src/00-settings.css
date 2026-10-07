@@ -88,12 +88,6 @@ settings:
         step: 1
         format: em
     -
-        id: lumen-editor-native-spacing
-        title: Full-height blank lines while editing
-        description: By default a blank line in Live Preview is as tall as the paragraph gap in Reading View, so a note keeps its rhythm in both. Turn this on to keep blank lines at full line height.
-        type: class-toggle
-        default: false
-    -
         id: lumen-editor-contrast
         title: High-contrast text
         type: class-toggle

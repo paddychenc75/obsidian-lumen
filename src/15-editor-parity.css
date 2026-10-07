@@ -4,17 +4,16 @@
 
 /*
  * Reading View spaces blocks with margins; Live Preview has no blocks, only
- * source lines, so a blank line is a full line of leading and every gap came
- * out a different size from the rendered note. This module sets both from the
- * same numbers and keeps each pair of rules next to each other so they cannot
- * drift apart again.
- *
- * The model: one paragraph gap (--p-spacing) between any two blocks, a larger
- * gap above a heading (--lg-heading-gap, in the heading's own em) and a fixed
- * small gap below it.
+ * source lines, and a blank line there is one full line of leading. So the
+ * paragraph gap is one line in both: --p-spacing is set to the line height in
+ * 02-obsidian-variables.css and every block here uses it. Text then sits on
+ * the same grid whether it is being read or edited, with no selector that has
+ * to look at a line's neighbours.
  */
 body {
-  --lg-blank-line: var(--lg-p-gap);
+  --lg-h12-before: 0.6;
+  --lg-h3-before: 0.4;
+  --lg-h456-before: 0.2;
   --lg-h12-after: var(--lg-space-4);
   --lg-h3-after: var(--lg-space-3);
   --lg-h456-after: var(--lg-space-2);
@@ -22,49 +21,58 @@ body {
   --lg-quote-indent: 0.94em;
 }
 
-/* Opt-out: leave blank source lines at full leading while editing. */
-body.lumen-editor-native-spacing {
-  --lg-blank-line: var(--line-height-normal);
-}
-
-/*
- * A blank source line is the paragraph gap, so it takes the gap's height. Lines
- * inside fences, quotes and lists carry a HyperMD-* class and are left alone.
- */
-.markdown-source-view.mod-cm6.is-live-preview
-  .cm-content
-  > .cm-line:not([class*="HyperMD-"]):has(> br:only-child) {
-  line-height: calc(var(--lg-blank-line) * 1em);
-}
-
 /* ---- Headings ---------------------------------------------------------- */
 
+/*
+ * A heading sits one blank line plus a small step below the previous block,
+ * and a fixed short distance above its own text. Both are written in body em
+ * and divided by the heading's scale, because a heading is sized in its own
+ * em. In Reading View the whole distance is the top margin, which collapses
+ * with the paragraph gap above; in Live Preview the blank line supplies the
+ * first part and the padding supplies the step.
+ */
 .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
-  margin-block-start: calc(var(--lg-heading-gap) * 1em);
+  --lg-h-scale: 1;
+  --lg-h-before: var(--lg-h456-before);
+  margin-block-start: calc((var(--line-height-normal) + var(--lg-h-before)) * 1em / var(--lg-h-scale));
+  margin-block-end: var(--lg-h456-after);
 }
 
-.markdown-rendered :is(h1, h2) {
+.markdown-rendered h1 {
+  --lg-h-scale: var(--lg-h1-scale);
+  --lg-h-before: var(--lg-h12-before);
+  margin-block-end: var(--lg-h12-after);
+}
+
+.markdown-rendered h2 {
+  --lg-h-scale: var(--lg-h2-scale);
+  --lg-h-before: var(--lg-h12-before);
   margin-block-end: var(--lg-h12-after);
 }
 
 .markdown-rendered h3 {
+  --lg-h-scale: var(--lg-h3-scale);
+  --lg-h-before: var(--lg-h3-before);
   margin-block-end: var(--lg-h3-after);
 }
 
-.markdown-rendered :is(h4, h5, h6) {
-  margin-block-end: var(--lg-h456-after);
+.markdown-rendered h4 {
+  --lg-h-scale: var(--lg-h4-scale);
 }
 
-/*
- * A heading line is sized in its own em, so the blank line above it — measured
- * in body em — is divided by the heading's scale before it is subtracted. The
- * result is the same distance to the previous block that Reading View's
- * collapsed margin gives, whether or not the author left a blank line.
- */
+.markdown-rendered h5 {
+  --lg-h-scale: var(--lg-h5-scale);
+}
+
+.markdown-rendered h6 {
+  --lg-h-scale: var(--lg-h6-scale);
+}
+
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header {
   --lg-h-scale: 1;
+  --lg-h-before: var(--lg-h456-before);
   --lg-h-after: var(--lg-h456-after);
-  padding-top: calc(var(--lg-heading-gap) * 1em);
+  padding-top: calc(var(--lg-h-before) * 1em / var(--lg-h-scale));
   padding-bottom: var(--lg-h-after);
 }
 
@@ -78,18 +86,21 @@ body.lumen-editor-native-spacing {
 
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-1 {
   --lg-h-scale: var(--lg-h1-scale);
+  --lg-h-before: var(--lg-h12-before);
   --lg-h-after: var(--lg-h12-after);
   line-height: var(--h1-line-height);
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-2 {
   --lg-h-scale: var(--lg-h2-scale);
+  --lg-h-before: var(--lg-h12-before);
   --lg-h-after: var(--lg-h12-after);
   line-height: var(--h2-line-height);
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-3 {
   --lg-h-scale: var(--lg-h3-scale);
+  --lg-h-before: var(--lg-h3-before);
   --lg-h-after: var(--lg-h3-after);
   line-height: var(--h3-line-height);
 }
@@ -107,17 +118,6 @@ body.lumen-editor-native-spacing {
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header-6 {
   --lg-h-scale: var(--lg-h6-scale);
   line-height: var(--h6-line-height);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview
-  .cm-line:not([class*="HyperMD-"]):has(> br:only-child)
-  + .cm-line.HyperMD-header {
-  padding-top: calc((var(--lg-heading-gap) - var(--lg-blank-line) / var(--lg-h-scale)) * 1em);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview
-  .cm-line.HyperMD-header:has(+ .cm-line:not([class*="HyperMD-"]) > br:only-child) {
-  padding-bottom: 0;
 }
 
 .markdown-source-view.mod-cm6.is-live-preview
@@ -178,7 +178,6 @@ body.lumen-editor-native-spacing {
 .markdown-source-view.mod-cm6 .HyperMD-task-line:is([data-task="x"], [data-task="X"], [data-task="-"]) {
   color: var(--text-muted);
   text-decoration: line-through;
-  text-decoration-thickness: 1px;
 }
 
 .markdown-rendered .task-list-item:is([data-task="x"], [data-task="X"], [data-task="-"]) :is(ul, ol),
@@ -190,9 +189,10 @@ body.lumen-editor-native-spacing {
 /* ---- Blockquotes ------------------------------------------------------- */
 
 /*
- * One continuous rail per level, rounded only where the quote starts and ends.
- * Live Preview draws the rail per source line; rounding each of those left a
- * dashed line instead of a rule.
+ * One continuous square-ended rail per level. Live Preview draws the rail one
+ * source line at a time, so each segment overlaps the next by 1px to close the
+ * fractional seam between line boxes; the rail colours are opaque, so the
+ * overlap does not show. Reading View draws the same shape in one piece.
  */
 .markdown-rendered blockquote {
   position: relative;
@@ -211,7 +211,6 @@ body.lumen-editor-native-spacing {
   inset-block: 0;
   inset-inline-start: 0;
   width: var(--lg-quote-rail);
-  border-radius: var(--lg-radius-pill);
   background: var(--lg-quote-line);
 }
 
@@ -233,6 +232,7 @@ body.lumen-editor-native-spacing {
 
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,
 .markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before {
+  bottom: -1px;
   width: var(--lg-quote-rail);
   border: 0;
   border-radius: 0;
@@ -250,52 +250,6 @@ body.lumen-editor-native-spacing {
   .HyperMD-quote
   :nth-child(n + 2 of .cm-blockquote-border)::before {
   background: var(--lg-quote-line-deep);
-}
-
-/* Adjacent line boxes meet on a fractional pixel; a 1px overlap closes the seam. */
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:has(+ .HyperMD-quote)::before,
-.markdown-source-view.mod-cm6.is-live-preview
-  .HyperMD-quote:has(+ .HyperMD-quote)
-  .cm-blockquote-border::before {
-  bottom: -1px;
-}
-
-/* A bare `>` line is the paragraph gap inside a quote. */
-.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-quote:not(:has(.cm-quote:not(.cm-formatting))) {
-  line-height: calc(var(--lg-blank-line) * 1em);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .cm-line:not(.HyperMD-quote) + .HyperMD-quote::before,
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:nth-child(1 of .cm-line)::before {
-  border-start-start-radius: var(--lg-radius-pill);
-  border-start-end-radius: var(--lg-radius-pill);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote:not(:has(+ .HyperMD-quote))::before {
-  border-end-start-radius: var(--lg-radius-pill);
-  border-end-end-radius: var(--lg-radius-pill);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview
-  .HyperMD-quote-1
-  + .HyperMD-quote:not(.HyperMD-quote-1)
-  :nth-child(1 of .cm-blockquote-border)::before,
-.markdown-source-view.mod-cm6.is-live-preview
-  .HyperMD-quote:is(.HyperMD-quote-1, .HyperMD-quote-2)
-  + .HyperMD-quote:not(.HyperMD-quote-1, .HyperMD-quote-2)
-  :nth-child(2 of .cm-blockquote-border)::before {
-  border-start-start-radius: var(--lg-radius-pill);
-  border-start-end-radius: var(--lg-radius-pill);
-}
-
-.markdown-source-view.mod-cm6.is-live-preview
-  .HyperMD-quote:not(:has(+ .HyperMD-quote:not(.HyperMD-quote-1)))
-  :nth-child(1 of .cm-blockquote-border)::before,
-.markdown-source-view.mod-cm6.is-live-preview
-  .HyperMD-quote:not(:has(+ .HyperMD-quote:not(.HyperMD-quote-1, .HyperMD-quote-2)))
-  :nth-child(2 of .cm-blockquote-border)::before {
-  border-end-start-radius: var(--lg-radius-pill);
-  border-end-end-radius: var(--lg-radius-pill);
 }
 
 /* ---- Rules and footnotes ----------------------------------------------- */
@@ -396,11 +350,15 @@ body.lumen-editor-native-spacing {
   line-height: 0;
 }
 
-/* The fence being edited shows its source again. */
+/*
+ * The fence being edited shows its source again. The line itself stays at
+ * zero size; the source spans CodeMirror puts back carry their own, so the
+ * line grows only while they are there.
+ */
 .markdown-source-view.mod-cm6.is-live-preview
-  .cm-line:is(.HyperMD-codeblock-begin, .HyperMD-codeblock-end):has(.cm-formatting-code-block) {
-  padding-block: var(--lg-space-1);
-  font-size: 0.875em;
+  .cm-line:is(.HyperMD-codeblock-begin, .HyperMD-codeblock-end)
+  > span[class*="cm-"] {
+  font-size: calc(var(--font-text-size) * 0.875);
   line-height: 1.55;
 }
 
