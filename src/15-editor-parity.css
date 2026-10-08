@@ -18,6 +18,7 @@ body {
   --lg-h3-after: var(--lg-space-3);
   --lg-h456-after: var(--lg-space-2);
   --lg-quote-rail: 4px;
+  --lg-quote-cap: calc(var(--lg-quote-rail) / 2);
   --lg-quote-indent: 0.94em;
 }
 
@@ -80,6 +81,11 @@ body {
  * CodeMirror's zero-width widget buffers align to text-top, which at heading
  * sizes pushes the line box 2px past its line-height on every heading.
  */
+/* Reading View balances a wrapped heading; the editor breaks it the same way. */
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header {
+  text-wrap: balance;
+}
+
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-header .cm-widgetBuffer {
   vertical-align: baseline;
 }
@@ -189,7 +195,7 @@ body {
 /* ---- Blockquotes ------------------------------------------------------- */
 
 /*
- * One continuous square-ended rail per level. Live Preview draws the rail one
+ * One continuous round-ended rail per level. Live Preview draws the rail one
  * source line at a time, so each segment overlaps the next by 1px to close the
  * fractional seam between line boxes; the rail colours are opaque, so the
  * overlap does not show. Reading View draws the same shape in one piece.
@@ -211,6 +217,7 @@ body {
   inset-block: 0;
   inset-inline-start: 0;
   width: var(--lg-quote-rail);
+  border-radius: var(--lg-quote-cap);
   background: var(--lg-quote-line);
 }
 
@@ -250,6 +257,88 @@ body {
   .HyperMD-quote
   :nth-child(n + 2 of .cm-blockquote-border)::before {
   background: var(--lg-quote-line-deep);
+}
+
+/*
+ * Core leaves a nested rail wherever its hidden `>` falls, which is the width
+ * of "> " in the text font: 15px in one face, 14px in the next. Pinning each
+ * level to the quote indent puts it where Reading View draws it whatever the
+ * font, and gives the foot mask below a position it can know.
+ */
+.mod-cm6.is-live-preview .HyperMD-quote > .cm-blockquote-border::before {
+  inset-inline-start: var(--lg-quote-indent);
+}
+
+.mod-cm6.is-live-preview
+  .HyperMD-quote
+  > .cm-blockquote-border
+  ~ .cm-blockquote-border::before {
+  inset-inline-start: calc(var(--lg-quote-indent) * 2);
+}
+
+/*
+ * Round ends in the editor. A rail starts on a line whose previous sibling is
+ * not as deep, which the adjacent-sibling combinator can see, so the top cap
+ * is a plain radius on that segment.
+ */
+.mod-cm6.is-live-preview
+  :is(:not(.HyperMD-quote) + .HyperMD-quote, .HyperMD-quote:first-child)::before,
+.mod-cm6.is-live-preview
+  :is(:is(:not(.HyperMD-quote), .HyperMD-quote-1) + .HyperMD-quote, .HyperMD-quote:first-child)
+  > .cm-blockquote-border::before,
+.mod-cm6.is-live-preview
+  .HyperMD-quote-2
+  + .HyperMD-quote
+  > .cm-blockquote-border
+  ~ .cm-blockquote-border::before {
+  border-radius: var(--lg-quote-cap) var(--lg-quote-cap) 0 0;
+}
+
+/*
+ * The bottom is the other way round: a segment cannot know it is the last
+ * without looking ahead. The line after it can look back, so that line lays a
+ * patch of paper over the foot of each rail that just ended, with a half-disc
+ * masked out of it. The patch also covers the 1px overlap the last segment
+ * left behind. Limited to the root paper, the one surface the patch is known
+ * to match; elsewhere the rail keeps a square foot.
+ */
+.mod-root .is-live-preview .HyperMD-quote + .cm-line:not(.HyperMD-quote)::before,
+.mod-root .is-live-preview :is(.HyperMD-quote-2, .HyperMD-quote-3) + .HyperMD-quote-1::after,
+.mod-root .is-live-preview .HyperMD-quote-3 + .HyperMD-quote-2::after {
+  --lg-quote-foot: radial-gradient(
+    circle at 50% 0,
+    transparent calc(var(--lg-quote-cap) - 0.5px),
+    #000 var(--lg-quote-cap)
+  );
+  content: "";
+  position: absolute;
+  inset-block-start: calc(var(--lg-quote-cap) * -1);
+  inset-inline-start: 0;
+  width: var(--lg-quote-rail);
+  height: calc(var(--lg-quote-cap) + 1px);
+  background: var(--lg-paper-solid);
+  -webkit-mask:
+    var(--lg-quote-foot) 0 0 / var(--lg-quote-rail) 100% no-repeat,
+    var(--lg-quote-foot) var(--lg-quote-indent) 0 / var(--lg-quote-rail) 100% no-repeat,
+    var(--lg-quote-foot) calc(var(--lg-quote-indent) * 2) 0 / var(--lg-quote-rail) 100% no-repeat;
+  pointer-events: none;
+}
+
+.mod-root .is-live-preview .HyperMD-quote-2 + .cm-line:not(.HyperMD-quote)::before,
+.mod-root .is-live-preview .HyperMD-quote-3 + .HyperMD-quote-1::after {
+  width: calc(var(--lg-quote-indent) + var(--lg-quote-rail));
+}
+
+.mod-root .is-live-preview .HyperMD-quote-3 + .cm-line:not(.HyperMD-quote)::before {
+  width: calc(var(--lg-quote-indent) * 2 + var(--lg-quote-rail));
+}
+
+.mod-root .is-live-preview :is(.HyperMD-quote-2, .HyperMD-quote-3) + .HyperMD-quote-1::after {
+  inset-inline-start: var(--lg-quote-indent);
+}
+
+.mod-root .is-live-preview .HyperMD-quote-3 + .HyperMD-quote-2::after {
+  inset-inline-start: calc(var(--lg-quote-indent) * 2);
 }
 
 /* ---- Rules and footnotes ----------------------------------------------- */
@@ -370,7 +459,7 @@ body {
   border-radius: var(--lg-radius-s);
   background: transparent;
   color: var(--text-faint);
-  font-family: var(--font-interface-theme);
+  font-family: var(--font-interface);
   font-size: var(--font-ui-smaller);
   font-weight: 500;
   line-height: 20px;

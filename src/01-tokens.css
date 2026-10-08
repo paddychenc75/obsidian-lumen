@@ -3,14 +3,16 @@
    -------------------------------------------------------------------------- */
 
 :root {
+  /*
+   * Only what holds in both appearances lives here. Anything light and dark
+   * disagree on is declared in .theme-light and .theme-dark below, which sit
+   * on body and would shadow a value given here anyway.
+   */
   --lumen-accent: #0a84ff;
   --lumen-ambient-bleed: 30%;
   --lumen-file-line-width: 40em;
 
   --lg-accent: var(--lumen-accent);
-  --lg-accent-hover: color-mix(in srgb, var(--lg-accent) 78%, #000);
-  --lg-accent-1: color-mix(in srgb, var(--lg-accent) 68%, #fff);
-  --lg-accent-2: color-mix(in srgb, var(--lg-accent) 62%, #000);
 
   /*
    * One focus language for the whole theme. Every :focus-visible rule composes
@@ -26,46 +28,12 @@
 
   --lg-glass-blur: 24px;
   --lg-glass-saturate: 112%;
-  --lg-glass-fill: color-mix(in srgb, var(--lg-wallpaper-fallback) var(--lumen-ambient-bleed), rgba(255, 255, 255, 0.22));
-  --lg-glass-border: rgba(255, 255, 255, 0.22);
-  --lg-glass-luma: rgba(255, 255, 255, 0.28);
-  --lg-glass-hover: rgba(0, 0, 0, 0.07);
-  --lg-glass-selected: rgba(0, 0, 0, 0.16);
-  --lg-selected-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 -0.5px 0 rgba(255, 255, 255, 0.28);
-  --lg-sidebar-fill: #dfe9ef;
-  --lg-state-hover: rgba(0, 0, 0, 0.045);
-  --lg-list-active-fill: rgba(0, 0, 0, 0.06);
-  --lg-tab-active-fill: rgba(18, 24, 32, 0.1);
-  --lg-glass-solid: #e8eef2;
-  --lg-overlay-solid: #f7f7f8;
   --lg-glass-highlight: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.22) 0%,
     rgba(255, 255, 255, 0.07) 34%,
     transparent 58%
   );
-  /*
-   * Shadows are stacked rather than single-blur. Real light casts a tight dark
-   * contact shadow where an object nearly touches the surface and a wide faint
-   * one from the room; one blur radius can only be one of those, so it either
-   * looks pasted down or lost in fog. Total darkness is held near the old
-   * single-stop value — the stack buys edge definition, not weight.
-   */
-  --lg-glass-shadow:
-    inset 0 0.5px 0 rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.04),
-    0 4px 14px rgba(0, 0, 0, 0.055);
-  /*
-   * Overlay lift tracks default `--shadow-l` (30px / ~10%), not a 48px fog.
-   * The old third stop (0 20px 48px / 10%) sat under Settings and menus and
-   * muddied the page behind them. Keep a tight contact + a short ambient.
-   */
-  --lg-overlay-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06),
-    0 12px 28px rgba(0, 0, 0, 0.08);
-  --lg-status-fill: rgba(255, 255, 255, 0.16);
-  --lg-status-luma: rgba(255, 255, 255, 0.14);
   --lg-tooltip-bg: rgba(28, 28, 30, 0.88);
   --lg-tooltip-text: #ffffff;
   --lg-tooltip-border: rgba(255, 255, 255, 0.12);
@@ -73,21 +41,6 @@
     0 1px 2px rgba(0, 0, 0, 0.18),
     0 4px 12px rgba(0, 0, 0, 0.16);
   --lg-tooltip-radius: var(--lg-radius-s);
-  --lg-scrollbar-thumb: rgba(60, 60, 67, 0.28);
-  --lg-scrollbar-thumb-hover: rgba(60, 60, 67, 0.46);
-
-  --lg-paper-solid: #fbfbfd;
-  --lg-paper-border: rgba(0, 0, 0, 0.06);
-  --lg-paper-link: #0066cc;
-  --lg-paper-link-hover: #004f9e;
-
-  --lg-text-on-glass: #1c1c1e;
-  --lg-text-on-glass-2: rgba(28, 28, 30, 0.76);
-
-  --lg-wallpaper-fallback: #7fa4b8;
-  --lg-wallpaper:
-    radial-gradient(70% 55% at 14% 0%, #e8f2f8 0%, transparent 62%),
-    linear-gradient(168deg, #6a97b4 0%, #d4b888 100%);
 
   --lg-space-1: 4px;
   --lg-space-2: 8px;
@@ -150,40 +103,26 @@
   --lg-table-focus-width: 1px;
   --lg-table-scrollbar-size: 8px;
 
-  --lg-ok: #248a3d;
-  --lg-warn: #b25000;
-  --lg-danger: #d70015;
-  --lg-info: #0071a4;
   --lg-cta: #0068d9;
   --lg-cta-hover: #0058b8;
   --lg-cta-active: #004b9f;
-  /*
-   * Rail colours are mixed against the paper rather than left translucent: the
- * editor draws the rail one source line at a time with a 1px overlap, and
- * stacked alpha would show as a tick at every line.
- *
- * A quote rule is structure, so it has to read as drawn rather than as a
-   * rendering artifact. The ladder also has to stay legible at the second and
-   * third level: fading it to a quarter made nesting read as a broken line
-   * instead of a deeper one.
-   */
-  --lg-quote-line: color-mix(
-    in srgb,
-    color-mix(in srgb, var(--lg-accent) 18%, var(--text-muted)) 80%,
-    var(--lg-paper-solid)
-  );
-  --lg-quote-line-nested: color-mix(
-    in srgb,
-    color-mix(in srgb, var(--lg-accent) 10%, var(--text-muted)) 56%,
-    var(--lg-paper-solid)
-  );
-  --lg-quote-line-deep: color-mix(
-    in srgb,
-    color-mix(in srgb, var(--lg-accent) 6%, var(--text-muted)) 40%,
-    var(--lg-paper-solid)
-  );
+}
 
-  --font-interface-theme: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+/*
+ * Fonts are declared on body, not :root. Core sets all three `--font-*-theme`
+ * variables to a placeholder on body, which shadows anything inherited from
+ * :root, so a stack declared there never reaches the page.
+ *
+ * Rules read `--font-text` / `--font-interface` / `--font-monospace` rather
+ * than these directly: core builds those from the reader's own font setting
+ * first and the theme's stack second, so a font chosen in Appearance still
+ * wins.
+ *
+ * Segoe UI sits ahead of the Han faces so Windows sets Latin in its interface
+ * face rather than in the Latin glyphs bundled with Microsoft YaHei.
+ */
+body {
+  --font-interface-theme: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
   --font-text-theme: var(--font-interface-theme);
   --font-monospace-theme: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
@@ -212,9 +151,21 @@
   --lg-tab-active-fill: rgba(255, 255, 255, 0.86);
   --lg-glass-solid: #f2f3f3;
   --lg-overlay-solid: #ffffff;
+  /*
+   * Shadows are stacked rather than single-blur. Real light casts a tight dark
+   * contact shadow where an object nearly touches the surface and a wide faint
+   * one from the room; one blur radius can only be one of those, so it either
+   * looks pasted down or lost in fog. Total darkness is held near the old
+   * single-stop value — the stack buys edge definition, not weight.
+   */
   --lg-glass-shadow:
     inset 0 0.5px 0 rgba(255, 255, 255, 0.62),
     0 1px 2px rgba(0, 0, 0, 0.035);
+  /*
+   * Overlay lift tracks default `--shadow-l` (30px / ~10%), not a 48px fog.
+   * The old third stop (0 20px 48px / 10%) sat under Settings and menus and
+   * muddied the page behind them. Keep a tight contact + a short ambient.
+   */
   --lg-overlay-shadow:
     0 1px 2px rgba(0, 0, 0, 0.035),
     0 8px 24px rgba(0, 0, 0, 0.07);
@@ -251,6 +202,16 @@
     transparent
   );
   --lg-table-control-surface: #fafafa;
+  /*
+   * Rail colours are mixed against the paper rather than left translucent: the
+ * editor draws the rail one source line at a time with a 1px overlap, and
+ * stacked alpha would show as a tick at every line.
+ *
+ * A quote rule is structure, so it has to read as drawn rather than as a
+   * rendering artifact. The ladder also has to stay legible at the second and
+   * third level: fading it to a quarter made nesting read as a broken line
+   * instead of a deeper one.
+   */
   --lg-quote-line: #303033;
   --lg-quote-line-nested: color-mix(in srgb, #262628 44%, var(--lg-paper-solid));
   --lg-quote-line-deep: color-mix(in srgb, #262628 28%, var(--lg-paper-solid));

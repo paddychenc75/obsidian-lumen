@@ -117,7 +117,7 @@ function checkRadiusScale(css) {
   const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
   const offScale = new Set();
 
-  for (const match of withoutComments.matchAll(/border(?:-[a-z-]+)?-radius: *([^;]+);/g)) {
+  for (const match of withoutComments.matchAll(/border(?:-[a-z-]+)?-radius: *([^;}]+)[;}]/g)) {
     const value = match[1].trim();
     if (value.includes("var(") || value.includes("calc(")) continue;
     for (const part of value.split(/\s+/)) {

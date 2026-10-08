@@ -26,14 +26,14 @@
   border-bottom: 1px solid var(--lg-paper-border);
 }
 
-.mod-root .view-header-title,
-.mod-root .inline-title {
+.mod-root .view-header-title {
   color: var(--text-normal);
 }
 
 .mod-root .inline-title {
   margin-bottom: var(--lg-space-8);
-  font-family: var(--font-text-theme);
+  color: var(--inline-title-color);
+  font-family: var(--font-text);
   font-size: var(--lg-inline-title-size);
   font-weight: var(--h1-weight);
   line-height: var(--h1-line-height);

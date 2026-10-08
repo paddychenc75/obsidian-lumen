@@ -48,6 +48,7 @@ body.theme-dark {
   --interactive-normal: #ffffff;
   --interactive-hover: #f3f3f2;
   --blockquote-color: var(--text-normal);
+  --lg-text-heading: color-mix(in srgb, var(--text-normal) 60%, #000);
   --tag-color: var(--lg-paper-link);
   --tag-background: color-mix(in srgb, var(--lg-accent) 10%, var(--background-primary));
   --tag-background-hover: color-mix(in srgb, var(--lg-accent) 16%, var(--background-primary));
@@ -75,7 +76,14 @@ body.theme-dark {
   --background-modifier-error: var(--lg-danger);
   --background-modifier-success: var(--lg-ok);
   --background-modifier-message: #25242d;
-  --text-normal: #ececf1;
+  /*
+   * Body text is held at 12:1 rather than the 14:1 it had. Light glyphs on a
+   * dark page bloom, and over a long read near-white strokes thicken and
+   * shimmer; this is where the stroke stays crisp. Headings take the brighter
+   * ink below, so the step also buys hierarchy. "High-contrast text" in Style
+   * Settings restores pure white for anyone who needs it.
+   */
+  --text-normal: #dedee5;
   --text-muted: #a9a9b3;
   --text-faint: #85858f;
   --text-on-accent: #ffffff;
@@ -83,6 +91,12 @@ body.theme-dark {
   --text-success: var(--lg-ok);
   --text-selection: color-mix(in srgb, var(--lg-accent) 34%, transparent);
   --text-highlight-bg: var(--lg-mark-bg);
+  /*
+   * A quote is quieter than the prose around it, but it is still read at
+   * length. Muted grey dropped a long passage to caption contrast.
+   */
+  --blockquote-color: color-mix(in srgb, var(--text-normal) 82%, var(--lg-paper-solid));
+  --lg-text-heading: color-mix(in srgb, var(--text-normal) 50%, #fff);
   --interactive-normal: #2c2a3a;
   --interactive-hover: #3a374c;
   --color-red: var(--lg-danger);
@@ -203,6 +217,17 @@ body {
   --h5-letter-spacing: var(--lg-tracking-h5);
   --h6-letter-spacing: var(--lg-tracking-h6);
   --h6-color: var(--text-muted);
+  /*
+   * Headings sit one step further from the paper than body text, in both
+   * appearances. Mixed from --text-normal so the step survives the contrast
+   * toggles, which move that variable.
+   */
+  --h1-color: var(--lg-text-heading);
+  --h2-color: var(--lg-text-heading);
+  --h3-color: var(--lg-text-heading);
+  --h4-color: var(--lg-text-heading);
+  --h5-color: var(--lg-text-heading);
+  --inline-title-color: var(--lg-text-heading);
   /*
    * Both measured in the reader's own body size rather than in px or rem, so the
    * line keeps its character count and the paragraph keeps its gap when the font

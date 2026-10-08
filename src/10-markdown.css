@@ -4,11 +4,49 @@
 
 .markdown-rendered,
 .markdown-source-view.mod-cm6 .cm-content {
-  font-family: var(--font-text-theme);
+  font-family: var(--font-text);
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
   font-kerning: normal;
   font-variant-ligatures: common-ligatures;
   font-synthesis-style: none;
+}
+
+/*
+ * Han type has no italic. The page above turns style synthesis off, so the
+ * system face is never mechanically slanted, which left `*强调*` looking
+ * exactly like the text around it. Chinese typesetting marks emphasis by
+ * switching to Kai, the way Latin switches to italic, so emphasis asks for a
+ * Kai face first. The unicode-range keeps it to Han and its punctuation: Latin
+ * in the same run falls through to the text font's true italic.
+ *
+ * Declared italic so that it satisfies the request as it stands. Where no Kai
+ * is installed the face is skipped and synthesis, re-enabled on emphasis only,
+ * slants the text font instead — the plain browser behaviour, and still a
+ * visible signal.
+ */
+@font-face {
+  font-family: "Lumen Han Emphasis";
+  font-style: italic;
+  font-weight: 100 500;
+  src: local("Kaiti SC"), local("STKaiti"), local("KaiTi"), local("DFKai-SB");
+  size-adjust: 106%;
+  unicode-range: U+3000-303F, U+3400-9FFF, U+FF00-FFEF, U+20000-2FA1F;
+}
+
+/* Kai is drawn small and light in its em; 106% brings it level with the text face. */
+@font-face {
+  font-family: "Lumen Han Emphasis";
+  font-style: italic;
+  font-weight: 600 900;
+  src: local("Kaiti SC Bold"), local("STKaitiSC-Bold"), local("Kaiti SC"), local("STKaiti"), local("KaiTi"), local("DFKai-SB");
+  size-adjust: 106%;
+  unicode-range: U+3000-303F, U+3400-9FFF, U+FF00-FFEF, U+20000-2FA1F;
+}
+
+.markdown-rendered :is(em, i),
+.markdown-source-view.mod-cm6 .cm-content .cm-em {
+  font-family: "Lumen Han Emphasis", var(--font-text);
+  font-synthesis-style: auto;
 }
 
 .markdown-rendered {
@@ -35,7 +73,7 @@
  * survives; a `color` here would win on source order and re-normalise it.
  */
 .markdown-rendered :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--font-text-theme);
+  font-family: var(--font-text);
   font-synthesis-weight: none;
   text-wrap: balance;
 }
@@ -73,7 +111,7 @@
   background: var(--background-primary-alt);
   color: var(--text-normal);
   box-shadow: 0 1px 0 color-mix(in srgb, var(--text-normal) 10%, transparent);
-  font-family: var(--font-interface-theme);
+  font-family: var(--font-interface);
   font-size: 0.78em;
   line-height: 1;
   vertical-align: 0.08em;
@@ -284,7 +322,7 @@
 }
 
 body {
-  --font-mermaid: var(--font-interface-theme);
+  --font-mermaid: var(--font-interface);
   --code-keyword: var(--lg-syn-keyword);
   --code-tag: var(--lg-syn-tag);
   --code-string: var(--lg-syn-string);
@@ -370,7 +408,7 @@ body.image-captions-enabled .image-embed::after {
   display: block;
   margin-top: var(--lg-space-2);
   color: var(--text-muted);
-  font-family: var(--font-interface-theme);
+  font-family: var(--font-interface);
   font-size: 13px;
   line-height: 1.5;
   text-align: center;

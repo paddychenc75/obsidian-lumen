@@ -26,7 +26,9 @@ function sources() {
  *
  * Indentation and blank lines go the same way: 1.2.0 drew that warning again
  * at 111 KB while 1.1.1 at 103 KB had not. Each declaration keeps its own
- * line, so the directory's lint still reports usable line numbers.
+ * line, so the directory's lint still reports usable line numbers; selector
+ * lists and multi-line values are joined, the last declaration loses its
+ * semicolon, and decimals lose their leading zero.
  */
 function stripAuthorComments(css) {
   const kept = [];
@@ -42,7 +44,10 @@ function stripAuthorComments(css) {
     .replace(/\n{2,}/g, "\n")
     .replace(/^(-{0,2}[a-z][a-z0-9-]*): /gm, "$1:")
     .replace(/ \{$/gm, "{")
-    .replace(/^[^"'\n]*$/gm, (line) => line.replace(/, /g, ","))
+    .replace(/^[^"'\n]*$/gm, (line) => line.replace(/, /g, ",").replace(/(?<![\w.#])0\.(?=\d)/g, "."))
+    .replace(/([,(])\n/g, "$1")
+    .replace(/\n\)/g, ")")
+    .replace(/;\n}/g, "}")
     .replace(/^\n+/, "")
     .replace(/\n+$/, "\n")
     .replace(/\u0000K(\d+)\u0000/g, (match, index) => `${kept[Number(index)]}\n`);

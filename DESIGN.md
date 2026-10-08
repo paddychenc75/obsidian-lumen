@@ -60,6 +60,8 @@ The in-document Properties block carries a similar debt, this time introduced by
 
 ## Type Scale
 
+Font stacks are declared on `body`, not `:root`: core sets `--font-text-theme`, `--font-interface-theme`, and `--font-monospace-theme` to a placeholder on `body`, which shadows anything inherited from `:root`. Rules read core's `--font-text`, `--font-interface`, and `--font-monospace`, never the `-theme` variables directly, so a font chosen in Settings → Appearance still comes first.
+
 Headings use `em` throughout so they follow the body size selected in Style Settings instead of locking to the root size.
 
 | Level | Size | Weight | Line height | Tracking |
@@ -91,6 +93,8 @@ Typographic convention calls for a sliver of space where Han characters meet Lat
 
 This is **additive, not corrective**. In Chromium 142, a boundary that already contains a manually typed space receives no additional width (delta 0), while a missing space gains 4.25px. Vaults that consistently type spaces see no change, and omissions remain readable.
 
+Han type has no italic, and the note turns style synthesis off so the system face is never mechanically slanted. Emphasis therefore asks for a Kai face first, the convention Chinese typesetting uses where Latin uses italic. `Lumen Han Emphasis` is a `local()`-only `@font-face` limited by `unicode-range` to Han and its punctuation, so Latin in the same run falls through to the text font's true italic. It is declared italic, in a regular and a bold face, at `size-adjust: 106%` because Kai is drawn small in its em. Where no Kai is installed the face is skipped and synthesis, re-enabled on emphasis only, slants the text font.
+
 Do not declare punctuation compression with `text-spacing-trim`: Chromium already measures as `normal`, so the declaration would be a no-op.
 
 ## Code Palette
@@ -117,7 +121,7 @@ The canvas does not float. A one-pixel structural line, top highlight, and sligh
 
 Mermaid injects a random ID selector into its SVG and hardcodes a light palette. Obsidian's dark mode normally applies `invert + hue-rotate` to the entire SVG. That makes it darker but cannot preserve semantic colours, text contrast, or author-defined colours. The theme disables the whole-image filter and directly overrides default nodes, connectors, and labels. The override uses `:is(#lumen-mermaid-theme, .mermaid)`: the nonexistent ID only raises specificity above generated rules, while `.mermaid` performs the actual match. No `!important` is required, and author declarations in `classDef` or inline `style` still win.
 
-Regression coverage includes five DOM families: flowchart, sequence, state, class, and ER. Their node labels and connector class names differ, so a single flowchart is not enough to validate the palette. All diagrams use `--font-interface-theme` to prevent Mermaid's bundled font from falling back to a different face in Chinese environments.
+Regression coverage includes five DOM families: flowchart, sequence, state, class, and ER. Their node labels and connector class names differ, so a single flowchart is not enough to validate the palette. All diagrams use `--font-interface` to prevent Mermaid's bundled font from falling back to a different face in Chinese environments.
 
 Interaction does not belong in the theme. The separate Lumen Stage plugin (`lumen-stage`) provides panning, `Ctrl`/`Cmd` + wheel zoom, fit-to-canvas, reset, and fullscreen; ordinary wheel input still scrolls the note. The plugin is not coupled to this theme and works with any theme; Lumen Glass only skins its `.lmm-*` classes. Once installed, the figure contracts to the body content width (`100%` border-box) and no longer borrows 4rem from each side. Controls reuse the code block's quiet title band: a 36px toolbar, text flair, low contrast at rest, and state fill on hover. The canvas sits flush with the content area, with no graph paper and no glass toolbar floating above it. Fullscreen uses the same light scrim as a modal and keeps the same figure in the centre rather than introducing a second canvas skin. Readers without the plugin see only the static figure described above.
 
@@ -135,15 +139,19 @@ The theme defines no keyframe animations, so there is no third tier. Do not rese
 - Light-paper links: `#0058B0` (exceeds 4.5:1)
 - Dark-paper links: `#70B8FF`
 - Light paper: `#FFFFFF`; body text: `#262628`
-- Dark paper: `#1C1A28`; body text: `#F5F5F7`
+- Dark paper: `#1E1D25`; body text: `#DEDEE5` (12:1). Near-white strokes bloom on a dark page over a long read, so body text stops short of it; `High-contrast text` restores white.
+- Headings and the inline title are mixed from `--text-normal`, 60% toward black in light and 50% toward white in dark, so they sit one step further from the paper than body text and follow the contrast toggles.
+- Dark blockquote text is body colour mixed 82% over the paper: quieter than prose, but not caption grey.
 - Light sidebar glass: `#F1F2F2`; dark sidebar glass: `#2B2742`
 - Light glass uses neutral dark text (`#2A2A2C`); dark glass uses white text. Light selection is a flat neutral-grey capsule with only a hairline inset edge, while dark selection keeps the deeper inset treatment.
 
 The violet sidebar in dark mode (`#2B2742`) and neutral paper (`#1C1C1E`) are not palette drift. Glass reveals the violet wallpaper beneath it, while paper is opaque. Their different temperatures are a consequence of layering and should not be "unified."
 
-Quote rails are 4px neutral capsules: solid `#303033` at the first level, 44% when nested, and 28% at the third level. The dark first rail gives introductory prose a stable editorial anchor, while the descending neutral ladder preserves nesting without introducing another accent colour.
+Quote rails are 4px neutral, round-ended capsules: solid `#303033` at the first level, 44% when nested, and 28% at the third level. The dark first rail gives introductory prose a stable editorial anchor, while the descending neutral ladder preserves nesting without introducing another accent colour.
 
-Each level is one continuous, square-ended 4px rail. Reading View draws it in one piece. Live Preview draws it one source line at a time, with each segment overlapping the next by 1px to close the seam between line boxes. Rail colours are mixed against the paper instead of being translucent, so the overlap cannot show as a tick. A nested rail sits at its parent's text edge in both views.
+Each level is one continuous, round-ended 4px rail. Reading View draws it in one piece. Live Preview draws it one source line at a time, with each segment overlapping the next by 1px to close the seam between line boxes. Rail colours are mixed against the paper instead of being translucent, so the overlap cannot show as a tick. A nested rail sits at its parent's text edge in both views; in Live Preview core would place it at the width of `> ` in the text font, so each level is pinned to `--lg-quote-indent` instead.
+
+The round ends in Live Preview are built without `:has()`. The top cap is a radius on the first segment, which the adjacent-sibling combinator can find. The last segment cannot know it is last, so the line after it lays a paper-coloured patch over the foot of each rail that just ended, with a half-disc masked out. The patch is limited to the root paper, the one surface whose colour it is known to match; in a sidebar or popover editor the foot stays square.
 
 ## Reading View and Live Preview
 

@@ -6,6 +6,21 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Dark body text is `#dedee5` (12:1 on the paper) instead of `#ececf1` (14:1), which keeps strokes crisp over a long read. Headings and the inline title take a brighter ink in dark and a darker one in light, so they sit one step further from the paper than the text. `High-contrast text` still restores pure white and near-black.
+- Dark blockquote text is a softened body colour rather than muted grey.
+- Emphasis in Han text is set in Kai (`Kaiti SC`, `KaiTi`) where one is installed, with a true bold for bold emphasis, and falls back to a slanted text face where none is. Latin in the same run keeps the text font's real italic.
+- Blockquote rails have round ends in both views. In Live Preview nested rails are pinned to the quote indent, so they sit where Reading View draws them whatever the text font.
+- A wrapped heading is balanced in Live Preview as it is in Reading View.
+- The published `theme.css` also joins selector lists and multi-line values and drops leading zeros and the last semicolon of each rule.
+
+### Fixed
+
+- The theme's font stacks never applied. They were declared on `:root`, where core's own placeholder on `body` shadowed them, so notes fell back to the browser's default face and emphasis showed no italic at all. They are now declared on `body`.
+- A text, interface, or monospace font chosen in Settings → Appearance was ignored inside notes. Note text, headings, the inline title, keys, captions, and diagram labels now read core's `--font-text` and `--font-interface`.
+- Windows set Latin text in the Latin glyphs of Microsoft YaHei; `Segoe UI` now comes first.
+
 ## [1.2.1] - 2026-10-07
 
 ### Changed
