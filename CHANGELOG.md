@@ -6,6 +6,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-08
+
 ### Changed
 
 - Dark body text is `#dedee5` (12:1 on the paper) instead of `#ececf1` (14:1), which keeps strokes crisp over a long read. Headings and the inline title take a brighter ink in dark and a darker one in light, so they sit one step further from the paper than the text. `High-contrast text` still restores pure white and near-black.
