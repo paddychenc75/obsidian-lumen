@@ -6,6 +6,14 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- The copy button on a code block in Reading View is always visible, as the language label is in Live Preview, instead of appearing on hover.
+
+### Fixed
+
+- The copy button on a code block drew the border, fill, and shadow of a form button, because the control styles outranked the rule meant to keep it flat. It is now as flat as the Live Preview language label.
+
 ## [1.3.0] - 2026-10-08
 
 ### Changed

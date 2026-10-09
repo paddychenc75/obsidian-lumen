@@ -2201,6 +2201,18 @@ line-height:20px}
 .markdown-source-view.mod-cm6.is-live-preview .code-block-flair:hover,.markdown-rendered pre > .copy-code-button:hover{
 background:var(--lg-state-hover);
 color:var(--text-normal)}
+.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive){
+border:0;
+background:transparent;
+box-shadow:none;
+color:var(--text-faint)}
+.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover{
+background:var(--lg-state-hover);
+color:var(--text-normal)}
+@media screen{
+.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive){
+display:inline-flex}
+}
 .markdown-rendered .callout,.markdown-rendered pre,.markdown-rendered .markdown-embed,.markdown-rendered .internal-query,.markdown-rendered details{
 margin-block:0 var(--p-spacing)}
 .markdown-rendered .callout-content > :last-child,.markdown-rendered .markdown-embed .markdown-preview-view > :last-child{

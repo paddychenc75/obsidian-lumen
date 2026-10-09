@@ -471,6 +471,30 @@ body {
   color: var(--text-normal);
 }
 
+/*
+ * The copy button is a <button>, so the control chrome in 13-controls outranks
+ * the rule above. Repeating that chrome's :not() chain matches its weight, and
+ * coming later in the file settles the tie.
+ */
+.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-faint);
+}
+
+.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover {
+  background: var(--lg-state-hover);
+  color: var(--text-normal);
+}
+
+/* The language label is always on screen, so the copy button is too. */
+@media screen {
+  .markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
+    display: inline-flex;
+  }
+}
+
 /* ---- Block cards -------------------------------------------------------- */
 
 /*
