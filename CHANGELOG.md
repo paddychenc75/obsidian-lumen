@@ -6,6 +6,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-10
+
 ### Added
 
 - Menus, hover previews, suggestions, and notices fade in with a short drop; modals and the command palette rise in while the backdrop fades. Desktop only, and switched off by `prefers-reduced-motion`.
