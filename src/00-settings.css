@@ -123,6 +123,12 @@ settings:
         type: class-toggle
         default: false
     -
+        id: lumen-reduce-motion
+        title: Reduce motion
+        description: Turns off the theme's fades, entrances, and press effects. The system setting does the same.
+        type: class-toggle
+        default: false
+    -
         id: lumen-increase-contrast
         title: Increase contrast
         type: class-toggle

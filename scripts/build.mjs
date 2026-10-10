@@ -20,16 +20,53 @@ function sources() {
  * "larger than recommended" warning, and they are not needed at install time.
  *
  * Indentation and blank lines go the same way: 1.2.0 drew that warning again
- * at 111 KB while 1.1.1 at 103 KB had not. Each declaration keeps its own
- * line, so the directory's lint still reports usable line numbers; selector
- * lists and multi-line values are joined, the last declaration loses its
- * semicolon, and decimals lose their leading zero.
+ * at 111 KB while 1.1.1 at 103 KB had not. Each rule keeps its own line, so
+ * the directory's lint still reports a line number that names one rule;
+ * declarations, selector lists, and multi-line values are joined, the last
+ * declaration loses its semicolon, and decimals lose their leading zero.
+ * Declarations had a line each until 1.4.0, which cost a byte apiece — about
+ * 1.9 KB — for a line number finer than anyone had needed.
  *
  * Selectors lose the spaces around `>`, `+`, and `~`, at-rule conditions the
  * space after their colon, and a colour like #aabbcc is written #abc. The
  * Style Settings block is YAML, where only the relative depth of the
  * indentation carries meaning, so each four-space level becomes one space.
+ *
+ * `body.theme-light X, body.theme-dark X` is how the source outranks a core
+ * rule written against one appearance class. `body:is(.theme-light,
+ * .theme-dark) X` matches the same elements with the same specificity and
+ * spells X once.
  */
+function splitSelectors(list) {
+  const parts = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < list.length; i++) {
+    if (list[i] === "(") depth++;
+    else if (list[i] === ")") depth--;
+    else if (list[i] === "," && depth === 0) {
+      parts.push(list.slice(start, i));
+      start = i + 1;
+    }
+  }
+  parts.push(list.slice(start));
+  return parts;
+}
+
+function foldAppearancePairs(line) {
+  if (line.startsWith("@") || !line.includes("body.theme-light ")) return line;
+  const parts = splitSelectors(line.slice(0, -1));
+  const dark = new Set(parts.filter((part) => part.startsWith("body.theme-dark ")).map((part) => part.slice(15)));
+  const folded = [];
+  for (const part of parts) {
+    const rest = part.startsWith("body.theme-light ") ? part.slice(16) : null;
+    if (rest !== null && dark.has(rest)) folded.push(`body:is(.theme-light,.theme-dark)${rest}`);
+    else if (part.startsWith("body.theme-dark ") && parts.includes(`body.theme-light${part.slice(15)}`)) continue;
+    else folded.push(part);
+  }
+  return `${folded.join(",")}{`;
+}
+
 function tightenSelector(line) {
   if (line.startsWith("@")) return line.replace(/: /g, ":");
   return line.replace(/ ([>+~]) /g, "$1").replace(/^([>+~]) /, "$1");
@@ -58,8 +95,11 @@ function stripAuthorComments(css) {
     .replace(/\n\)/g, ")")
     .replace(/;\n}/g, "}")
     .replace(/^.*\{$/gm, tightenSelector)
+    .replace(/^.*\{$/gm, foldAppearancePairs)
     .replace(/^[>+~] .*$/gm, tightenSelector)
     .replace(/^[^"'\n]*$/gm, (line) => line.replace(/#([\da-f])\1([\da-f])\2([\da-f])\3(?![\da-f])/gi, "#$1$2$3"))
+    .replace(/;\n/g, ";")
+    .replace(/^([^@\n]*\{)\n/gm, "$1")
     .replace(/^\n+/, "")
     .replace(/\n+$/, "\n")
     .replace(/\u0000K(\d+)\u0000/g, (match, index) => `${kept[Number(index)]}\n`);

@@ -32,8 +32,21 @@ body.mod-macos.is-hidden-frameless.is-popout-modal:not(.lumen-chrome-flush) {
   --lg-chrome-frame: var(--lg-space-1);
 }
 
+/*
+ * A scrollbar is drawn only while the pointer is over its scroller, or over
+ * anything inside it. Left on, the thumb of a long file tree is a grey bar
+ * down the whole edge of a panel that is otherwise glass. The space stays
+ * reserved, so nothing shifts when it appears.
+ *
+ * Both dialects are kept: a current Electron reads the standard properties and
+ * then ignores ::-webkit-scrollbar, while an old installer knows only that.
+ */
 body * {
   scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+body *:hover {
   scrollbar-color: var(--lg-scrollbar-thumb) transparent;
 }
 
@@ -53,8 +66,12 @@ body *::-webkit-scrollbar-thumb {
   min-height: 40px;
   border: 3px solid transparent;
   border-radius: var(--lg-radius-pill);
-  background-color: var(--lg-scrollbar-thumb);
+  background-color: transparent;
   background-clip: padding-box;
+}
+
+body *:hover::-webkit-scrollbar-thumb {
+  background-color: var(--lg-scrollbar-thumb);
 }
 
 body *::-webkit-scrollbar-thumb:hover {

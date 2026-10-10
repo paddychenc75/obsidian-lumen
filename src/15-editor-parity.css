@@ -161,6 +161,18 @@ body {
   margin-block-end: 0;
 }
 
+/*
+ * The editor sets a bullet's text one "- " in, and a hyphen and a space are
+ * 7px narrower than the "1. " of a numbered item, so bulleted text started 7px
+ * left of both numbered text and of the same list in Reading View, and a long
+ * item wrapped at a different word in each view. Widening the space after the
+ * hyphen closes it; core measures the marker to set the hanging indent, so
+ * wrapped lines follow.
+ */
+.markdown-source-view.mod-cm6 .cm-formatting-list-ul {
+  word-spacing: 0.425em;
+}
+
 /* ---- Tasks ------------------------------------------------------------- */
 
 .markdown-rendered .task-list-item-checkbox,
@@ -174,6 +186,34 @@ body {
 .markdown-rendered .task-list-item-checkbox {
   margin-inline: -20px 9px;
   transform: translateY(2px);
+}
+
+/*
+ * Core fills every state but the empty one the same way, so a task in progress
+ * and a cancelled one were both a blue tick. In progress is half full and
+ * cancelled is grey; done keeps the tick. The state is on the checkbox in the
+ * editor and on its list item in Reading View, hence the three forms.
+ */
+input.task-list-item-checkbox:is([data-task="/"], [data-task="/"] > *, [data-task="/"] > p > *) {
+  background: linear-gradient(90deg, var(--checkbox-color) 50%, transparent 0);
+}
+
+input.task-list-item-checkbox:is([data-task="/"], [data-task="/"] > *, [data-task="/"] > p > *)::after {
+  display: none;
+}
+
+input.task-list-item-checkbox:is([data-task="-"], [data-task="-"] > *, [data-task="-"] > p > *) {
+  border-color: var(--text-faint);
+  background-color: var(--text-faint);
+}
+
+/* The box is 16px, where the 3% press of a button would be half a pixel. */
+.task-list-item-checkbox {
+  transition: scale var(--lg-duration-fast) var(--lg-ease);
+}
+
+.task-list-item-checkbox:active {
+  scale: 0.86;
 }
 
 /*

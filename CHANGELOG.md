@@ -6,6 +6,26 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Switching tabs fades the incoming view in, and a note rises 4px as it does; the same applies to sidebar tab groups and to the switch between Reading View and the editor. The active tab's pill slides to the tab being selected instead of jumping, and the labels cross-fade. Desktop only, and switched off by `prefers-reduced-motion`.
+- Guides in the file tree: a faint line runs down from each open folder's glyph while the pointer is in the tree.
+- A task marked `[/]` shows a half-filled box and one marked `[-]` a grey one, in both views. Both used to be the same blue tick as a finished task.
+- Task checkboxes compress slightly while pressed.
+- `Reduce motion` setting, which turns the theme's fades, entrances, and press effects off without changing the system setting.
+
+### Changed
+
+- The file tree no longer draws a disclosure arrow beside each folder. The folder glyph is already open or closed and the whole row toggles it, so the glyph now leads the row and every name gains 20px. Other panes keep their arrows.
+- Rows in menus, suggestion lists, the command palette, and every sidebar tree highlight at once and fade out over 120ms. The highlight used to fade in, over 180ms outside the file tree, and trailed behind the arrow keys.
+- Scrollbars are drawn only while the pointer is over the area they scroll, so a long file tree no longer carries a grey bar down the edge of its panel. Their space stays reserved.
+- The published `theme.css` puts each rule on one line instead of each declaration, and writes `body.theme-light X, body.theme-dark X` as `body:is(.theme-light, .theme-dark) X`. That takes about 2.5 KB off the file.
+
+### Fixed
+
+- Bulleted text in Live Preview started 7px left of numbered text and of the same list in Reading View, so a long item wrapped at a different word in each view. Bulleted, numbered, and task text now share one column in both.
+- Tabs in the main area sat at their 120px minimum however much room the strip had, cutting titles to a few characters. A tab is now 160px wide and shrinks only when the strip is full.
+
 ## [1.4.0] - 2026-10-10
 
 ### Added

@@ -66,7 +66,7 @@ Install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) to
 - Specular highlight visibility
 - Tree indent in the outline, tag, bookmark, and link panes
 - Note width and neutral or high-contrast reading surfaces
-- Reduced transparency and increased contrast overrides
+- Reduced transparency, reduced motion, and increased contrast overrides
 - Accent color
 
 Lumen Glass also follows the matching accessibility preferences provided by your operating system.

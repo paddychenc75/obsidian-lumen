@@ -8,7 +8,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-inline: contain;
-  scrollbar-color: var(--lg-scrollbar-thumb) transparent;
 }
 
 .markdown-preview-view .el-table::-webkit-scrollbar,
@@ -113,7 +112,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-inline: contain;
-  scrollbar-color: var(--lg-scrollbar-thumb) transparent;
 }
 
 .markdown-source-view.mod-cm6 .cm-table-widget .table-wrapper {

@@ -353,11 +353,6 @@ body.lumen-increase-contrast .prompt {
 }
 
 .workspace-tab-header,
-.nav-file-title,
-.nav-folder-title,
-.tree-item-self,
-.suggestion-item,
-.menu-item,
 .side-dock-ribbon-action,
 button.mod-cta {
   transition:
@@ -366,6 +361,34 @@ button.mod-cta {
     color var(--lg-duration) var(--lg-ease),
     box-shadow var(--lg-duration) var(--lg-ease),
     transform var(--lg-duration-fast) var(--lg-ease);
+}
+
+/*
+ * Rows in a list change state in place, so they take the fast tier in every
+ * pane. The highlight arrives at once and only its departure is eased: a fill
+ * that fades in trails behind the arrow keys in the palette and behind the
+ * pointer in a long tree, and reads as lag.
+ */
+.nav-file-title,
+.nav-folder-title,
+.tree-item-self,
+.suggestion-item,
+.menu-item {
+  transition:
+    background-color var(--lg-duration-fast) var(--lg-ease),
+    color var(--lg-duration-fast) var(--lg-ease),
+    box-shadow var(--lg-duration-fast) var(--lg-ease);
+}
+
+:is(.nav-file-title, .nav-folder-title, .tree-item-self, .suggestion-item, .menu-item):is(:hover, .is-selected, .selected) {
+  transition-duration: 0s;
+}
+
+body.lumen-reduce-motion {
+  --lg-duration-fast: 0ms;
+  --lg-duration: 0ms;
+  --lg-duration-enter: 0ms;
+  --lg-press-scale: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

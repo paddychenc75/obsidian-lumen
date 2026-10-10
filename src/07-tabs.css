@@ -38,8 +38,15 @@ body.theme-dark .workspace-split.mod-root .workspace-tab-header-container-inner 
 body.theme-light .workspace-split.mod-root .workspace-tab-header,
 body.theme-dark .workspace-split.mod-root .workspace-tab-header {
   position: relative;
-  flex: 1 1 160px;
-  width: auto;
+  /*
+   * The width is a width, not a flex-basis. The strip is only as wide as its
+   * tabs ask for, and a tab that can grow and shrink asks for the size of its
+   * content — which, the label being free to clip, is the 120px minimum. With
+   * a basis of 160px every tab then shrank to fit a strip sized for 120px
+   * tabs, and labels were cut to five characters beside an empty bar.
+   */
+  flex: 0 1 auto;
+  width: 160px;
   min-width: 120px;
   max-width: 240px;
   height: 38px;
@@ -182,4 +189,98 @@ body.theme-dark .workspace-split.mod-root .workspace-tab-header-inner-close-butt
 .workspace-split.mod-root .workspace-tab-header-new-tab svg {
   width: 14px;
   height: 14px;
+}
+
+/*
+ * Switching tabs. The pill and its label are what change state, and neither
+ * carried a transition — the one on .workspace-tab-header covers a box that is
+ * transparent here — so the selection used to jump from tab to tab.
+ */
+.workspace-split.mod-root .workspace-tab-header-inner {
+  transition:
+    background-color var(--lg-duration) var(--lg-ease),
+    box-shadow var(--lg-duration) var(--lg-ease);
+}
+
+.workspace-split.mod-root .workspace-tab-header-inner-title {
+  transition: color var(--lg-duration) var(--lg-ease);
+}
+
+/*
+ * Where anchors can be scoped, the selection is one pill that travels. The
+ * active tab stops painting its own fill and names itself as an anchor; the
+ * strip draws the fill instead, sized and placed from that anchor, and since
+ * an anchor resolves to plain lengths the move to the next tab transitions
+ * like any other change of left and width. anchor-scope keeps each strip to
+ * its own tabs when the workspace is split. Anywhere else the cross-fade above
+ * is what remains. The strip scrolls, and the pill is inside it, so it stays
+ * on its tab when a long row of tabs is scrolled.
+ */
+@supports (anchor-scope: --lg-tab) {
+  .workspace-split.mod-root .workspace-tab-header-container-inner {
+    position: relative;
+    anchor-scope: --lg-tab;
+  }
+
+  body.theme-light .workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner,
+  body.theme-dark .workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner {
+    anchor-name: --lg-tab;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .workspace-split.mod-root .workspace-tab-header-container-inner:has(.workspace-tab-header.is-active)::before {
+    content: "";
+    position: absolute;
+    position-anchor: --lg-tab;
+    top: anchor(top);
+    left: anchor(left);
+    width: anchor-size(width);
+    height: anchor-size(height);
+    border-radius: var(--lg-radius-m);
+    background: var(--lg-tab-active-fill);
+    box-shadow: var(--lg-selected-shadow);
+    pointer-events: none;
+    transition:
+      left var(--lg-duration-enter) var(--lg-ease),
+      width var(--lg-duration-enter) var(--lg-ease);
+  }
+}
+
+/*
+ * Core shows one leaf of a tab group and sets the rest to display: none, and an
+ * animation starts over whenever its element is rendered again, so the content
+ * of the tab being switched to fades in with no script involved. It is the
+ * children of .view-content that move, not the leaf: the paper stays put and
+ * only what is printed on it arrives, where fading the leaf would flash the
+ * wallpaper through the page. The same rule covers the sidebars' tab groups
+ * and the switch between Reading View and the editor. Stacked tabs show every
+ * leaf at once and are left alone.
+ *
+ * A note also rises a few pixels. Other views only fade, since a canvas, a
+ * graph, or a plugin's view may be placed with a transform of its own.
+ */
+@keyframes lg-enter-view {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lg-enter-note {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+body:not(.is-mobile) .workspace-tabs:not(.mod-stacked) .workspace-leaf-content > .view-content > * {
+  animation: lg-enter-view var(--lg-duration) var(--lg-ease);
+}
+
+body:not(.is-mobile)
+  .workspace-tabs:not(.mod-stacked)
+  .workspace-leaf-content
+  > .view-content
+  > :is(.markdown-source-view, .markdown-reading-view) {
+  animation-name: lg-enter-note;
 }
