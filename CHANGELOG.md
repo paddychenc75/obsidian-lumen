@@ -6,6 +6,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-10
+
 ### Added
 
 - Switching tabs fades the incoming view in, and a note rises 4px as it does; the same applies to sidebar tab groups and to the switch between Reading View and the editor. The active tab's pill slides to the tab being selected instead of jumping, and the labels cross-fade. Desktop only, and switched off by `prefers-reduced-motion`.
