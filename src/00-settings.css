@@ -73,6 +73,21 @@ settings:
         type: class-toggle
         default: false
     -
+        id: lumen-nav-h
+        title: Sidebars
+        type: heading
+        level: 2
+    -
+        id: lumen-tree-indent
+        title: Tree indent
+        description: How far each nested level steps in, in the outline, tag, bookmark, and link panes. The file tree keeps a fixed 20px step so that each item lines up under its folder's name.
+        type: variable-number-slider
+        default: 10
+        min: 4
+        max: 20
+        step: 1
+        format: px
+    -
         id: lumen-paper-h
         title: Reading surface
         type: heading

@@ -11,6 +11,7 @@
   --lumen-accent: #0a84ff;
   --lumen-ambient-bleed: 30%;
   --lumen-file-line-width: 40em;
+  --lumen-tree-indent: 10px;
 
   --lg-accent: var(--lumen-accent);
 
@@ -91,6 +92,7 @@
   --lg-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --lg-duration-fast: 120ms;
   --lg-duration: 180ms;
+  --lg-duration-enter: 240ms;
   --lg-press-scale: 0.97;
 
   --lg-table-radius: var(--lg-radius-s);

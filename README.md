@@ -64,6 +64,7 @@ Install [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) to
 - Thin, regular, or thick glass density
 - Inset or flush workspace layout
 - Specular highlight visibility
+- Tree indent in the outline, tag, bookmark, and link panes
 - Note width and neutral or high-contrast reading surfaces
 - Reduced transparency and increased contrast overrides
 - Accent color

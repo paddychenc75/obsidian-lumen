@@ -277,6 +277,15 @@ body {
   --nav-item-padding: 3px 8px;
   --nav-collapse-icon-color: var(--lg-text-on-glass-2);
   --nav-indentation-guide-color: transparent;
+  /*
+   * Core builds a tree level out of three parts: a margin, a padding, and the
+   * guide's own width, 17px in all. The guide is transparent here, so the step
+   * is one number instead, and the outline, tag, bookmark, and link panes all
+   * nest by the same amount. The file tree sets its own, to match its glyphs.
+   */
+  --nav-item-children-margin-start: var(--lumen-tree-indent, 10px);
+  --nav-item-children-padding-start: 0px;
+  --nav-indentation-guide-width: 0px;
 
   --modal-background: var(--lg-glass-solid);
   --modal-border-color: var(--lg-glass-border);

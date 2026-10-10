@@ -1,137 +1,147 @@
-/* ============================================================================
-   Lumen Glass — Obsidian theme
-
-   GENERATED FILE — edit src/*.css instead, then run `npm run build`.
-   ============================================================================ */
+/* Lumen Glass. GENERATED FILE: edit src/*.css, then run `npm run build`. */
 /* @settings
-
 name: Lumen Glass
 id: lumen
 settings:
-    -
-        id: lumen-about
-        title: Lumen Glass
-        description: A translucent interface with a clear, focused reading surface.
-        type: heading
-        level: 1
-    -
-        id: lumen-env-h
-        title: Environment
-        type: heading
-        level: 2
-    -
-        id: lumen-ambient-bleed
-        title: Ambient color bleed
-        description: Applies the built-in backdrop colors to translucent surfaces without affecting notes.
-        type: variable-number-slider
-        default: 36
-        min: 0
-        max: 80
-        step: 1
-        format: "%"
-    -
-        id: lumen-glass-h
-        title: Glass
-        type: heading
-        level: 2
-    -
-        id: lumen-glass-character
-        title: Glass character
-        description: Paper neutral keeps the quiet reading-first appearance. Liquid modes add adaptive optical highlights only to navigation and controls; note content stays solid.
-        type: class-select
-        allowEmpty: false
-        default: lumen-glass-neutral
-        options:
-            -
-                label: Paper neutral
-                value: lumen-glass-neutral
-            -
-                label: Liquid regular
-                value: lumen-liquid-regular
-            -
-                label: Liquid clear
-                value: lumen-liquid-clear
-    -
-        id: lumen-glass-weight
-        title: Glass density
-        type: class-select
-        allowEmpty: false
-        default: lumen-glass-regular
-        options:
-            -
-                label: Thin
-                value: lumen-glass-thin
-            -
-                label: Regular
-                value: lumen-glass-regular
-            -
-                label: Thick
-                value: lumen-glass-thick
-    -
-        id: lumen-chrome-flush
-        title: Flush interface
-        type: class-toggle
-        default: false
-    -
-        id: lumen-hide-specular
-        title: Disable specular highlights
-        type: class-toggle
-        default: false
-    -
-        id: lumen-paper-h
-        title: Reading surface
-        type: heading
-        level: 2
-    -
-        id: lumen-file-line-width
-        title: Note width
-        description: Measured in characters of your body text, so the line holds its length when you change the font size. The default 40 gives about 37 Han characters or 77 Latin ones per line; it also shrinks with the window to prevent horizontal scrolling.
-        type: variable-number-slider
-        default: 40
-        min: 28
-        max: 70
-        step: 1
-        format: em
-    -
-        id: lumen-editor-contrast
-        title: High-contrast text
-        type: class-toggle
-        default: false
-    -
-        id: lumen-paper-neutral
-        title: Neutral surface
-        type: class-toggle
-        default: false
-    -
-        id: lumen-a11y-h
-        title: Accessibility and performance
-        type: heading
-        level: 2
-    -
-        id: lumen-reduce-transparency
-        title: Reduce transparency
-        type: class-toggle
-        default: false
-    -
-        id: lumen-increase-contrast
-        title: Increase contrast
-        type: class-toggle
-        default: false
-    -
-        id: lumen-accent
-        title: Accent color
-        type: variable-themed-color
-        opacity: false
-        format: hex
-        default-light: '#0A84FF'
-        default-dark: '#0A84FF'
-
+ -
+  id: lumen-about
+  title: Lumen Glass
+  description: A translucent interface with a clear, focused reading surface.
+  type: heading
+  level: 1
+ -
+  id: lumen-env-h
+  title: Environment
+  type: heading
+  level: 2
+ -
+  id: lumen-ambient-bleed
+  title: Ambient color bleed
+  description: Applies the built-in backdrop colors to translucent surfaces without affecting notes.
+  type: variable-number-slider
+  default: 36
+  min: 0
+  max: 80
+  step: 1
+  format: "%"
+ -
+  id: lumen-glass-h
+  title: Glass
+  type: heading
+  level: 2
+ -
+  id: lumen-glass-character
+  title: Glass character
+  description: Paper neutral keeps the quiet reading-first appearance. Liquid modes add adaptive optical highlights only to navigation and controls; note content stays solid.
+  type: class-select
+  allowEmpty: false
+  default: lumen-glass-neutral
+  options:
+   -
+    label: Paper neutral
+    value: lumen-glass-neutral
+   -
+    label: Liquid regular
+    value: lumen-liquid-regular
+   -
+    label: Liquid clear
+    value: lumen-liquid-clear
+ -
+  id: lumen-glass-weight
+  title: Glass density
+  type: class-select
+  allowEmpty: false
+  default: lumen-glass-regular
+  options:
+   -
+    label: Thin
+    value: lumen-glass-thin
+   -
+    label: Regular
+    value: lumen-glass-regular
+   -
+    label: Thick
+    value: lumen-glass-thick
+ -
+  id: lumen-chrome-flush
+  title: Flush interface
+  type: class-toggle
+  default: false
+ -
+  id: lumen-hide-specular
+  title: Disable specular highlights
+  type: class-toggle
+  default: false
+ -
+  id: lumen-nav-h
+  title: Sidebars
+  type: heading
+  level: 2
+ -
+  id: lumen-tree-indent
+  title: Tree indent
+  description: How far each nested level steps in, in the outline, tag, bookmark, and link panes. The file tree keeps a fixed 20px step so that each item lines up under its folder's name.
+  type: variable-number-slider
+  default: 10
+  min: 4
+  max: 20
+  step: 1
+  format: px
+ -
+  id: lumen-paper-h
+  title: Reading surface
+  type: heading
+  level: 2
+ -
+  id: lumen-file-line-width
+  title: Note width
+  description: Measured in characters of your body text, so the line holds its length when you change the font size. The default 40 gives about 37 Han characters or 77 Latin ones per line; it also shrinks with the window to prevent horizontal scrolling.
+  type: variable-number-slider
+  default: 40
+  min: 28
+  max: 70
+  step: 1
+  format: em
+ -
+  id: lumen-editor-contrast
+  title: High-contrast text
+  type: class-toggle
+  default: false
+ -
+  id: lumen-paper-neutral
+  title: Neutral surface
+  type: class-toggle
+  default: false
+ -
+  id: lumen-a11y-h
+  title: Accessibility and performance
+  type: heading
+  level: 2
+ -
+  id: lumen-reduce-transparency
+  title: Reduce transparency
+  type: class-toggle
+  default: false
+ -
+  id: lumen-increase-contrast
+  title: Increase contrast
+  type: class-toggle
+  default: false
+ -
+  id: lumen-accent
+  title: Accent color
+  type: variable-themed-color
+  opacity: false
+  format: hex
+  default-light: '#0A84FF'
+  default-dark: '#0A84FF'
 */
 
 :root{
 --lumen-accent:#0a84ff;
 --lumen-ambient-bleed:30%;
 --lumen-file-line-width:40em;
+--lumen-tree-indent:10px;
 --lg-accent:var(--lumen-accent);
 --lg-focus-color:color-mix(in srgb,var(--lg-accent) 85%,transparent);
 --lg-focus-width:2px;
@@ -142,7 +152,7 @@ settings:
 --lg-glass-saturate:112%;
 --lg-glass-highlight:linear-gradient(145deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,.07) 34%,transparent 58%);
 --lg-tooltip-bg:rgba(28,28,30,.88);
---lg-tooltip-text:#ffffff;
+--lg-tooltip-text:#fff;
 --lg-tooltip-border:rgba(255,255,255,.12);
 --lg-tooltip-shadow:
 0 1px 2px rgba(0,0,0,.18),0 4px 12px rgba(0,0,0,.16);
@@ -170,6 +180,7 @@ settings:
 --lg-ease:cubic-bezier(.22,1,.36,1);
 --lg-duration-fast:120ms;
 --lg-duration:180ms;
+--lg-duration-enter:240ms;
 --lg-press-scale:.97;
 --lg-table-radius:var(--lg-radius-s);
 --lg-table-font-size:14px;
@@ -205,7 +216,7 @@ linear-gradient(180deg,color-mix(in srgb,var(--lg-sidebar-fill) 95%,transparent)
 --lg-list-active-fill:rgba(28,28,30,.06);
 --lg-tab-active-fill:rgba(255,255,255,.86);
 --lg-glass-solid:#f2f3f3;
---lg-overlay-solid:#ffffff;
+--lg-overlay-solid:#fff;
 --lg-glass-shadow:
 inset 0 .5px 0 rgba(255,255,255,.62),0 1px 2px rgba(0,0,0,.035);
 --lg-overlay-shadow:
@@ -214,7 +225,7 @@ inset 0 .5px 0 rgba(255,255,255,.62),0 1px 2px rgba(0,0,0,.035);
 --lg-scrollbar-thumb-hover:rgba(60,60,67,.38);
 --lg-status-fill:rgba(255,255,255,.58);
 --lg-status-luma:rgba(255,255,255,.08);
---lg-paper-solid:#ffffff;
+--lg-paper-solid:#fff;
 --lg-paper-border:rgba(28,28,30,.065);
 --lg-paper-link:#075fb8;
 --lg-paper-link-hover:#034f9a;
@@ -272,7 +283,7 @@ inset 0 .5px 0 rgba(255,255,255,.08),0 1px 2px rgba(0,0,0,.24),0 4px 16px rgba(0
 --lg-status-fill:rgba(40,39,50,.78);
 --lg-status-luma:transparent;
 --lg-tooltip-bg:rgba(14,13,20,.92);
---lg-tooltip-text:#ffffff;
+--lg-tooltip-text:#fff;
 --lg-tooltip-border:rgba(255,255,255,.14);
 --lg-tooltip-shadow:
 0 1px 2px rgba(0,0,0,.3),0 5px 14px rgba(0,0,0,.26);
@@ -328,16 +339,16 @@ body.theme-light,body.theme-dark{
 --background-modifier-form-field:rgba(255,255,255,.9);
 --background-modifier-error:var(--lg-danger);
 --background-modifier-success:var(--lg-ok);
---background-modifier-message:#ffffff;
+--background-modifier-message:#fff;
 --text-normal:#262628;
 --text-muted:#68686b;
 --text-faint:#96969b;
---text-on-accent:#ffffff;
+--text-on-accent:#fff;
 --text-error:var(--lg-danger);
 --text-success:var(--lg-ok);
 --text-selection:color-mix(in srgb,var(--lg-accent) 28%,transparent);
 --text-highlight-bg:var(--lg-mark-bg);
---interactive-normal:#ffffff;
+--interactive-normal:#fff;
 --interactive-hover:#f3f3f2;
 --blockquote-color:var(--text-normal);
 --lg-text-heading:color-mix(in srgb,var(--text-normal) 60%,#000);
@@ -369,7 +380,7 @@ body.theme-light,body.theme-dark{
 --text-normal:#dedee5;
 --text-muted:#a9a9b3;
 --text-faint:#85858f;
---text-on-accent:#ffffff;
+--text-on-accent:#fff;
 --text-error:var(--lg-danger);
 --text-success:var(--lg-ok);
 --text-selection:color-mix(in srgb,var(--lg-accent) 34%,transparent);
@@ -496,6 +507,9 @@ body{
 --nav-item-padding:3px 8px;
 --nav-collapse-icon-color:var(--lg-text-on-glass-2);
 --nav-indentation-guide-color:transparent;
+--nav-item-children-margin-start:var(--lumen-tree-indent,10px);
+--nav-item-children-padding-start:0px;
+--nav-indentation-guide-width:0px;
 --modal-background:var(--lg-glass-solid);
 --modal-border-color:var(--lg-glass-border);
 --prompt-border-color:var(--lg-glass-border);
@@ -504,7 +518,7 @@ body{
 --tooltip-background:var(--lg-tooltip-bg);
 --tooltip-color:var(--lg-tooltip-text);
 --checkbox-color:var(--lg-accent);
---checkbox-marker-color:#ffffff;
+--checkbox-marker-color:#fff;
 --tag-color:var(--text-normal);
 --tag-background:color-mix(in srgb,var(--lg-accent) 14%,var(--background-primary));
 --tag-background-hover:color-mix(in srgb,var(--lg-accent) 22%,var(--background-primary));
@@ -681,12 +695,10 @@ box-shadow:none}
 .workspace-split.mod-right-split{
 margin:var(--lg-chrome-frame) var(--lg-chrome-frame) var(--lg-chrome-frame) calc(var(--lg-chrome-gap) / 2);
 box-shadow:none}
-.workspace-split.mod-left-split > .workspace-tabs,.workspace-split.mod-right-split > .workspace-tabs{
+.workspace-split.mod-left-split>.workspace-tabs,.workspace-split.mod-right-split>.workspace-tabs{
 border-radius:inherit;
 overflow:clip}
 .nav-files-container{
---nav-item-children-margin-start:10px;
---nav-item-children-padding-start:3px;
 padding:var(--lg-space-1) var(--lg-space-2) var(--lg-space-6)}
 .nav-files-container .tree-item-self{
 display:flex;
@@ -732,17 +744,22 @@ display:block;
 flex:0 0 auto;
 width:14px;
 height:14px}
+.collapse-icon svg.svg-icon{
+transition:transform var(--lg-duration) var(--lg-ease)}
 body.theme-light .nav-files-container .collapse-icon:not(.is-collapsed),body.theme-dark .nav-files-container .collapse-icon:not(.is-collapsed){
 opacity:.72}
 .nav-files-container .nav-folder-title:hover .collapse-icon{
 opacity:.86}
 .nav-files-container .nav-folder-title-content{
 flex:1 1 auto;
-margin-inline-start:18px}
+margin-inline-start:var(--lg-tree-cell)}
 .nav-files-container{
+--lg-tree-cell:20px;
 --lg-tree-icon-size:16px;
---lg-tree-icon-gap:6px;
+--lg-tree-icon-gap:calc(var(--lg-tree-cell) - var(--lg-tree-icon-size));
+--nav-item-children-margin-start:var(--lg-tree-cell);
 --lg-tree-folder-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z'/%3E%3C/svg%3E");
+--lg-tree-file-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'/%3E%3Cpath d='M14 2v4a2 2 0 0 0 2 2h4'/%3E%3C/svg%3E");
 --lg-tree-folder-open-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2'/%3E%3C/svg%3E")}
 .nav-files-container .nav-folder-title-content::before{
 content:"";
@@ -755,12 +772,18 @@ opacity:.72;
 vertical-align:-3px;
 -webkit-mask:var(--lg-tree-folder-icon) center / contain no-repeat;
 mask:var(--lg-tree-folder-icon) center / contain no-repeat}
-.nav-files-container .nav-folder:not(.is-collapsed) > .nav-folder-title .nav-folder-title-content::before{
+.nav-files-container .nav-folder:not(.is-collapsed)>.nav-folder-title .nav-folder-title-content::before{
 -webkit-mask-image:var(--lg-tree-folder-open-icon);
 mask-image:var(--lg-tree-folder-open-icon)}
 .nav-files-container .nav-file-title::before{
 content:"";
-flex:0 0 calc(18px + var(--lg-tree-icon-size) + var(--lg-tree-icon-gap))}
+flex:0 0 var(--lg-tree-icon-size);
+height:var(--lg-tree-icon-size);
+margin-inline:var(--lg-tree-cell) var(--lg-tree-icon-gap);
+background-color:currentcolor;
+opacity:.5;
+-webkit-mask:var(--lg-tree-file-icon) center / contain no-repeat;
+mask:var(--lg-tree-file-icon) center / contain no-repeat}
 .nav-files-container .nav-file-title-content,.nav-files-container .nav-folder-title-content{
 flex:1 1 auto;
 width:0;
@@ -981,7 +1004,7 @@ z-index:var(--layer-status-bar,15)}
 body.obsidian-app.theme-light .status-bar,body.obsidian-app.theme-dark .status-bar{
 padding-right:var(--lg-space-3);
 padding-left:var(--lg-space-3)}
-@supports (anchor-name: --lumen-editor-column){
+@supports (anchor-name:--lumen-editor-column){
 .status-bar{
 position-anchor:--lumen-editor-column;
 inset:auto anchor(--lumen-editor-column right) var(--lg-space-2) auto;
@@ -1128,7 +1151,7 @@ background:var(--background-primary-alt)}
 color:var(--text-normal);
 font-weight:600;
 cursor:pointer}
-.markdown-rendered details[open] > summary,.markdown-source-view.mod-cm6 .cm-html-embed details[open] > summary{
+.markdown-rendered details[open]>summary,.markdown-source-view.mod-cm6 .cm-html-embed details[open]>summary{
 margin-bottom:var(--lg-space-2)}
 .markdown-rendered li::marker{
 color:var(--text-faint)}
@@ -1166,7 +1189,7 @@ opacity:.78}
 .markdown-rendered .callout-content{
 font-size:.95em;
 line-height:1.6}
-.markdown-rendered .callout-content > :last-child{
+.markdown-rendered .callout-content>:last-child{
 margin-bottom:0}
 .markdown-rendered .callout::before,.callout::before{
 content:none}
@@ -1264,7 +1287,7 @@ background:var(--code-background);
 box-shadow:inset 0 1px 0 var(--lg-code-highlight);
 line-height:1.55;
 tab-size:2}
-.markdown-rendered :not(pre) > code,.cm-s-obsidian .cm-inline-code:not(.cm-formatting){
+.markdown-rendered :not(pre)>code,.cm-s-obsidian .cm-inline-code:not(.cm-formatting){
 padding:.12em .34em;
 border:0;
 border-radius:var(--lg-radius-xs);
@@ -1275,9 +1298,9 @@ font-size:.88em;
 vertical-align:.02em;
 -webkit-box-decoration-break:clone;
 box-decoration-break:clone}
-.markdown-rendered :not(pre) > code{
+.markdown-rendered :not(pre)>code{
 line-height:inherit}
-body[class] .workspace-leaf-content .markdown-rendered pre > code{
+body[class] .workspace-leaf-content .markdown-rendered pre>code{
 display:block;
 padding:36px var(--lg-space-4) var(--lg-space-4);
 background:transparent;
@@ -1288,7 +1311,7 @@ overflow-x:auto}
 display:block;
 margin-block:0;
 text-align:center}
-.markdown-source-view.mod-cm6 .cm-line > .image-embed{
+.markdown-source-view.mod-cm6 .cm-line>.image-embed{
 display:inline-flex;
 justify-content:center;
 width:100%;
@@ -1348,7 +1371,7 @@ stroke-width:1.25px}
 rx:var(--lg-radius-s);
 ry:var(--lg-radius-s)}
 .markdown-rendered :is(#lumen-mermaid-theme,.mermaid)
-:is(.nodeLabel,.nodeLabel p,.label text,.label span,.cluster-label text,.cluster-label span,text.actor,.actor > tspan,.messageText,.loopText,.noteText,.stateLabel,.classTitle,.entityLabel){
+:is(.nodeLabel,.nodeLabel p,.label text,.label span,.cluster-label text,.cluster-label span,text.actor,.actor>tspan,.messageText,.loopText,.noteText,.stateLabel,.classTitle,.entityLabel){
 fill:var(--text-normal);
 color:var(--text-normal)}
 .markdown-rendered :is(#lumen-mermaid-theme,.mermaid)
@@ -1371,7 +1394,7 @@ fill:color-mix(in srgb,var(--lg-diagram-node) 42%,transparent);
 stroke:var(--lg-diagram-border);
 rx:var(--lg-radius-m);
 ry:var(--lg-radius-m)}
-@media (max-width: 700px){
+@media (max-width:700px){
 .markdown-rendered .mermaid{
 width:100%;
 max-width:100%;
@@ -1400,7 +1423,7 @@ height:var(--lg-table-scrollbar-size)}
 min-width:32px;
 min-height:32px;
 border-width:2px}
-.markdown-preview-view .el-table > table{
+.markdown-preview-view .el-table>table{
 width:100%;
 min-width:100%;
 max-width:none;
@@ -1414,7 +1437,7 @@ background:var(--lg-table-surface);
 color:var(--lg-table-text);
 font-size:var(--lg-table-font-size);
 line-height:var(--lg-table-line-height)}
-.markdown-preview-view .el-table > table :is(th,td){
+.markdown-preview-view .el-table>table :is(th,td){
 min-width:0;
 padding:var(--lg-table-cell-padding-y) var(--lg-table-cell-padding-x);
 border:0;
@@ -1425,11 +1448,11 @@ overflow-wrap:break-word;
 word-break:normal;
 font-size:var(--lg-table-font-size);
 line-height:var(--lg-table-line-height)}
-.markdown-preview-view .el-table > table tr > :is(th,td):first-child{
+.markdown-preview-view .el-table>table tr>:is(th,td):first-child{
 padding-inline-start:calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra))}
-.markdown-preview-view .el-table > table tr > :is(th,td):last-child{
+.markdown-preview-view .el-table>table tr>:is(th,td):last-child{
 padding-inline-end:calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra))}
-.markdown-preview-view .el-table > table th{
+.markdown-preview-view .el-table>table th{
 background:var(--lg-table-header-surface);
 color:var(--lg-table-text);
 border-bottom-color:var(--lg-table-header-divider);
@@ -1437,14 +1460,14 @@ font-size:var(--lg-table-header-font-size);
 font-weight:600;
 text-align:start;
 white-space:normal}
-.markdown-preview-view .el-table > table :is(th, td)[align="right"]{
+.markdown-preview-view .el-table>table :is(th, td)[align="right"]{
 text-align:right;
 font-variant-numeric:tabular-nums}
-.markdown-preview-view .el-table > table tbody tr:hover > td{
+.markdown-preview-view .el-table>table tbody tr:hover>td{
 background:var(--lg-table-row-hover)}
-.markdown-preview-view .el-table > table tr > :is(th,td):last-child{
+.markdown-preview-view .el-table>table tr>:is(th,td):last-child{
 border-inline-end:0}
-.markdown-preview-view .el-table > table tbody tr:last-child > td{
+.markdown-preview-view .el-table>table tbody tr:last-child>td{
 border-bottom:0}
 .markdown-source-view.mod-cm6 .cm-table-widget{
 --table-header-background:var(--lg-table-header-surface);
@@ -1512,20 +1535,20 @@ white-space:break-spaces}
 .cm-table-widget
 .table-editor
 tr
-> :is(th,td):first-child
-> .table-cell-wrapper{
+>:is(th,td):first-child
+>.table-cell-wrapper{
 padding-inline-start:calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra))}
 .markdown-source-view.mod-cm6
 .cm-table-widget
 .table-editor
 tr
-> :is(th,td):last-child
-> .table-cell-wrapper{
+>:is(th,td):last-child
+>.table-cell-wrapper{
 padding-inline-end:calc(var(--lg-table-cell-padding-x) + var(--lg-table-edge-padding-extra))}
 .markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th, td)[align="right"]{
 text-align:right;
 font-variant-numeric:tabular-nums}
-.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:hover > td{
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:hover>td{
 background:var(--lg-table-row-hover)}
 .markdown-source-view.mod-cm6 .cm-table-widget.has-focus .table-editor :is(th,td):focus-within{
 z-index:2;
@@ -1541,17 +1564,17 @@ scrollbar-width:none}
 display:none;
 width:0;
 height:0}
-.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child > td{
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child>td{
 border-bottom:0}
-.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tr > :is(th,td):last-child{
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tr>:is(th,td):last-child{
 border-inline-end:0}
 .markdown-source-view.mod-cm6 .cm-table-widget .table-editor thead th:first-child{
 border-start-start-radius:calc(var(--lg-table-radius) - 1px)}
 .markdown-source-view.mod-cm6 .cm-table-widget .table-editor thead th:last-child{
 border-start-end-radius:calc(var(--lg-table-radius) - 1px)}
-.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child > td:first-child{
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child>td:first-child{
 border-end-start-radius:calc(var(--lg-table-radius) - 1px)}
-.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child > td:last-child{
+.markdown-source-view.mod-cm6 .cm-table-widget .table-editor tbody tr:last-child>td:last-child{
 border-end-end-radius:calc(var(--lg-table-radius) - 1px)}
 .markdown-source-view.mod-cm6 .cm-table-widget :is(.table-row-btn,.table-col-btn,.table-row-drag-handle,.table-col-drag-handle){
 border-radius:var(--lg-radius-xs);
@@ -1710,7 +1733,7 @@ gap:var(--lg-space-2) var(--lg-space-4)}
 padding-block:0}
 .modal.mod-settings .setting-item-heading{
 padding-inline:var(--lg-space-4)}
-body:not(.is-mobile) .modal.mod-settings .setting-group + .setting-group{
+body:not(.is-mobile) .modal.mod-settings .setting-group+.setting-group{
 margin-top:var(--lg-space-8)}
 body:not(.is-mobile) .modal.mod-settings .setting-item:not(.setting-item-heading){
 padding:var(--lg-space-3) var(--lg-space-4)}
@@ -1792,6 +1815,26 @@ border-radius:var(--lg-radius-xs);
 background-color:var(--lg-mark-bg)}
 .cm-searchMatch-selected .obsidian-search-match-highlight,.obsidian-search-match-highlight.is-flashing{
 background-color:color-mix(in srgb,var(--lg-accent) 42%,transparent)}
+@keyframes lg-enter-drop{
+from{
+opacity:0;
+transform:translateY(-4px)}
+}
+@keyframes lg-enter-rise{
+from{
+opacity:0;
+transform:translateY(6px) scale(.98)}
+}
+@keyframes lg-enter-fade{
+from{
+opacity:0}
+}
+body:not(.is-mobile) :is(.menu,.suggestion-container,.popover.hover-popover,.notice){
+animation:lg-enter-drop var(--lg-duration) var(--lg-ease)}
+body:not(.is-mobile) :is(.modal,.prompt){
+animation:lg-enter-rise var(--lg-duration-enter) var(--lg-ease)}
+body:not(.is-mobile) .modal-bg{
+animation:lg-enter-fade var(--lg-duration-enter) var(--lg-ease)}
 body{
 accent-color:var(--lg-accent)}
 button.mod-cta{
@@ -1890,7 +1933,7 @@ overflow:hidden}
 padding:0;
 background:transparent;
 box-shadow:none}
-.markdown-source-view.mod-cm6 .cm-embed-block > .mermaid.lmm-host{
+.markdown-source-view.mod-cm6 .cm-embed-block>.mermaid.lmm-host{
 overflow:hidden}
 .lmm-host .lmm-bar{
 min-height:36px;
@@ -1952,7 +1995,7 @@ height:min(100%,calc(100vh - 2 * var(--lg-space-8)))}
 margin:0;
 box-shadow:
 inset 0 1px 0 var(--lg-diagram-highlight),var(--lg-overlay-shadow)}
-@media (max-width: 700px){
+@media (max-width:700px){
 body .mermaid.lmm-host{
 width:100%;
 max-width:100%;
@@ -1962,7 +2005,7 @@ transform:none}
 .lmm-fs{
 padding:var(--lg-space-4)}
 }
-@media (prefers-reduced-motion: reduce){
+@media (prefers-reduced-motion:reduce){
 .lmm-host :is(.lmm-stage.is-animating,.lmm-flair){
 animation:none;
 transition:none}
@@ -2036,17 +2079,17 @@ line-height:var(--h5-line-height)}
 line-height:var(--h6-line-height)}
 .markdown-source-view.mod-cm6.is-live-preview
 .cm-content
-> .cm-line.HyperMD-header:nth-child(1 of .cm-line){
+>.cm-line.HyperMD-header:nth-child(1 of .cm-line){
 padding-top:0}
 .markdown-rendered :is(ul,ol){
 margin-block:0 var(--p-spacing)}
 .markdown-rendered li,.markdown-rendered .task-list-item{
 margin-block:0}
-.markdown-rendered li > :is(ul,ol){
+.markdown-rendered li>:is(ul,ol){
 margin-block:0}
-.markdown-rendered li > p{
+.markdown-rendered li>p{
 margin-block:0 var(--p-spacing)}
-.markdown-rendered li > p:last-child{
+.markdown-rendered li>p:last-child{
 margin-block-end:0}
 .markdown-rendered .task-list-item-checkbox,.markdown-source-view.mod-cm6 .task-list-item-checkbox{
 width:var(--checkbox-size);
@@ -2084,7 +2127,7 @@ margin-block:var(--p-spacing) 0}
 background:var(--lg-quote-line-nested)}
 .markdown-rendered blockquote blockquote blockquote::before{
 background:var(--lg-quote-line-deep)}
-.markdown-rendered blockquote > :last-child{
+.markdown-rendered blockquote>:last-child{
 margin-bottom:0}
 .markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote::before,.markdown-source-view.mod-cm6.is-live-preview .cm-blockquote-border::before{
 bottom:-1px;
@@ -2097,25 +2140,25 @@ background:var(--lg-quote-line)}
 background:var(--lg-quote-line-nested)}
 .markdown-source-view.mod-cm6.is-live-preview
 .HyperMD-quote
-:nth-child(n + 2 of .cm-blockquote-border)::before{
+:nth-child(n+2 of .cm-blockquote-border)::before{
 background:var(--lg-quote-line-deep)}
-.mod-cm6.is-live-preview .HyperMD-quote > .cm-blockquote-border::before{
+.mod-cm6.is-live-preview .HyperMD-quote>.cm-blockquote-border::before{
 inset-inline-start:var(--lg-quote-indent)}
 .mod-cm6.is-live-preview
 .HyperMD-quote
-> .cm-blockquote-border
-~ .cm-blockquote-border::before{
+>.cm-blockquote-border
+~.cm-blockquote-border::before{
 inset-inline-start:calc(var(--lg-quote-indent) * 2)}
 .mod-cm6.is-live-preview
 :is(:not(.HyperMD-quote) + .HyperMD-quote,.HyperMD-quote:first-child)::before,.mod-cm6.is-live-preview
 :is(:is(:not(.HyperMD-quote),.HyperMD-quote-1) + .HyperMD-quote,.HyperMD-quote:first-child)
-> .cm-blockquote-border::before,.mod-cm6.is-live-preview
+>.cm-blockquote-border::before,.mod-cm6.is-live-preview
 .HyperMD-quote-2
-+ .HyperMD-quote
-> .cm-blockquote-border
-~ .cm-blockquote-border::before{
++.HyperMD-quote
+>.cm-blockquote-border
+~.cm-blockquote-border::before{
 border-radius:var(--lg-quote-cap) var(--lg-quote-cap) 0 0}
-.mod-root .is-live-preview .HyperMD-quote + .cm-line:not(.HyperMD-quote)::before,.mod-root .is-live-preview :is(.HyperMD-quote-2,.HyperMD-quote-3) + .HyperMD-quote-1::after,.mod-root .is-live-preview .HyperMD-quote-3 + .HyperMD-quote-2::after{
+.mod-root .is-live-preview .HyperMD-quote+.cm-line:not(.HyperMD-quote)::before,.mod-root .is-live-preview :is(.HyperMD-quote-2,.HyperMD-quote-3)+.HyperMD-quote-1::after,.mod-root .is-live-preview .HyperMD-quote-3+.HyperMD-quote-2::after{
 --lg-quote-foot:radial-gradient(circle at 50% 0,transparent calc(var(--lg-quote-cap) - .5px),#000 var(--lg-quote-cap));
 content:"";
 position:absolute;
@@ -2127,13 +2170,13 @@ background:var(--lg-paper-solid);
 -webkit-mask:
 var(--lg-quote-foot) 0 0 / var(--lg-quote-rail) 100% no-repeat,var(--lg-quote-foot) var(--lg-quote-indent) 0 / var(--lg-quote-rail) 100% no-repeat,var(--lg-quote-foot) calc(var(--lg-quote-indent) * 2) 0 / var(--lg-quote-rail) 100% no-repeat;
 pointer-events:none}
-.mod-root .is-live-preview .HyperMD-quote-2 + .cm-line:not(.HyperMD-quote)::before,.mod-root .is-live-preview .HyperMD-quote-3 + .HyperMD-quote-1::after{
+.mod-root .is-live-preview .HyperMD-quote-2+.cm-line:not(.HyperMD-quote)::before,.mod-root .is-live-preview .HyperMD-quote-3+.HyperMD-quote-1::after{
 width:calc(var(--lg-quote-indent) + var(--lg-quote-rail))}
-.mod-root .is-live-preview .HyperMD-quote-3 + .cm-line:not(.HyperMD-quote)::before{
+.mod-root .is-live-preview .HyperMD-quote-3+.cm-line:not(.HyperMD-quote)::before{
 width:calc(var(--lg-quote-indent) * 2 + var(--lg-quote-rail))}
-.mod-root .is-live-preview :is(.HyperMD-quote-2,.HyperMD-quote-3) + .HyperMD-quote-1::after{
+.mod-root .is-live-preview :is(.HyperMD-quote-2,.HyperMD-quote-3)+.HyperMD-quote-1::after{
 inset-inline-start:var(--lg-quote-indent)}
-.mod-root .is-live-preview .HyperMD-quote-3 + .HyperMD-quote-2::after{
+.mod-root .is-live-preview .HyperMD-quote-3+.HyperMD-quote-2::after{
 inset-inline-start:calc(var(--lg-quote-indent) * 2)}
 .markdown-rendered hr,.markdown-source-view.mod-cm6 .markdown-embed .markdown-rendered hr{
 margin-block:calc(var(--p-spacing) + var(--line-height-normal) * .5em);
@@ -2149,7 +2192,7 @@ border-top:1px solid var(--lg-doc-divider);
 color:var(--text-muted);
 font-size:.82em;
 line-height:1.6}
-.markdown-rendered .footnotes > hr{
+.markdown-rendered .footnotes>hr{
 display:none}
 .markdown-rendered .footnotes li{
 margin-block:var(--lg-space-1)}
@@ -2176,7 +2219,7 @@ box-shadow:
 inset 1px 0 0 var(--lg-code-border),inset -1px 0 0 var(--lg-code-border),inset 0 1px 0 var(--lg-code-border),inset 0 2px 0 var(--lg-code-highlight)}
 .markdown-source-view.mod-cm6.is-live-preview
 .cm-line.HyperMD-codeblock-begin
-+ .HyperMD-codeblock:not(.HyperMD-codeblock-end){
++.HyperMD-codeblock:not(.HyperMD-codeblock-end){
 padding-block-start:0}
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock-end{
 min-height:var(--lg-space-4);
@@ -2184,11 +2227,10 @@ font-size:0;
 line-height:0}
 .markdown-source-view.mod-cm6.is-live-preview
 .cm-line:is(.HyperMD-codeblock-begin,.HyperMD-codeblock-end)
-> span[class*="cm-"]{
+>span[class*="cm-"]{
 font-size:calc(var(--font-text-size) * .875);
 line-height:1.55}
-.markdown-source-view.mod-cm6.is-live-preview .code-block-flair,.markdown-rendered pre > .copy-code-button{
-inset:var(--lg-space-2) var(--lg-space-2) auto auto;
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair,.markdown-rendered .code-block-flair,.markdown-rendered pre>.copy-code-button{
 min-height:24px;
 padding:2px var(--lg-space-2);
 border-radius:var(--lg-radius-s);
@@ -2198,24 +2240,28 @@ font-family:var(--font-interface);
 font-size:var(--font-ui-smaller);
 font-weight:500;
 line-height:20px}
-.markdown-source-view.mod-cm6.is-live-preview .code-block-flair:hover,.markdown-rendered pre > .copy-code-button:hover{
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair,.markdown-rendered .code-block-flair{
+inset:var(--lg-space-2) auto auto var(--lg-space-2)}
+.markdown-rendered pre>.copy-code-button{
+inset:var(--lg-space-2) var(--lg-space-2) auto auto}
+.markdown-source-view.mod-cm6.is-live-preview .code-block-flair:hover,.markdown-rendered pre>.copy-code-button:hover{
 background:var(--lg-state-hover);
 color:var(--text-normal)}
-.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive){
+.markdown-rendered pre>button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive){
 border:0;
 background:transparent;
 box-shadow:none;
 color:var(--text-faint)}
-.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover{
+.markdown-rendered pre>button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive):hover{
 background:var(--lg-state-hover);
 color:var(--text-normal)}
 @media screen{
-.markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive){
+.markdown-rendered pre>button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive){
 display:flex}
 }
 .markdown-rendered .callout,.markdown-rendered pre,.markdown-rendered .markdown-embed,.markdown-rendered .internal-query,.markdown-rendered details{
 margin-block:0 var(--p-spacing)}
-.markdown-rendered .callout-content > :last-child,.markdown-rendered .markdown-embed .markdown-preview-view > :last-child{
+.markdown-rendered .callout-content>:last-child,.markdown-rendered .markdown-embed .markdown-preview-view>:last-child{
 margin-block-end:0}
 .markdown-rendered .MathJax[display="true"]{
 margin-block:0 var(--p-spacing)}
@@ -2250,7 +2296,7 @@ body.is-mobile.is-floating-nav .mobile-navbar.mod-raised{
 border:1px solid var(--lg-glass-border)}
 .is-mobile .nav-file-title,.is-mobile .nav-folder-title,.is-mobile .tree-item-self,.is-mobile .suggestion-item,.is-mobile button.mod-cta,.is-mobile .workspace-tab-header{
 min-height:44px}
-@media (pointer: coarse){
+@media (pointer:coarse){
 .clickable-icon,.side-dock-ribbon-action,.workspace-tab-header-inner-close-button,.workspace-tab-header-new-tab .clickable-icon,.menu-item,button,.dropdown,.checkbox-container{
 min-width:44px;
 min-height:44px}
@@ -2337,14 +2383,14 @@ body.lumen-hide-specular{
 body.lumen-editor-contrast.theme-light,body.lumen-increase-contrast.theme-light{
 --text-normal:#111113;
 --text-muted:#2c2c31;
---lg-paper-solid:#ffffff;
+--lg-paper-solid:#fff;
 --lg-table-outline:rgba(17,17,19,.44);
 --lg-table-row-divider:rgba(17,17,19,.32);
 --lg-table-col-divider:rgba(17,17,19,.24);
 --lg-table-header-divider:rgba(17,17,19,.4);
 --lg-table-row-hover:rgba(17,17,19,.08)}
 body.lumen-editor-contrast.theme-dark,body.lumen-increase-contrast.theme-dark{
---text-normal:#ffffff;
+--text-normal:#fff;
 --text-muted:#d8d8e2;
 --lg-paper-solid:#0e0d14;
 --lg-table-outline:rgba(255,255,255,.46);
@@ -2367,7 +2413,7 @@ body.lumen-reduce-transparency.theme-light,body.lumen-reduce-transparency.theme-
 body.lumen-reduce-transparency .workspace-ribbon.side-dock-ribbon,body.lumen-reduce-transparency .workspace-split.mod-left-split,body.lumen-reduce-transparency .workspace-split.mod-right-split,body.lumen-reduce-transparency .workspace-split.mod-root .workspace-tab-header-container,body.lumen-reduce-transparency .status-bar,body.lumen-reduce-transparency .prompt,body.lumen-increase-contrast .workspace-ribbon.side-dock-ribbon,body.lumen-increase-contrast .workspace-split.mod-left-split,body.lumen-increase-contrast .workspace-split.mod-right-split,body.lumen-increase-contrast .workspace-split.mod-root .workspace-tab-header-container,body.lumen-increase-contrast .status-bar,body.lumen-increase-contrast .prompt{
 backdrop-filter:none;
 -webkit-backdrop-filter:none}
-@media (prefers-reduced-transparency: reduce){
+@media (prefers-reduced-transparency:reduce){
 body{
 --lg-glass-blur:0px;
 --lg-glass-fill:var(--lg-glass-solid);
@@ -2380,11 +2426,11 @@ body{
 backdrop-filter:none;
 -webkit-backdrop-filter:none}
 }
-@media (prefers-contrast: more){
+@media (prefers-contrast:more){
 body.theme-light{
 --text-normal:#111113;
 --text-muted:#2c2c31;
---lg-paper-solid:#ffffff;
+--lg-paper-solid:#fff;
 --lg-glass-blur:0px;
 --lg-list-active-fill:rgba(0,0,0,.18);
 --lg-state-hover:rgba(0,0,0,.12);
@@ -2395,7 +2441,7 @@ body.theme-light{
 --lg-table-header-divider:rgba(17,17,19,.4);
 --lg-table-row-hover:rgba(17,17,19,.08)}
 body.theme-dark{
---text-normal:#ffffff;
+--text-normal:#fff;
 --text-muted:#dddde6;
 --lg-paper-solid:#0e0d14;
 --lg-glass-blur:0px;
@@ -2417,10 +2463,10 @@ body{
 --lg-status-fill:var(--lg-glass-solid);
 --lg-status-luma:transparent}
 }
-@media (forced-colors: active){
+@media (forced-colors:active){
 .markdown-preview-view .el-table,.markdown-source-view.mod-cm6 .cm-table-widget .table-editor{
 border-color:CanvasText}
-.markdown-preview-view .el-table > table :is(th,td),.markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th,td){
+.markdown-preview-view .el-table>table :is(th,td),.markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th,td){
 border-bottom-color:CanvasText;
 border-inline-end-color:CanvasText}
 .markdown-source-view.mod-cm6
@@ -2434,13 +2480,13 @@ box-shadow:none}
 .markdown-source-view.mod-cm6 .cm-table-widget :is(.table-row-btn,.table-col-btn,.table-row-drag-handle,.table-col-drag-handle):focus-visible{
 outline-color:Highlight}
 }
-@media (pointer: coarse){
+@media (pointer:coarse){
 body{
 --lg-table-scrollbar-size:12px}
 body .markdown-source-view.mod-cm6 .cm-table-widget :is(.table-row-btn,.table-col-btn){
 opacity:.72}
 }
-@media (max-width: 700px){
+@media (max-width:700px){
 body:not(.is-mobile){
 --lg-chrome-frame:var(--lg-space-1);
 --lg-control-size:32px;
@@ -2452,24 +2498,25 @@ body:not(.is-mobile) .cm-sizer,body:not(.is-mobile) .markdown-preview-sizer,body
 padding-inline:var(--lg-space-4);
 padding-top:var(--lg-space-4)}
 }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
 .workspace-ribbon.side-dock-ribbon,.workspace-split.mod-left-split,.workspace-split.mod-right-split,.workspace-split.mod-root .workspace-tab-header-container,.status-bar,.prompt,.is-mobile .mobile-navbar{
 background:var(--lg-glass-solid)}
 }
 .workspace-tab-header,.nav-file-title,.nav-folder-title,.tree-item-self,.suggestion-item,.menu-item,.side-dock-ribbon-action,button.mod-cta{
 transition:
 background-color var(--lg-duration) var(--lg-ease),border-color var(--lg-duration) var(--lg-ease),color var(--lg-duration) var(--lg-ease),box-shadow var(--lg-duration) var(--lg-ease),transform var(--lg-duration-fast) var(--lg-ease)}
-@media (prefers-reduced-motion: reduce){
+@media (prefers-reduced-motion:reduce){
 body{
 --lg-duration-fast:0ms;
 --lg-duration:0ms;
+--lg-duration-enter:0ms;
 --lg-press-scale:1}
 .workspace-tab-header,.nav-file-title,.nav-folder-title,.tree-item-self,.suggestion-item,.menu-item,.side-dock-ribbon-action,button.mod-cta,.clickable-icon,.workspace-tab-header-inner-close-button,.markdown-source-view.mod-cm6 .cm-table-widget .table-editor :is(th,td){
 transition:none}
 }
 @media print{
 body{
---lg-paper-solid:#ffffff;
+--lg-paper-solid:#fff;
 --lg-paper-border:rgba(0,0,0,.18);
 --lg-doc-divider:rgba(0,0,0,.2);
 --lg-mark-bg:#ffefa8;
@@ -2478,12 +2525,12 @@ body{
 --lg-inline-code-bg:#f1f1f4;
 --lg-inline-code-text:#1c1c1e;
 --lg-inline-code-border:rgba(0,0,0,.2);
---lg-diagram-surface:#ffffff;
+--lg-diagram-surface:#fff;
 --lg-diagram-border:rgba(0,0,0,.2);
 --lg-diagram-node:#f1f5fa;
 --lg-diagram-node-border:#526d8a;
 --lg-diagram-edge:rgba(0,0,0,.68);
---lg-diagram-label-bg:#ffffff;
+--lg-diagram-label-bg:#fff;
 --lg-diagram-highlight:transparent;
 --lg-syn-keyword:#1c1c1e;
 --lg-syn-tag:#1c1c1e;
@@ -2496,7 +2543,7 @@ body{
 --lg-syn-punctuation:#45454a;
 --lg-syn-comment:#5b6570}
 .print,.print .markdown-preview-view{
-background:#ffffff;
+background:#fff;
 backdrop-filter:none;
 -webkit-backdrop-filter:none;
 box-shadow:none}

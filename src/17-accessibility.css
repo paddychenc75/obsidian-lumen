@@ -377,6 +377,7 @@ button.mod-cta {
   body {
     --lg-duration-fast: 0ms;
     --lg-duration: 0ms;
+    --lg-duration-enter: 0ms;
     --lg-press-scale: 1;
   }
 

@@ -6,9 +6,20 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Menus, hover previews, suggestions, and notices fade in with a short drop; modals and the command palette rise in while the backdrop fades. Desktop only, and switched off by `prefers-reduced-motion`.
+- Notes and other files in the file tree carry a sheet glyph in the slot folders use for theirs, so a file no longer looks indented a level deeper than it is.
+- `Tree indent` setting (4–20px, default 10px) under a new `Sidebars` heading, for the outline, tag, bookmark, and link panes.
+
 ### Changed
 
+- The file tree is laid out on a 20px grid: the arrow, the glyph, and each nested level are one cell wide, so an item's glyph sits directly under the first letter of its folder's name. The step was 14px, which lined up with nothing.
+- Each nested level in the outline, tag, bookmark, and link panes steps in 10px instead of 17px.
+- Disclosure arrows turn in 180ms on the theme's easing curve instead of core's 100ms.
+- The published `theme.css` also drops the spaces around selector combinators, shortens colours such as `#ffffff` to `#fff`, and indents the Style Settings block by one space per level.
 - A code block has 36px above its first line instead of 16px, in both views. The copy button and the language label now sit in that band rather than on the first line of code, where they covered the end of a long line.
+- The language label on a code block leads that band from the left in both views; the copy button stays in the right corner.
 - The copy button on a code block in Reading View is always visible, as the language label is in Live Preview, instead of appearing on hover.
 
 ### Fixed

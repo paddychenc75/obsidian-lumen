@@ -105,7 +105,7 @@ Six hues carry semantics. Comments, operators, and punctuation **deliberately sh
 
 One mapping serves both renderers. The variables feed Prism `.token-*` in Reading View and CodeMirror `.cm-*` in the editor.
 
-A code block is not a floating card and casts no environmental shadow. A one-pixel structural line, a top highlight, and a temperature shift from the neighbouring paper are sufficient separation. Use a 10px radius, a 16px body inset with 36px at the top, and 1.55 code line height. The taller top is a quiet title band for the corner control, the copy button or language label, which is inset 8px and 24px tall; with a 16px top it shared a row with the first line of code and covered the end of a long one. This is tighter than the body's 1.7 because monospaced glyphs and indentation already provide horizontal and vertical anchors; reusing body leading would split a program into visually unrelated lines.
+A code block is not a floating card and casts no environmental shadow. A one-pixel structural line, a top highlight, and a temperature shift from the neighbouring paper are sufficient separation. Use a 10px radius, a 16px body inset with 36px at the top, and 1.55 code line height. The taller top is a quiet title band: the language name leads from the left, and the copy button stays in the right corner. Both are inset 8px and 24px tall; with a 16px top the control shared a row with the first line of code and covered the end of a long one. This is tighter than the body's 1.7 because monospaced glyphs and indentation already provide horizontal and vertical anchors; reusing body leading would split a program into visually unrelated lines.
 
 Live Preview and Reading View use completely different DOMs. Reading View has one `<pre>` element, while CodeMirror separates the opening fence and every code line into individual `.cm-line` elements. Live Preview therefore turns the opening fence into that 36px title band, with the first code line directly beneath it, and the closing fence into the 16px bottom inset. Reading View puts the same 36px and 16px on the `<code>` element as padding. Each line continues the side rails with a layout-neutral inset stroke. A real border on every line would stack horizontal rules and change line width, while a border on the outer wrapper cannot access a single continuous DOM block.
 
@@ -129,9 +129,15 @@ Interaction does not belong in the theme. The separate Lumen Stage plugin (`lume
 
 Focus has one visual language, composed entirely from tokens: `--lg-focus-ring` (width and colour) with `--lg-focus-offset`; clipped rows and cells use `--lg-focus-offset-inset`. `prefers-contrast: more` changes only the tokens rather than adding selectors, which would otherwise lose to component-specific focus rules.
 
-Motion has two tiers based on travel distance: `--lg-duration-fast` at 120ms for state changes in place, and `--lg-duration` at 180ms for moving elements. Primary controls compress on press using `--lg-press-scale`. `prefers-reduced-motion` reduces both durations to zero and restores the press scale to 1.
+Motion has three tiers based on travel distance: `--lg-duration-fast` at 120ms for state changes in place, `--lg-duration` at 180ms for moving elements, and `--lg-duration-enter` at 240ms for large surfaces that enter. Primary controls compress on press using `--lg-press-scale`. `prefers-reduced-motion` reduces all three durations to zero and restores the press scale to 1.
 
-The theme defines no keyframe animations, so there is no third tier. Do not reserve tokens before a need exists: `npm run check` reports tokens that are defined but never consumed.
+Overlays enter with a keyframe that sets only `from`, so each settles on its own resting style. Menus, hover previews, suggestions, and notices fade in over 180ms with 4px of travel; they never scale, because core positions them by measuring their box. Modals and the command palette are centred by layout, so they rise 6px from 98% over 240ms while the scrim fades. Nothing animates out: core removes the node immediately. Rows inside a sidebar tree have no entrance, because the tree is virtualised and rows are re-attached while scrolling, which would replay it.
+
+The outline, tag, bookmark, and link panes nest by one step, `--lumen-tree-indent` (10px, adjustable from 4px to 20px in Style Settings). Core's step is 17px, assembled from a margin, a padding, and the guide width; the theme folds the three into the one number.
+
+The file tree is a grid of one 20px cell, `--lg-tree-cell`: the arrow slot, the glyph slot, and the step into a folder are all one cell. A child's arrow therefore falls under its parent's glyph and its glyph under the first letter of the parent's name. Folders carry a folder glyph and files a fainter sheet in the same slot, so every label in a level shares a column. The step is not adjustable, because any other width breaks that alignment.
+
+Do not reserve tokens before a need exists: `npm run check` reports tokens that are defined but never consumed.
 
 ## Colour
 
@@ -162,7 +168,7 @@ The two views are set from the same numbers, in `src/15-editor-parity.css`, with
 - A heading sits one line plus 0.6 / 0.4 / 0.2 body em (h1–h2 / h3 / h4–h6) below the previous block and 16 / 16 / 12 / 8 / 8 / 8px above its own text. The two views agree when a blank line precedes the heading and none follows it; a blank line after a heading adds one line in Live Preview only.
 - List items sit on consecutive lines with one indent step, `--list-indent` (1.7em), per level in both views.
 - Callouts, code, note embeds, display math, and `<details>` carry no top margin and one paragraph gap below. Tables keep 16px more on each side because the table editor reserves that for its handles.
-- A fenced block is one card in both views. In Live Preview the fence lines are the card's top and bottom padding and the language label sits where Reading View puts the copy button; a fence line shows its source again while it is being edited.
+- A fenced block is one card in both views. In Live Preview the fence lines are the card's top and bottom padding. The language label leads that band from the left, and Reading View's copy button stays in the right corner; a fence line shows its source again while it is being edited.
 - Images are bare, centred figures. Only note embeds are cards.
 - Only `[x]` and `[-]` tasks are struck through, in both views.
 

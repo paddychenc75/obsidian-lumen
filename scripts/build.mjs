@@ -5,12 +5,7 @@ const root = resolve(import.meta.dirname, "..");
 const srcDir = resolve(root, "src");
 const outFile = resolve(root, "theme.css");
 
-const banner = `/* ============================================================================
-   Lumen Glass — Obsidian theme
-
-   GENERATED FILE — edit src/*.css instead, then run \`npm run build\`.
-   ============================================================================ */
-`;
+const banner = "/* Lumen Glass. GENERATED FILE: edit src/*.css, then run `npm run build`. */\n";
 
 function sources() {
   return readdirSync(srcDir)
@@ -29,11 +24,25 @@ function sources() {
  * line, so the directory's lint still reports usable line numbers; selector
  * lists and multi-line values are joined, the last declaration loses its
  * semicolon, and decimals lose their leading zero.
+ *
+ * Selectors lose the spaces around `>`, `+`, and `~`, at-rule conditions the
+ * space after their colon, and a colour like #aabbcc is written #abc. The
+ * Style Settings block is YAML, where only the relative depth of the
+ * indentation carries meaning, so each four-space level becomes one space.
  */
+function tightenSelector(line) {
+  if (line.startsWith("@")) return line.replace(/: /g, ":");
+  return line.replace(/ ([>+~]) /g, "$1").replace(/^([>+~]) /, "$1");
+}
+
+function tightenSettings(block) {
+  return block.replace(/^(?: {4})+/gm, (indent) => " ".repeat(indent.length / 4)).replace(/\n{2,}/g, "\n");
+}
+
 function stripAuthorComments(css) {
   const kept = [];
   const masked = css.replace(/\/\*\s*@settings[\s\S]*?\*\//g, (block) => {
-    kept.push(block.trim());
+    kept.push(tightenSettings(block.trim()));
     return `\u0000K${kept.length - 1}\u0000`;
   });
 
@@ -48,6 +57,9 @@ function stripAuthorComments(css) {
     .replace(/([,(])\n/g, "$1")
     .replace(/\n\)/g, ")")
     .replace(/;\n}/g, "}")
+    .replace(/^.*\{$/gm, tightenSelector)
+    .replace(/^[>+~] .*$/gm, tightenSelector)
+    .replace(/^[^"'\n]*$/gm, (line) => line.replace(/#([\da-f])\1([\da-f])\2([\da-f])\3(?![\da-f])/gi, "#$1$2$3"))
     .replace(/^\n+/, "")
     .replace(/\n+$/, "\n")
     .replace(/\u0000K(\d+)\u0000/g, (match, index) => `${kept[Number(index)]}\n`);

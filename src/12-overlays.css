@@ -410,3 +410,46 @@ body:not(.is-mobile) .modal.mod-settings .setting-item:not(.setting-item-heading
 .obsidian-search-match-highlight.is-flashing {
   background-color: color-mix(in srgb, var(--lg-accent) 42%, transparent);
 }
+
+/*
+ * Entrances. A surface that appears out of nowhere gives no hint of where it
+ * came from; a short fade with a few pixels of travel does. Only `from` is
+ * keyed, so each one settles on whatever its own rules say and nothing has to
+ * be restated here. Desktop only: mobile sheets and drawers are moved by core.
+ *
+ * Surfaces that core places by measuring them — menus, hover previews,
+ * suggestions — move but never scale, so the box it measures keeps its size.
+ * Modals and the palette are centred by layout and can afford a slight scale.
+ * Nothing animates on the way out, because core removes the node at once.
+ */
+@keyframes lg-enter-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes lg-enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+@keyframes lg-enter-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+body:not(.is-mobile) :is(.menu, .suggestion-container, .popover.hover-popover, .notice) {
+  animation: lg-enter-drop var(--lg-duration) var(--lg-ease);
+}
+
+body:not(.is-mobile) :is(.modal, .prompt) {
+  animation: lg-enter-rise var(--lg-duration-enter) var(--lg-ease);
+}
+
+body:not(.is-mobile) .modal-bg {
+  animation: lg-enter-fade var(--lg-duration-enter) var(--lg-ease);
+}
