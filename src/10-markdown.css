@@ -374,9 +374,10 @@ body {
   line-height: inherit;
 }
 
+/* The 36px top keeps the first line below the copy button; 15-editor-parity matches it. */
 body[class] .workspace-leaf-content .markdown-rendered pre > code {
   display: block;
-  padding: var(--lg-space-4);
+  padding: 36px var(--lg-space-4) var(--lg-space-4);
   background: transparent;
   font-size: 0.875em;
   line-height: 1.55;

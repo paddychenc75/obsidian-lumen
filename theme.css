@@ -1279,7 +1279,7 @@ box-decoration-break:clone}
 line-height:inherit}
 body[class] .workspace-leaf-content .markdown-rendered pre > code{
 display:block;
-padding:var(--lg-space-4);
+padding:36px var(--lg-space-4) var(--lg-space-4);
 background:transparent;
 font-size:.875em;
 line-height:1.55;
@@ -2166,7 +2166,7 @@ box-shadow:none}
 .markdown-source-view.mod-cm6 .cm-line:is(.HyperMD-codeblock,.HyperMD-footnote){
 max-width:none}
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock-begin{
-min-height:var(--lg-space-4);
+min-height:36px;
 padding-block:0;
 border-radius:var(--lg-radius-m) var(--lg-radius-m) 0 0;
 background:var(--code-background);
@@ -2211,7 +2211,7 @@ background:var(--lg-state-hover);
 color:var(--text-normal)}
 @media screen{
 .markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive){
-display:inline-flex}
+display:flex}
 }
 .markdown-rendered .callout,.markdown-rendered pre,.markdown-rendered .markdown-embed,.markdown-rendered .internal-query,.markdown-rendered details{
 margin-block:0 var(--p-spacing)}

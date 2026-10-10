@@ -8,6 +8,7 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- A code block has 36px above its first line instead of 16px, in both views. The copy button and the language label now sit in that band rather than on the first line of code, where they covered the end of a long line.
 - The copy button on a code block in Reading View is always visible, as the language label is in Live Preview, instead of appearing on hover.
 
 ### Fixed

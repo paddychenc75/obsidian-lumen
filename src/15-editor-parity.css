@@ -401,8 +401,10 @@ body {
 
 /*
  * The rendered block is one card with its copy button in the corner. The
- * editor's fence lines become that card's top and bottom padding rather than a
- * header band, and the language label sits where the copy button does.
+ * editor's fence lines become that card's top and bottom padding, and the
+ * language label sits where the copy button does. The top is 36px in both
+ * views: enough for that corner control (8px inset, 24px tall) to clear the
+ * first line of code instead of sharing its row and covering a long one.
  */
 /*
  * Core caps each line at --file-line-width, an em value that resolves against
@@ -414,7 +416,7 @@ body {
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock-begin {
-  min-height: var(--lg-space-4);
+  min-height: 36px;
   padding-block: 0;
   border-radius: var(--lg-radius-m) var(--lg-radius-m) 0 0;
   background: var(--code-background);
@@ -491,7 +493,7 @@ body {
 /* The language label is always on screen, so the copy button is too. */
 @media screen {
   .markdown-rendered pre > button.copy-code-button:not(.mod-cta):not(.clickable-icon):not(.mod-destructive) {
-    display: inline-flex;
+    display: flex;
   }
 }
 
