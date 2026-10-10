@@ -535,6 +535,7 @@ color var(--lg-duration-fast) var(--lg-ease),background-color var(--lg-duration-
 .lmm-host .lmm-flair:hover{background:var(--lg-state-hover);color:var(--text-normal)}
 .lmm-host .lmm-flair:focus-visible{outline:var(--lg-focus-ring);outline-offset:var(--lg-focus-offset-inset);box-shadow:none;color:var(--text-normal)}
 .lmm-host .lmm-flair:disabled{background:transparent;color:var(--text-faint);opacity:1}
+.lmm-host .lmm-flair svg{width:var(--icon-size);min-width:0;max-width:none;height:var(--icon-size);margin:0}
 .lmm-host .lmm-viewport{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
 .lmm-host .lmm-viewport:focus-visible{outline:var(--lg-focus-ring);outline-offset:var(--lg-focus-offset-inset)}
 .lmm-host .lmm-stage.is-animating{transition:transform var(--lg-duration) var(--lg-ease)}

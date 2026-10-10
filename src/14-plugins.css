@@ -16,7 +16,8 @@
 }
 
 /*
- * Lumen Stage (plugin id lumen-stage) owns pan, zoom and fullscreen.
+ * Mermaid Kit (plugin id mermaid-kit; formerly Lumen Stage) owns pan, zoom
+ * and fullscreen.
  * The theme only skins the .lmm-* classes that plugin creates, so readers
  * without it keep the native figure above. The interactive host is the same
  * component as a code block: a silent 36px header band, then a flush canvas.
@@ -101,6 +102,19 @@ body .mermaid.lmm-host {
   background: transparent;
   color: var(--text-faint);
   opacity: 1;
+}
+
+/*
+ * The bar sits inside .mermaid, so the raw-diagram sizing in 10-markdown
+ * (.markdown-rendered .mermaid svg: auto width, and a 32rem min-width on
+ * phones) would otherwise reach its icons. Same specificity, later file.
+ */
+.lmm-host .lmm-flair svg {
+  width: var(--icon-size);
+  min-width: 0;
+  max-width: none;
+  height: var(--icon-size);
+  margin: 0;
 }
 
 .lmm-host .lmm-viewport {

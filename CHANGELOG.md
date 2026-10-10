@@ -6,6 +6,10 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Mermaid Kit (formerly Lumen Stage) toolbar icons inherited the raw Mermaid SVG sizing: they rendered at 24px instead of 15px, and on phones picked up the 32rem minimum width.
+
 ## [1.5.0] - 2026-10-10
 
 ### Added
