@@ -6,9 +6,9 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Fixed
+### Removed
 
-- Mermaid Kit (formerly Lumen Stage) toolbar icons inherited the raw Mermaid SVG sizing: they rendered at 24px instead of 15px, and on phones picked up the 32rem minimum width.
+- The scoped skin for the Lumen Stage plugin (`.lmm-*`). Lumen Stage is discontinued; its successor, Mermaid Kit, draws its own chrome from Obsidian's variables and needs no theme support. Diagram colours, the figure surface, and the static figure are unchanged.
 
 ## [1.5.0] - 2026-10-10
 

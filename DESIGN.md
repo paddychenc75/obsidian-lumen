@@ -123,7 +123,7 @@ Mermaid injects a random ID selector into its SVG and hardcodes a light palette.
 
 Regression coverage includes five DOM families: flowchart, sequence, state, class, and ER. Their node labels and connector class names differ, so a single flowchart is not enough to validate the palette. All diagrams use `--font-interface` to prevent Mermaid's bundled font from falling back to a different face in Chinese environments.
 
-Interaction does not belong in the theme. The separate Mermaid Kit plugin (`mermaid-kit`, formerly Lumen Stage) provides panning, `Ctrl`/`Cmd` + wheel zoom, fit-to-canvas, reset, and fullscreen; ordinary wheel input still scrolls the note. The plugin is not coupled to this theme and works with any theme; Lumen Glass only skins its `.lmm-*` classes. Once installed, the figure contracts to the body content width (`100%` border-box) and no longer borrows 4rem from each side. Controls reuse the code block's quiet title band: a 36px toolbar, text flair, low contrast at rest, and state fill on hover. The canvas sits flush with the content area, with no graph paper and no glass toolbar floating above it. Fullscreen uses the same light scrim as a modal and keeps the same figure in the centre rather than introducing a second canvas skin. Readers without the plugin see only the static figure described above.
+Interaction does not belong in the theme, and neither does the chrome of whatever provides it. A plugin that adds panning, zoom, or fullscreen to diagrams, such as Mermaid Kit, draws its own controls from Obsidian's variables; Lumen Glass does not skin them. The theme styles the static figure described above and the diagram's nodes, edges, and labels, which such a plugin keeps.
 
 ## Focus and Motion
 
