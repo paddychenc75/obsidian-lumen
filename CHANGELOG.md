@@ -6,6 +6,10 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Removed
+
+- The scoped skin for the Lumen Stage plugin (`.lmm-*`). Lumen Stage is discontinued; its successor, Mermaid Kit, draws its own chrome from Obsidian's variables and needs no theme support. Diagram colours, the figure surface, and the static figure are unchanged.
+
 ## [1.5.0] - 2026-10-10
 
 ### Added
