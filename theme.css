@@ -328,7 +328,7 @@ font-family:"Lumen Han Emphasis";font-style:italic;font-weight:600 900;src:local
 .markdown-rendered .callout,.callout{background-color:color-mix(in srgb,var(--callout-color) 3%,var(--lg-paper-solid));border:1px solid color-mix(in srgb,var(--callout-color) 18%,var(--lg-paper-solid));border-radius:var(--callout-radius);margin-block:var(--lg-space-6);padding:var(--lg-space-3) var(--lg-space-4);box-shadow:none;mix-blend-mode:normal}
 .markdown-rendered .callout-title{align-items:center;gap:var(--lg-space-2);font-size:.9em;font-weight:600;line-height:1.4}
 .markdown-rendered .callout-icon{opacity:.78}
-.markdown-rendered .callout-content{font-size:.95em;line-height:1.6}
+.markdown-rendered .callout-content{margin-top:var(--lg-space-2);font-size:.95em;line-height:1.6}
 .markdown-rendered .callout-content>:last-child{margin-bottom:0}
 .markdown-rendered .callout::before,.callout::before{content:none}
 .release-notes-view .markdown-preview-view{padding-top:var(--lg-space-4)}

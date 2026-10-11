@@ -6,6 +6,10 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- A callout's body starts 8px below its title instead of directly under it.
+
 ### Removed
 
 - The scoped skin for the Lumen Stage plugin (`.lmm-*`). Lumen Stage is discontinued; its successor, Mermaid Kit, draws its own chrome from Obsidian's variables and needs no theme support. Diagram colours, the figure surface, and the static figure are unchanged.

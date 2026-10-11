@@ -206,7 +206,13 @@
   opacity: 0.78;
 }
 
+/*
+ * The body used to start on the title's own bottom edge. Paragraphs inside are
+ * a full line apart, so a title with nothing under it read as the first line
+ * of the first paragraph rather than as a heading over all of them.
+ */
 .markdown-rendered .callout-content {
+  margin-top: var(--lg-space-2);
   font-size: 0.95em;
   line-height: 1.6;
 }
