@@ -16,7 +16,6 @@ The preview above is a 1280×720 capture of Lumen Glass running in a real Obsidi
 - Support for pop-out windows and responsive mobile layouts
 - System-aware fallbacks for reduced transparency, increased contrast, and reduced motion
 - Optional customization through the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin
-- Optional Lumen Stage plugin for pan, zoom, and fullscreen diagrams. Any theme can use it; this theme only skins its `.lmm-*` classes
 - No remote fonts, images, or other runtime network requests
 
 ## Requirements
